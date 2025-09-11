@@ -23,9 +23,7 @@
         </div>
 
         <div class="relative flex items-center justify-center h-40">
-            <!-- Voice visualizer rings -->
             <div id="visualizer" class="absolute w-36 h-36 rounded-full bg-blue-500/20 border-2 border-blue-500/50" style="transform: scale(1);"></div>
-
             <button id="call-button" class="relative bg-blue-600 text-white rounded-full w-24 h-24 flex items-center justify-center shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/50 transition-all duration-300 ease-in-out">
                 <svg id="phone-icon" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -46,83 +44,95 @@
                 <li>Free up your front desk to focus on in-office patients.</li>
             </ul>
         </div>
-        
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@vapi-ai/web@latest/dist/vapi.umd.js"></script>
+    
     <script>
-        // This code now runs after the entire page is loaded, ensuring Vapi is ready.
-        const VAPI_PUBLIC_KEY = 'ebb2b07d-b81f-43b3-9503-e8523797683d'; // API Key
-        const ASSISTANT_ID = 'a62ccb25-e09e-474a-832c-b21b045bcca2';       // Assistant ID
+        // This function dynamically loads the Vapi script and runs our main code only after it's loaded.
+        function setupVapi() {
+            const vapiScript = document.createElement('script');
+            vapiScript.src = "https://cdn.jsdelivr.net/npm/@vapi-ai/web@latest/dist/vapi.umd.js";
 
-        const vapi = new Vapi(VAPI_PUBLIC_KEY);
-        
-        const callButton = document.getElementById('call-button');
-        const callStatus = document.getElementById('call-status');
-        const phoneIcon = document.getElementById('phone-icon');
-        const hangupIcon = document.getElementById('hangup-icon');
-        const spinner = document.getElementById('spinner');
-        const visualizer = document.getElementById('visualizer');
+            // This part is crucial: The code inside will only run AFTER the script has been successfully loaded.
+            vapiScript.onload = () => {
+                const VAPI_PUBLIC_KEY = 'ebb2b07d-b81f-43b3-9503-e8523797683d'; // API Key
+                const ASSISTANT_ID = 'a62ccb25-e09e-474a-832c-b21b045bcca2'; // Assistant ID
 
-        let isCallActive = false;
+                const vapi = new Vapi(VAPI_PUBLIC_KEY);
+                
+                const callButton = document.getElementById('call-button');
+                const callStatus = document.getElementById('call-status');
+                const phoneIcon = document.getElementById('phone-icon');
+                const hangupIcon = document.getElementById('hangup-icon');
+                const spinner = document.getElementById('spinner');
+                const visualizer = document.getElementById('visualizer');
 
-        vapi.on('call-start', () => {
-            isCallActive = true;
-            callStatus.innerHTML = '<p class="text-green-400 text-lg font-medium">Call connected. Speak now!</p>';
-            spinner.classList.add('hidden');
-            phoneIcon.classList.add('hidden');
-            hangupIcon.classList.remove('hidden');
-            callButton.classList.remove('bg-blue-600');
-            callButton.classList.add('bg-red-600');
-            visualizer.style.display = 'block';
-        });
+                let isCallActive = false;
 
-        vapi.on('call-end', () => {
-            isCallActive = false;
-            callStatus.innerHTML = '<p class="text-gray-400 text-lg font-medium">Call ended. Click to try again.</p>';
-            phoneIcon.classList.remove('hidden');
-            hangupIcon.classList.add('hidden');
-            callButton.classList.remove('bg-red-600');
-            callButton.classList.add('bg-blue-600');
-            visualizer.style.transform = 'scale(1)';
-            visualizer.style.display = 'none';
-        });
-        
-        vapi.on('volume-level', (volume) => {
-            const scale = 1 + volume * 0.5;
-            visualizer.style.transform = `scale(${scale})`;
-        });
+                vapi.on('call-start', () => {
+                    isCallActive = true;
+                    callStatus.innerHTML = '<p class="text-green-400 text-lg font-medium">Call connected. Speak now!</p>';
+                    spinner.classList.add('hidden');
+                    phoneIcon.classList.add('hidden');
+                    hangupIcon.classList.remove('hidden');
+                    callButton.classList.remove('bg-blue-600');
+                    callButton.classList.add('bg-red-600');
+                    visualizer.style.display = 'block';
+                });
 
-        vapi.on('error', (e) => {
-            console.error(e);
-            isCallActive = false;
-            callStatus.innerHTML = '<p class="text-red-500 text-lg font-medium">An error occurred. Please try again.</p>';
-            spinner.classList.add('hidden');
-            phoneIcon.classList.remove('hidden');
-            hangupIcon.classList.add('hidden');
-            callButton.classList.remove('bg-red-600');
-            callButton.classList.add('bg-blue-600');
-            visualizer.style.display = 'none';
-        });
+                vapi.on('call-end', () => {
+                    isCallActive = false;
+                    callStatus.innerHTML = '<p class="text-gray-400 text-lg font-medium">Call ended. Click to try again.</p>';
+                    phoneIcon.classList.remove('hidden');
+                    hangupIcon.classList.add('hidden');
+                    callButton.classList.remove('bg-red-600');
+                    callButton.classList.add('bg-blue-600');
+                    visualizer.style.transform = 'scale(1)';
+                    visualizer.style.display = 'none';
+                });
+                
+                vapi.on('volume-level', (volume) => {
+                    const scale = 1 + volume * 0.5;
+                    visualizer.style.transform = `scale(${scale})`;
+                });
 
-        callButton.addEventListener('click', () => {
-            if (isCallActive) {
-                vapi.stop();
-            } else {
-                callStatus.innerHTML = '<p class="text-blue-400 text-lg font-medium">Connecting...</p>';
-                phoneIcon.classList.add('hidden');
-                spinner.classList.remove('hidden');
-                visualizer.style.display = 'block';
-                vapi.start(ASSISTANT_ID);
-            }
-        });
+                vapi.on('error', (e) => {
+                    console.error(e);
+                    isCallActive = false;
+                    callStatus.innerHTML = '<p class="text-red-500 text-lg font-medium">An error occurred. Please try again.</p>';
+                    spinner.classList.add('hidden');
+                    phoneIcon.classList.remove('hidden');
+                    hangupIcon.classList.add('hidden');
+                    callButton.classList.remove('bg-red-600');
+                    callButton.classList.add('bg-blue-600');
+                    visualizer.style.display = 'none';
+                });
 
-        visualizer.style.display = 'none';
+                callButton.addEventListener('click', () => {
+                    if (isCallActive) {
+                        vapi.stop();
+                    } else {
+                        callStatus.innerHTML = '<p class="text-blue-400 text-lg font-medium">Connecting...</p>';
+                        phoneIcon.classList.add('hidden');
+                        spinner.classList.remove('hidden');
+                        visualizer.style.display = 'block';
+                        vapi.start(ASSISTANT_ID);
+                    }
+                });
+
+                visualizer.style.display = 'none';
+            };
+            
+            // If the script fails to load, show an error.
+            vapiScript.onerror = () => {
+                 console.error("Failed to load Vapi script.");
+                 document.getElementById('call-status').innerHTML = '<p class="text-red-500 text-lg font-medium">Error loading AI services.</p>';
+            };
+
+            document.body.appendChild(vapiScript);
+        }
+
+        // Start the entire process when the page is ready.
+        document.addEventListener('DOMContentLoaded', setupVapi);
     </script>
 </body>
 </html>
-
-
-</html>
-
-
