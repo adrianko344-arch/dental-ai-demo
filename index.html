@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Family Dental Care - AI Assistant Demo</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@vapi-ai/web@latest/dist/vapi.umd.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -50,81 +49,80 @@
         
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@vapi-ai/web@latest/dist/vapi.umd.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const VAPI_PUBLIC_KEY = 'ebb2b07d-b81f-43b3-9503-e8523797683d'; // <-- Toto je teraz API kľúč
-            const ASSISTANT_ID = 'a62ccb25-e09e-474a-832c-b21b045bcca2';       // <-- Toto je teraz ID asistenta
+        // This code now runs after the entire page is loaded, ensuring Vapi is ready.
+        const VAPI_PUBLIC_KEY = 'ebb2b07d-b81f-43b3-9503-e8523797683d'; // API Key
+        const ASSISTANT_ID = 'a62ccb25-e09e-474a-832c-b21b045bcca2';       // Assistant ID
 
-            const vapi = new Vapi(VAPI_PUBLIC_KEY);
-            
-            const callButton = document.getElementById('call-button');
-            const callStatus = document.getElementById('call-status');
-            const phoneIcon = document.getElementById('phone-icon');
-            const hangupIcon = document.getElementById('hangup-icon');
-            const spinner = document.getElementById('spinner');
-            const visualizer = document.getElementById('visualizer');
+        const vapi = new Vapi(VAPI_PUBLIC_KEY);
+        
+        const callButton = document.getElementById('call-button');
+        const callStatus = document.getElementById('call-status');
+        const phoneIcon = document.getElementById('phone-icon');
+        const hangupIcon = document.getElementById('hangup-icon');
+        const spinner = document.getElementById('spinner');
+        const visualizer = document.getElementById('visualizer');
 
-            let isCallActive = false;
+        let isCallActive = false;
 
-            vapi.on('call-start', () => {
-                isCallActive = true;
-                callStatus.innerHTML = '<p class="text-green-400 text-lg font-medium">Hovor je spojený. Hovorte.</p>';
-                spinner.classList.add('hidden');
-                phoneIcon.classList.add('hidden');
-                hangupIcon.classList.remove('hidden');
-                callButton.classList.remove('bg-blue-600');
-                callButton.classList.add('bg-red-600');
-                visualizer.style.display = 'block';
-            });
+        vapi.on('call-start', () => {
+            isCallActive = true;
+            callStatus.innerHTML = '<p class="text-green-400 text-lg font-medium">Call connected. Speak now!</p>';
+            spinner.classList.add('hidden');
+            phoneIcon.classList.add('hidden');
+            hangupIcon.classList.remove('hidden');
+            callButton.classList.remove('bg-blue-600');
+            callButton.classList.add('bg-red-600');
+            visualizer.style.display = 'block';
+        });
 
-            vapi.on('call-end', () => {
-                isCallActive = false;
-                callStatus.innerHTML = '<p class="text-gray-400 text-lg font-medium">Hovor ukončený. Skúste znova.</p>';
-                phoneIcon.classList.remove('hidden');
-                hangupIcon.classList.add('hidden');
-                callButton.classList.remove('bg-red-600');
-                callButton.classList.add('bg-blue-600');
-                visualizer.style.transform = 'scale(1)';
-                visualizer.style.display = 'none';
-            });
-            
-            // Toto je nová časť s animáciou!
-            vapi.on('volume-level', (volume) => {
-                // Hlasitosť je číslo medzi 0 a 1.
-                // Podľa toho budeme meniť veľkosť vizualizéra.
-                const scale = 1 + volume * 0.5; // Mierka od 1 do 1.5
-                visualizer.style.transform = `scale(${scale})`;
-            });
-
-            vapi.on('error', (e) => {
-                console.error(e);
-                isCallActive = false;
-                callStatus.innerHTML = '<p class="text-red-500 text-lg font-medium">Vyskytla sa chyba. Skúste znova.</p>';
-                spinner.classList.add('hidden');
-                phoneIcon.classList.remove('hidden');
-                hangupIcon.classList.add('hidden');
-                callButton.classList.remove('bg-red-600');
-                callButton.classList.add('bg-blue-600');
-                visualizer.style.display = 'none';
-            });
-
-            callButton.addEventListener('click', () => {
-                if (isCallActive) {
-                    vapi.stop();
-                } else {
-                    callStatus.innerHTML = '<p class="text-blue-400 text-lg font-medium">Pripájam...</p>';
-                    phoneIcon.classList.add('hidden');
-                    spinner.classList.remove('hidden');
-                    visualizer.style.display = 'block';
-                    vapi.start(ASSISTANT_ID);
-                }
-            });
-
-             // Na začiatku skryť vizualizér
+        vapi.on('call-end', () => {
+            isCallActive = false;
+            callStatus.innerHTML = '<p class="text-gray-400 text-lg font-medium">Call ended. Click to try again.</p>';
+            phoneIcon.classList.remove('hidden');
+            hangupIcon.classList.add('hidden');
+            callButton.classList.remove('bg-red-600');
+            callButton.classList.add('bg-blue-600');
+            visualizer.style.transform = 'scale(1)';
             visualizer.style.display = 'none';
         });
+        
+        vapi.on('volume-level', (volume) => {
+            const scale = 1 + volume * 0.5;
+            visualizer.style.transform = `scale(${scale})`;
+        });
+
+        vapi.on('error', (e) => {
+            console.error(e);
+            isCallActive = false;
+            callStatus.innerHTML = '<p class="text-red-500 text-lg font-medium">An error occurred. Please try again.</p>';
+            spinner.classList.add('hidden');
+            phoneIcon.classList.remove('hidden');
+            hangupIcon.classList.add('hidden');
+            callButton.classList.remove('bg-red-600');
+            callButton.classList.add('bg-blue-600');
+            visualizer.style.display = 'none';
+        });
+
+        callButton.addEventListener('click', () => {
+            if (isCallActive) {
+                vapi.stop();
+            } else {
+                callStatus.innerHTML = '<p class="text-blue-400 text-lg font-medium">Connecting...</p>';
+                phoneIcon.classList.add('hidden');
+                spinner.classList.remove('hidden');
+                visualizer.style.display = 'block';
+                vapi.start(ASSISTANT_ID);
+            }
+        });
+
+        visualizer.style.display = 'none';
     </script>
 </body>
+</html>
+
+
 </html>
 
 
