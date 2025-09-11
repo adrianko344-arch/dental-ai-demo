@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Family Dental Care - AI Assistant Demo</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <script src="https://unpkg.com/@vapi-ai/web@latest/dist/vapi.umd.js"></script>
-    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         body { font-family: 'Inter', sans-serif; }
         #visualizer { transition: transform 0.1s ease-out, opacity 0.3s ease-in-out; }
@@ -36,7 +34,7 @@
         </div>
         <div class="mt-8 text-left">
             <h1 class="text-2xl font-bold text-white">AI-Powered Receptionist for Family Dental Care</h1>
-            <p class="mt-2 text-gray-400">Meet Harry, your new AI Assistant. He provides a warm, professional first impression and handles all incoming calls with perfect efficiency.</p>
+            <p class="mt-2 text-gray-400">Meet Harry, your new AI Assistant.</p>
             <ul class="mt-4 list-disc list-inside text-gray-400 space-y-2">
                 <li>Schedules new patient appointments 24/7.</li>
                 <li>Intelligently answers questions about your services.</li>
@@ -44,22 +42,30 @@
             </ul>
         </div>
     </div>
-    
+
     <script>
-        // ✅ A MORE PATIENT WAY TO WAIT
-        // This function will only run after everything on the page (scripts, images, etc.) is fully loaded.
-        window.addEventListener('load', () => {
+        document.addEventListener('DOMContentLoaded', () => {
+            // Dynamically load vapi.js
+            const script = document.createElement('script');
+            script.src = 'vapi.js'; // Must be in same folder
+            script.onload = () => initializeVapiDemo();
+            script.onerror = () => {
+                document.getElementById('call-status').innerHTML =
+                    '<p class="text-red-500 text-lg font-medium">Failed to load vapi.js. Make sure it is in the same folder.</p>';
+            };
+            document.body.appendChild(script);
+
             function initializeVapiDemo() {
                 if (typeof Vapi === 'undefined' || typeof Vapi.default === 'undefined') {
-                    console.error("Vapi object or Vapi.default is not defined even after script load.");
-                    document.getElementById('call-status').innerHTML = '<p class="text-red-500 text-lg font-medium">AI Service failed to initialize.</p>';
+                    document.getElementById('call-status').innerHTML =
+                        '<p class="text-red-500 text-lg font-medium">Vapi object not found.</p>';
                     return;
                 }
 
                 const VAPI_PUBLIC_KEY = 'ebb2b07d-b81f-43b3-9503-e8523797683d';
                 const ASSISTANT_ID = 'a62ccb25-e09e-474a-832c-b21b045bcca2';
                 const vapi = new Vapi.default(VAPI_PUBLIC_KEY);
-                
+
                 const callButton = document.getElementById('call-button');
                 const callStatus = document.getElementById('call-status');
                 const phoneIcon = document.getElementById('phone-icon');
@@ -95,7 +101,7 @@
                 vapi.on('call-end', () => {
                     resetUI('<p class="text-gray-400 text-lg font-medium">Call ended. Click to try again.</p>');
                 });
-                
+
                 vapi.on('volume-level', (volume) => {
                     if (!isCallActive) return;
                     const scale = 1 + volume * 0.7;
@@ -103,8 +109,7 @@
                 });
 
                 vapi.on('error', (e) => {
-                    console.error("Vapi runtime error:", e);
-                    resetUI(`<p class="text-red-500 text-lg font-medium">An error occurred. Please try again.</p>`);
+                    resetUI('<p class="text-red-500 text-lg font-medium">An error occurred. Please try again.</p>');
                 });
 
                 callButton.addEventListener('click', async () => {
@@ -119,15 +124,13 @@
                         try {
                             await vapi.start(ASSISTANT_ID);
                         } catch (err) {
-                            console.error("Error starting Vapi call:", err);
-                            resetUI(`<p class="text-red-500 text-lg font-medium">Could not start call. Check mic permissions.</p>`);
+                            resetUI('<p class="text-red-500 text-lg font-medium">Could not start call. Check mic permissions.</p>');
                         }
                     }
                 });
+
                 visualizer.style.display = 'none';
             }
-            
-            initializeVapiDemo();
         });
     </script>
 </body>
