@@ -11,7 +11,8 @@
     <!-- Vapi SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@vapi-ai/web@latest/dist/vapi.umd.js"></script>
   </head>
-  <body class="bg-gray-900 flex items-center justify-center min-h-screen">
+  <body class="bg-gray-900 flex items-center justify-center min-h-screen relative">
+    <!-- Main Card -->
     <div
       class="bg-gray-800 text-white rounded-2xl shadow-xl p-8 w-full max-w-md text-center"
     >
@@ -19,6 +20,7 @@
         Click below to speak with your new AI assistant.
       </p>
 
+      <!-- Call button -->
       <button
         id="call-btn"
         class="bg-blue-600 hover:bg-blue-700 rounded-full p-6 mb-6 transition duration-200"
@@ -39,6 +41,7 @@
         </svg>
       </button>
 
+      <!-- Card content -->
       <h2 class="text-xl font-bold mb-4">
         AI-Powered Receptionist for Family Dental Care
       </h2>
@@ -54,8 +57,30 @@
         <li>• Free up your front desk to focus on in-office patients.</li>
       </ul>
 
+      <!-- Call status updates -->
       <div id="call-status" class="mt-6 text-gray-400 text-sm"></div>
     </div>
+
+    <!-- Floating Call Widget -->
+    <button
+      id="floating-btn"
+      class="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 rounded-full w-16 h-16 flex items-center justify-center shadow-lg transition duration-200"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-8 w-8 text-white"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M3 5h2l3.6 7.59-1.35 2.45a1 1 0 00.9 1.5h11a1 1 0 00.9-1.5l-1.35-2.45L19 5h2"
+        />
+      </svg>
+    </button>
 
     <script>
       function initVapi() {
@@ -71,13 +96,14 @@
 
         const vapi = new window.vapiWeb.Vapi(VAPI_PUBLIC_KEY);
 
-        const callBtn = document.getElementById("call-btn");
         const callStatus = document.getElementById("call-status");
+        const callBtn = document.getElementById("call-btn");
+        const floatingBtn = document.getElementById("floating-btn");
 
-        callBtn.addEventListener("click", async () => {
+        // Shared call function
+        async function startCall() {
           callStatus.innerHTML =
             '<p class="text-yellow-400">Connecting to your AI assistant...</p>';
-
           try {
             await vapi.start(ASSISTANT_ID);
           } catch (err) {
@@ -85,7 +111,10 @@
             callStatus.innerHTML =
               '<p class="text-red-500">Failed to start the call.</p>';
           }
-        });
+        }
+
+        callBtn.addEventListener("click", startCall);
+        floatingBtn.addEventListener("click", startCall);
 
         vapi.on("call-started", () => {
           callStatus.innerHTML =
