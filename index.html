@@ -4,39 +4,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dental AI Demo</title>
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Vapi Client -->
-  <script src="https://unpkg.com/@vapi-ai/web"></script>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen p-4">
 
-  <div class="bg-white shadow-xl rounded-2xl p-8 text-center">
-    <h1 class="text-2xl font-bold mb-4 text-gray-800">Dental AI Receptionist</h1>
-    <p class="text-gray-600 mb-6">Click the button below to talk with your AI assistant.</p>
-    
-    <button id="talk-btn" 
-            class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl shadow hover:bg-blue-700 transition">
-      🎙️ Talk to Assistant
-    </button>
+  <div class="bg-gray-800 rounded-2xl shadow-2xl p-8 text-center border border-gray-700 max-w-md w-full">
+    <div id="call-status" class="mb-6 h-12 flex items-center justify-center">
+      <p class="text-gray-400 text-lg font-medium">Click below to speak with your new AI assistant.</p>
+    </div>
+    <div class="relative flex items-center justify-center h-40">
+      <div id="visualizer" class="absolute w-36 h-36 rounded-full bg-blue-500/20 border-2 border-blue-500/50"></div>
+      <button id="call-button" class="relative bg-blue-600 text-white rounded-full w-24 h-24 flex items-center justify-center shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500/50 transition-all duration-300 ease-in-out">
+        <span id="phone-icon">📞</span>
+        <span id="hangup-icon" class="hidden">❌</span>
+        <span id="spinner" class="hidden">⏳</span>
+      </button>
+    </div>
+    <div class="mt-8 text-left text-gray-400">
+      <h1 class="text-2xl font-bold text-white">AI-Powered Receptionist for Family Dental Care</h1>
+      <p class="mt-2">Meet Harry, your new AI Assistant.</p>
+      <ul class="mt-4 list-disc list-inside space-y-2">
+        <li>Schedules new patient appointments 24/7.</li>
+        <li>Intelligently answers questions about your services.</li>
+        <li>Frees up your front desk to focus on in-office patients.</li>
+      </ul>
+    </div>
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const vapi = new Vapi.Client({
-        apiKey: "ebb2b07d-b81f-43b3-9503-e8523797683d",   // tvoje API key
-        assistantId: "a62ccb25-e09e-474a-832c-b21b045bcca2" // tvoje Assistant ID
-      });
+    // Tvoje API kľúče:
+    const PUBLIC_KEY = "ebb2b07d-b81f-43b3-9503-e8523797683d";
+    const ASSISTANT_ID = "a62ccb25-e09e-474a-832c-b21b045bcca2";
 
-      const btn = document.getElementById("talk-btn");
-      btn.addEventListener("click", () => {
-        vapi.start(); // spustí konverzáciu
-      });
-    });
+    // Vytvor script tag zo script-widgetu Vapi
+    (function(d, t) {
+      var g = document.createElement(t);
+      var s = d.getElementsByTagName(t)[0];
+      g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+      g.defer = true;
+      g.async = true;
+      s.parentNode.insertBefore(g, s);
+      g.onload = function() {
+        window.vapiSDK.run({
+          apiKey: PUBLIC_KEY,
+          assistant: ASSISTANT_ID,
+          config: { mode: "voice" }
+        });
+      };
+      g.onerror = function() {
+        document.getElementById("call-status").innerHTML = "<p class='text-red-500 text-lg font-medium'>Nepodarilo sa načítať Vapi widget. Skontroluj internetové pripojenie alebo nastavenia.</p>";
+      };
+    })(document, "script");
   </script>
-
-</body>
-</html>
 
 </body>
 </html>
