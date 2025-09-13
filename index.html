@@ -13,7 +13,8 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(-45deg, #4c0519, #831843, #4c0519, #831843);
+            /* Jemný animovaný gradient na pozadí - ZMENENÝ NA MODRÚ */
+            background: linear-gradient(-45deg, #0a192f, #112240, #0a192f, #112240);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
         }
@@ -38,7 +39,7 @@
         <main class="w-full max-w-3xl mx-auto">
             <div class="fade-in" style="animation-delay: 0.2s;">
                 <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight">
-                    Zoznámte sa s Vašou Novou <span class="text-pink-400">AI Recepčnou</span>
+                    Zoznámte sa s Vašou Novou <span class="text-blue-400">AI Recepčnou</span>
                 </h1>
             </div>
 
@@ -75,42 +76,26 @@
         </footer>
     </div>
 
-    <!-- TOTO JE TVOJ SPRÁVNY KÓD PRE VAPI WIDGET -->
+    <!-- VAPI WIDGET - OPRAVENÁ A SPOĽAHLIVÁ VERZIA -->
     <script>
-        var vapiInstance = null;
+      window.vapiConfig = {
+        // 👉 KROK 1: Doplň sem tvoj verejný API kľúč
+        apiKey: "ebb2b07d-b81f-43b3-9503-e8523797683d", 
         
-        // 👉 KROK 1: Vymeň tento text za tvoje ID asistenta
-        const assistant = "<a62ccb25-e09e-474a-832c-b21b045bcca2>"; 
+        // 👉 KROK 2: Doplň sem tvoje ID asistenta
+        assistant: "a62ccb25-e09e-474a-832c-b21b045bcca2", 
         
-        // 👉 KROK 2: Vymeň tento text za tvoj verejný API kľúč
-        const apiKey = "<ebb2b07d-b81f-43b3-9503-e8523797683d>; 
-
-        // Tu môžeš upraviť tlačidlo, ak budeš chcieť (napríklad farbu)
-        const buttonConfig = {
+        // Konfigurácia tlačidla
+        button: {
             position: "bottom", // Zobrazí tlačidlo v strede dole
             idle: {
-                color: "#db2777" // Ružová farba
+                color: "#2563eb" // Modrá farba
             }
-        }; 
-      
-        (function (d, t) {
-          var g = document.createElement(t),
-            s = d.getElementsByTagName(t)[0];
-          g.src =
-            "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
-          g.defer = true;
-          g.async = true;
-          s.parentNode.insertBefore(g, s);
-      
-          g.onload = function () {
-            vapiInstance = window.vapiSDK.run({
-              apiKey: apiKey,
-              assistant: assistant,
-              config: buttonConfig,
-            });
-          };
-        })(document, "script");
+        }
+      };
     </script>
+    <!-- Používame oficiálny a spoľahlivejší skript priamo od Vapi -->
+    <script src="https://cdn.vapi.ai/web/v1/vapi.js"></script>
     
 </body>
 </html>
