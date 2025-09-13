@@ -5,10 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Recepčná Demo</title>
     
-    <!-- Tailwind CSS pre moderný dizajn -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Font pre krajší text -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -16,41 +13,28 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            /* Jemný animovaný gradient na pozadí - ZMENENÝ NA RUŽOVÚ */
             background: linear-gradient(-45deg, #4c0519, #831843, #4c0519, #831843);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
         }
-
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
-        /* Animácia pre načítanie obsahu */
         .fade-in {
             animation: fadeInAnimation 1s ease-in-out forwards;
             opacity: 0;
         }
-
         @keyframes fadeInAnimation {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Prispôsobenie Vapi tlačidla (môžete si zmeniť farby) - ZMENENÉ NA RUŽOVÚ */
-        :root {
-            --vapi-btn-bg-color: #db2777;
-            --vapi-btn-pulse-color: #db2777;
         }
     </style>
 </head>
 <body class="text-gray-200">
 
     <div class="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-
-        <!-- HLAVNÝ OBSAH STRÁNKY -->
         <main class="w-full max-w-3xl mx-auto">
             <div class="fade-in" style="animation-delay: 0.2s;">
                 <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight">
@@ -66,53 +50,67 @@
             
             <div class="fade-in" style="animation-delay: 0.6s;">
                  <p class="mt-8 text-sm text-gray-500">
-                    Kliknite na ikonu telefónu vpravo dole a vyskúšajte si to.
+                    Kliknite na ikonu telefónu nižšie a vyskúšajte si to.
                 </p>
             </div>
 
-            <!-- VÝHODY / FUNKCIE -->
             <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Funkcia 1 -->
                 <div class="fade-in bg-gray-800/50 p-6 rounded-xl border border-gray-700/50" style="animation-delay: 0.8s;">
                     <h3 class="text-lg font-bold text-white">Objednávanie 24/7</h3>
-                    <p class="mt-2 text-gray-400">Asistent dokáže objednať nových aj existujúcich pacientov kedykoľvek, aj mimo ordinačných hodín.</p>
+                    <p class="mt-2 text-gray-400">Asistent dokáže objednať nových aj existujúcich pacientov kedykoľvek.</p>
                 </div>
-                <!-- Funkcia 2 -->
                 <div class="fade-in bg-gray-800/50 p-6 rounded-xl border border-gray-700/50" style="animation-delay: 1s;">
                     <h3 class="text-lg font-bold text-white">Inteligentné Odpovede</h3>
-                    <p class="mt-2 text-gray-400">Odpovie na najčastejšie otázky o vašich službách, cenách či otváracích hodinách.</p>
+                    <p class="mt-2 text-gray-400">Odpovie na najčastejšie otázky o vašich službách, cenách či hodinách.</p>
                 </div>
-                <!-- Funkcia 3 -->
                 <div class="fade-in bg-gray-800/50 p-6 rounded-xl border border-gray-700/50" style="animation-delay: 1.2s;">
                     <h3 class="text-lg font-bold text-white">Menej Stresu</h3>
-                    <p class="mt-2 text-gray-400">Váš personál sa môže naplno venovať pacientom v ambulancii, zatiaľ čo AI rieši telefonáty.</p>
+                    <p class="mt-2 text-gray-400">Váš personál sa môže naplno venovať pacientom v ambulancii.</p>
                 </div>
             </div>
         </main>
         
-        <!-- PÄTIČKA -->
         <footer class="mt-16 text-gray-500 fade-in" style="animation-delay: 1.4s;">
             <p>&copy; 2025 Vaša Zubná Ambulancia. Všetky práva vyhradené.</p>
         </footer>
-
     </div>
 
-    <!-- VAPI WIDGET - NAJĽAHŠIA INTEGRÁCIA -->
-    <!-- ===================================== -->
-    <!-- 1. Vymeňte 'VAŠA_VEREJNÁ_API_KĽÚČ_SEM' za váš verejný API kľúč z Vapi. -->
-    <!-- 2. Vymeňte 'VAŠE_ID_ASISTENTA_SEM' za ID asistenta, ktorého chcete použiť. -->
-    <!-- ===================================== -->
+    <!-- TOTO JE TVOJ SPRÁVNY KÓD PRE VAPI WIDGET -->
     <script>
-      window.vapiConfig = {
-        apiKey: 'VAŠA_VEREJNÁ_API_KĽÚČ_SEM',
-        assistant: 'VAŠE_ID_ASISTENTA_SEM',
-        // Pridaná konfigurácia pre zmenu pozície tlačidla
-        button: {
-          position: 'bottom' // Možné hodnoty: 'bottom-right', 'bottom-left', 'top-right', 'top-left', 'bottom'
-        }
-      };
+        var vapiInstance = null;
+        
+        // 👉 KROK 1: Vymeň tento text za tvoje ID asistenta
+        const assistant = "<a62ccb25-e09e-474a-832c-b21b045bcca2>"; 
+        
+        // 👉 KROK 2: Vymeň tento text za tvoj verejný API kľúč
+        const apiKey = "<ebb2b07d-b81f-43b3-9503-e8523797683d>; 
+
+        // Tu môžeš upraviť tlačidlo, ak budeš chcieť (napríklad farbu)
+        const buttonConfig = {
+            position: "bottom", // Zobrazí tlačidlo v strede dole
+            idle: {
+                color: "#db2777" // Ružová farba
+            }
+        }; 
+      
+        (function (d, t) {
+          var g = document.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+          g.src =
+            "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+          g.defer = true;
+          g.async = true;
+          s.parentNode.insertBefore(g, s);
+      
+          g.onload = function () {
+            vapiInstance = window.vapiSDK.run({
+              apiKey: apiKey,
+              assistant: assistant,
+              config: buttonConfig,
+            });
+          };
+        })(document, "script");
     </script>
-    <script src="https://cdn.vapi.ai/web/v1/vapi.js"></script>
     
 </body>
 </html>
