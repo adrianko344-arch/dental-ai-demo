@@ -22,7 +22,7 @@
       overflow-x: hidden;
     }
 
-    /* Background video */
+    /* Background video & gradient */
     .bg-video {
       position: fixed;
       top: 0; left: 0;
@@ -31,8 +31,6 @@
       z-index: -3;
       opacity: 0.25;
     }
-
-    /* Background gradient animation */
     .bg-animated {
       position: fixed;
       top: 0; left: 0;
@@ -66,34 +64,22 @@
       -webkit-background-clip: text;
       animation: shimmer 5s linear infinite;
     }
-    @keyframes shimmer {
-      to { background-position: 200% center; }
-    }
+    @keyframes shimmer { to { background-position: 200% center; } }
 
     /* Typing effect */
-    .typing::after {
-      content: "|";
-      animation: blink 1s infinite;
-    }
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
+    .typing::after { content: "|"; animation: blink 1s infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
 
     /* Call button glowing sonar */
     .call-button {
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
       animation: float 3s ease-in-out infinite;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-    }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
     .call-button::before {
       content: "";
-      position: absolute;
-      top: 50%; left: 50%;
+      position: absolute; top: 50%; left: 50%;
       width: 200%; height: 200%;
       background: radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%);
       transform: translate(-50%, -50%);
@@ -102,13 +88,10 @@
       z-index: -1;
     }
     @keyframes pulse {
-      0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.6; }
-      100% { transform: translate(-50%, -50%) scale(1.8); opacity: 0; }
+      0% { transform: translate(-50%, -50%) scale(0.8); opacity:0.6; }
+      100% { transform: translate(-50%, -50%) scale(1.8); opacity:0; }
     }
-    .call-button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 25px rgba(37, 99, 235, 0.6);
-    }
+    .call-button:hover { transform: scale(1.1); box-shadow: 0 0 25px rgba(37, 99, 235, 0.6); }
 
     /* Glass cards tilt */
     .glass {
@@ -118,9 +101,33 @@
       transform-style: preserve-3d;
       transition: transform 0.4s ease;
     }
-    .glass:hover {
-      transform: rotate3d(1,1,0,8deg) scale(1.03);
+    .glass:hover { transform: rotate3d(1,1,0,8deg) scale(1.03); }
+
+    /* Timeline section */
+    .timeline {
+      display: flex; overflow-x: auto; padding: 2rem 0;
+      scroll-snap-type: x mandatory; gap: 2rem;
     }
+    .timeline-step {
+      flex: 0 0 250px;
+      scroll-snap-align: start;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .timeline-step:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(37,99,235,0.5); }
+    .timeline-step-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #60a5fa;
+    }
+
+    /* Counter styles */
+    .counter { font-size: 2rem; font-weight: bold; color: #60a5fa; }
   </style>
 </head>
 <body>
@@ -166,6 +173,56 @@
     </div>
   </section>
 
+  <!-- Live Call Flow Timeline -->
+  <section class="py-20 bg-black/80">
+    <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12 gradient-text" data-aos="fade-up">How Your AI Receptionist Works</h2>
+    <div class="timeline px-6">
+      <div class="timeline-step" data-aos="fade-right">
+        <div class="timeline-step-icon">📞</div>
+        <h3 class="font-bold mb-2">Patient Calls</h3>
+        <p class="text-gray-400">A patient calls your clinic number.</p>
+      </div>
+      <div class="timeline-step" data-aos="fade-right" data-aos-delay="200">
+        <div class="timeline-step-icon">🤖</div>
+        <h3 class="font-bold mb-2">AI Greets</h3>
+        <p class="text-gray-400">AI answers with a friendly greeting instantly.</p>
+      </div>
+      <div class="timeline-step" data-aos="fade-right" data-aos-delay="400">
+        <div class="timeline-step-icon">📋</div>
+        <h3 class="font-bold mb-2">Collects Details</h3>
+        <p class="text-gray-400">AI asks for patient name, service, and preferred time.</p>
+      </div>
+      <div class="timeline-step" data-aos="fade-right" data-aos-delay="600">
+        <div class="timeline-step-icon">✅</div>
+        <h3 class="font-bold mb-2">Books Appointment</h3>
+        <p class="text-gray-400">Appointment is added to your calendar automatically.</p>
+      </div>
+      <div class="timeline-step" data-aos="fade-right" data-aos-delay="800">
+        <div class="timeline-step-icon">📩</div>
+        <h3 class="font-bold mb-2">Confirmation Sent</h3>
+        <p class="text-gray-400">Patient receives instant confirmation via SMS/email.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Animated Counters -->
+  <section class="py-20 bg-black/70 text-center">
+    <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6">
+      <div data-aos="fade-up" data-aos-delay="100">
+        <div class="counter" data-target="120">0</div>
+        <p class="text-gray-400 mt-2">Appointments Booked This Week</p>
+      </div>
+      <div data-aos="fade-up" data-aos-delay="300">
+        <div class="counter" data-target="95">0</div>
+        <p class="text-gray-400 mt-2">Customer Satisfaction %</p>
+      </div>
+      <div data-aos="fade-up" data-aos-delay="500">
+        <div class="counter" data-target="24">0</div>
+        <p class="text-gray-400 mt-2">Hours Available Per Day</p>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA -->
   <section class="py-20 bg-gradient-to-br from-blue-900 via-indigo-900 to-black text-center relative">
     <h2 class="text-4xl md:text-5xl font-extrabold mb-6" data-aos="zoom-in" data-aos-delay="100">Experience the Future of Patient Calls</h2>
@@ -182,47 +239,51 @@
     &copy; 2025 Your Dental Practice. All rights reserved.
   </footer>
 
-  <!-- AOS Init -->
+  <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>AOS.init({ duration: 1000, once: true });</script>
-
-  <!-- Particle Script -->
   <script>
+    AOS.init({ duration: 1000, once: true });
+
+    // Particle Script
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
     const particles = [];
-    for (let i = 0; i < 80; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 2,
-        dx: (Math.random() - 0.5) * 0.5,
-        dy: (Math.random() - 0.5) * 0.5
-      });
+    for(let i=0;i<80;i++){
+      particles.push({ x:Math.random()*canvas.width, y:Math.random()*canvas.height, radius:Math.random()*2, dx:(Math.random()-0.5)*0.5, dy:(Math.random()-0.5)*0.5 });
     }
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = 'rgba(96,165,250,0.6)';
-      particles.forEach(p => {
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle='rgba(96,165,250,0.6)';
+      particles.forEach(p=>{
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
         ctx.fill();
-        p.x += p.dx;
-        p.y += p.dy;
-
-        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+        p.x+=p.dx; p.y+=p.dy;
+        if(p.x<0||p.x>canvas.width)p.dx*=-1;
+        if(p.y<0||p.y>canvas.height)p.dy*=-1;
       });
       requestAnimationFrame(draw);
     }
     draw();
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+
+    // Animated Counters
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter=>{
+      const updateCount = () => {
+        const target = +counter.getAttribute('data-target');
+        let count = +counter.innerText;
+        const increment = target / 100;
+        if(count < target){
+          counter.innerText = Math.ceil(count + increment);
+          setTimeout(updateCount, 20);
+        } else {
+          counter.innerText = target;
+        }
+      };
+      updateCount();
     });
   </script>
 
@@ -231,31 +292,18 @@
     var vapiInstance = null;
     const assistant = "a62ccb25-e09e-474a-832c-b21b045bcca2";
     const apiKey = "ebb2b07d-b81f-43b3-9503-e8523797683d";
-    
     const buttonConfig = {
       position: "bottom",
-      idle: {
-        color: "#2563eb",
-        backgroundColor: "#ffffff"
-      }
+      idle: { color: "#2563eb", backgroundColor: "#ffffff" }
     };
-  
-    (function (d, t) {
-      var g = document.createElement(t),
-        s = d.getElementsByTagName(t)[0];
-      g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
-      g.defer = true;
-      g.async = true;
-      s.parentNode.insertBefore(g, s);
-  
-      g.onload = function () {
-        vapiInstance = window.vapiSDK.run({
-          apiKey: apiKey,
-          assistant: assistant,
-          config: buttonConfig,
-        });
-      };
-    })(document, "script");
+    (function(d,t){
+      var g=document.createElement(t), s=d.getElementsByTagName(t)[0];
+      g.src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+      g.defer=true; g.async=true; s.parentNode.insertBefore(g,s);
+      g.onload=function(){
+        vapiInstance = window.vapiSDK.run({ apiKey, assistant, config:buttonConfig });
+      }
+    })(document,"script");
   </script>
 
 </body>
