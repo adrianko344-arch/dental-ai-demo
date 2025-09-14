@@ -20,114 +20,71 @@ body {
   color: #fff;
   overflow-x: hidden;
   background: #000;
+  perspective: 1000px;
 }
 
-/* Background video */
+/* Background video + gradient + particles */
 .bg-video {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: 0; left:0;
+  width: 100%; height:100%;
   object-fit: cover;
   z-index: -4;
   opacity: 0.25;
 }
-
-/* Gradient animated background */
 .bg-animated {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  position: fixed; top:0; left:0; width:100%; height:100%;
   background: linear-gradient(-45deg, #0a0f2c, #0d1b42, #111827, #1e3a8a);
   background-size: 400% 400%;
   animation: gradientShift 20s ease infinite;
-  z-index: -3;
+  z-index:-3;
 }
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% { background-position:0% 50%; }
+  50% { background-position:100% 50%; }
+  100% { background-position:0% 50%; }
 }
-
-/* Particles canvas */
 #particles { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-2; pointer-events:none; }
 
-/* Gradient shimmer text */
-.gradient-text {
-  background: linear-gradient(90deg, #60a5fa, #38bdf8, #3b82f6);
-  background-size: 200% auto;
-  color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
-  animation: shimmer 5s linear infinite;
-}
-@keyframes shimmer { to { background-position: 200% center; } }
+/* Hero Text */
+.gradient-text { background: linear-gradient(90deg, #60a5fa, #38bdf8, #3b82f6); background-size:200% auto; color:transparent; background-clip:text; -webkit-background-clip:text; animation: shimmer 5s linear infinite; display:inline-block; }
+@keyframes shimmer { to { background-position:200% center; } }
+.typing::after { content:"|"; animation: blink 1s infinite; }
+@keyframes blink { 50% { opacity:0; } }
+.word-fade { opacity:0; display:inline-block; animation: wordFade 1s forwards; }
+@keyframes wordFade { to { opacity:1; transform: translateY(0); } }
 
-/* Typing effect */
-.typing::after {
-  content: "|";
-  animation: blink 1s infinite;
-}
-@keyframes blink { 50% { opacity: 0; } }
-
-/* Floating phone */
+/* Phone Mockup */
 .phone-mockup {
-  width: 120px;
-  height: 240px;
-  background: linear-gradient(180deg, #1e3a8a, #2563eb);
-  border-radius: 2rem;
+  width: 100px; height:220px; border-radius:2rem;
+  background: linear-gradient(180deg, #1e3a8a,#2563eb);
   box-shadow: 0 0 30px rgba(37,99,235,0.6);
-  position: absolute;
-  right: 5%;
-  bottom: 20%;
-  transform-style: preserve-3d;
+  position:absolute; right:5%; bottom:20%; transform-style: preserve-3d;
   animation: phoneFloat 6s ease-in-out infinite alternate;
+  transition: all 0.3s ease;
 }
-@keyframes phoneFloat {
-  0% { transform: rotateY(0deg) translateY(0); }
-  50% { transform: rotateY(5deg) translateY(-10px); }
-  100% { transform: rotateY(-5deg) translateY(0); }
-}
+@keyframes phoneFloat { 0%{transform:rotateY(0deg) translateY(0);} 50%{transform:rotateY(5deg) translateY(-8px);} 100%{transform:rotateY(-5deg) translateY(0);} }
+.phone-live { animation: phoneCall 0.6s infinite alternate, phoneGlow 0.8s infinite alternate; }
+@keyframes phoneCall { 0%{transform:rotateY(0deg) translateY(0);}50%{transform:rotateY(10deg) translateY(-6px);}100%{transform:rotateY(-10deg) translateY(0);} }
+@keyframes phoneGlow { 0%{box-shadow:0 0 30px rgba(37,99,235,0.6);}50%{box-shadow:0 0 50px rgba(37,99,235,1);}100%{box-shadow:0 0 30px rgba(37,99,235,0.6);} }
 
-/* CTA Button */
-.call-button {
-  position: relative;
-  font-size: 1.75rem;
-  font-weight: 800;
-  padding: 1.25rem 3rem;
-  border-radius: 1rem;
-  background: #2563eb;
-  color: white;
-  animation: float 3s ease-in-out infinite;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.call-button:hover { transform: scale(1.1); box-shadow:0 0 30px rgba(37,99,235,0.7); }
-.call-button::before {
-  content:"";
-  position:absolute;
-  top:50%; left:50%;
-  width:200%; height:200%;
-  background: radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%);
-  transform: translate(-50%,-50%);
-  border-radius: 50%;
-  animation: pulse 3s infinite;
-  z-index:-1;
-}
-@keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-6px);} }
-@keyframes pulse { 0%{transform:translate(-50%,-50%) scale(0.8);opacity:0.6;} 100%{transform:translate(-50%,-50%) scale(1.8);opacity:0;} }
-
-/* Glass cards */
-.glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border:1px solid rgba(255,255,255,0.1); transition: transform 0.4s ease, box-shadow 0.3s ease; }
+/* Glass Cards */
+.glass { background: rgba(255,255,255,0.05); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.1); transition: transform 0.4s ease, box-shadow 0.3s ease; }
 .glass:hover { transform: rotate3d(1,1,0,8deg) scale(1.03); box-shadow:0 0 20px rgba(37,99,235,0.3); }
 
-/* Timeline steps */
-.timeline { display:flex; justify-content:center; flex-wrap:wrap; gap:2rem; padding:2rem 0; position:relative; }
-.timeline-step { flex:0 0 250px; background:rgba(255,255,255,0.05); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); border-radius:1rem; padding:1.5rem; text-align:center; transition:transform 0.3s ease, box-shadow 0.3s ease; }
-.timeline-step:hover { transform:scale(1.05); box-shadow:0 0 20px rgba(37,99,235,0.5); }
+/* Timeline */
+.timeline { display:flex; justify-center; flex-wrap:wrap; gap:2rem; padding:2rem 0; position:relative; }
+.timeline-step { flex:0 0 250px; background:rgba(255,255,255,0.05); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); border-radius:1rem; padding:1.5rem; text-align:center; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.timeline-step:hover { transform: scale(1.05); box-shadow:0 0 20px rgba(37,99,235,0.5); }
 .timeline-step-icon { font-size:2rem; margin-bottom:1rem; color:#60a5fa; }
+
+/* CTA Button */
+.call-button { position:relative; font-size:1.5rem; font-weight:800; padding:1rem 2.5rem; border-radius:1rem; background:#2563eb; color:white; animation: float 3s ease-in-out infinite; transition:transform 0.3s ease, box-shadow 0.3s ease; }
+.call-button:hover { transform:scale(1.1); box-shadow:0 0 30px rgba(37,99,235,0.7); }
+.call-button::before { content:""; position:absolute; top:50%; left:50%; width:200%; height:200%; background:radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%); transform:translate(-50%,-50%); border-radius:50%; animation:pulse 3s infinite; z-index:-1; }
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);} }
+@keyframes pulse{0%{transform:translate(-50%,-50%) scale(0.8);opacity:0.6;}100%{transform:translate(-50%,-50%) scale(1.8);opacity:0;} }
+
 </style>
 </head>
 <body>
@@ -140,7 +97,13 @@ body {
 
 <!-- Hero -->
 <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
-  <h1 class="text-5xl md:text-7xl font-black gradient-text mb-6" data-aos="fade-down">Meet Your New 24/7 <br> AI Receptionist</h1>
+  <h1 class="text-5xl md:text-7xl font-black gradient-text mb-6" data-aos="fade-down">
+    <span class="word-fade" style="animation-delay:0.2s">Meet</span> 
+    <span class="word-fade" style="animation-delay:0.4s">Your</span> 
+    <span class="word-fade" style="animation-delay:0.6s">New</span> 
+    <span class="word-fade" style="animation-delay:0.8s">24/7</span> 
+    <span class="word-fade" style="animation-delay:1s">AI Receptionist</span>
+  </h1>
   <p class="typing text-xl md:text-2xl text-gray-200" data-aos="fade-up" data-aos-delay="300">Booking patients even while you sleep</p>
   <p class="mt-6 text-gray-400 max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="600">Our intelligent assistant works for you 24/7. Save time and never miss a patient call again.</p>
   <p class="mt-6 text-sm text-gray-500" data-aos="fade-up" data-aos-delay="900">Click the phone icon below to experience the future firsthand.</p>
@@ -200,18 +163,19 @@ tsParticles.load("particles", {
 var vapiInstance=null;
 const assistant="a62ccb25-e09e-474a-832c-b21b045bcca2";
 const apiKey="ebb2b07d-b81f-43b3-9503-e8523797683d";
-const buttonConfig={position:"bottom", idle:{color:"#2563eb", backgroundColor:"#ffffff"}};
+const buttonConfig={ position:"bottom", idle:{ color:"#2563eb", backgroundColor:"#ffffff" } };
 (function(d,t){
-  var g=d.createElement(t), s=d.getElementsByTagName(t)[0];
+  var g=document.createElement(t), s=d.getElementsByTagName(t)[0];
   g.src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
   g.defer=true; g.async=true; s.parentNode.insertBefore(g,s);
-  g.onload=function(){vapiInstance=window.vapiSDK.run({apiKey, assistant, config:buttonConfig});}
+  g.onload=function(){ vapiInstance=window.vapiSDK.run({ apiKey, assistant, config:buttonConfig }); }
 })(document,"script");
 
-// CTA Button opens VAPI
-document.querySelector('.call-button').addEventListener('click', ()=>{
-  if(vapiInstance){ vapiInstance.open(); }
-  else{ alert("Assistant loading… please wait."); }
+// Phone Live Demo Click
+document.querySelector('.call-button').addEventListener('click',()=> {
+  const phone = document.querySelector('.phone-mockup');
+  phone.classList.add('phone-live');
+  setTimeout(()=>phone.classList.remove('phone-live'),3000);
 });
 </script>
 </body>
