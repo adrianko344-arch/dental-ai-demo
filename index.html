@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="sk">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Recepčná Demo</title>
+    <title>AI Dental Assistant Demo</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,107 +13,135 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            /* Nový, elegantný čierny gradient */
-            background: linear-gradient(-45deg, #000000, #1a1a1a, #000000, #1a1a1a);
-            background-size: 400% 400%;
-            animation: gradientBG 20s ease infinite;
+            background-color: #000000;
+            overflow: hidden;
         }
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
         }
-        .fade-in {
-            animation: fadeInAnimation 1s ease-in-out forwards;
+        .content-container {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Vylepšená animácia pre načítanie textu */
+        .animate-entry {
             opacity: 0;
+            transform: translateY(30px);
+            animation: slideUp 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
         }
-        @keyframes fadeInAnimation {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* "Glow" efekt pre nadpis pri prejdení myšou */
+        h1 {
+            transition: text-shadow 0.3s ease;
+        }
+        h1:hover {
+            text-shadow: 0 0 15px rgba(66, 153, 225, 0.5);
         }
     </style>
 </head>
 <body class="text-gray-300">
 
-    <div class="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-        <main class="w-full max-w-3xl mx-auto">
-            <div class="fade-in" style="animation-delay: 0.2s;">
-                <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight">
-                    Budúcnosť Vašej Recepcie je <span class="text-gray-400">Umelá Inteligencia</span>
-                </h1>
+    <div id="particles-js"></div>
+
+    <div class="content-container min-h-screen flex flex-col items-center justify-center p-6 text-center">
+        <main class="w-full max-w-4xl mx-auto">
+            
+            <div class="animate-entry" style="animation-delay: 0.2s;">
+                <svg class="w-12 h-12 mx-auto text-blue-400 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
+                </svg>
             </div>
 
-            <div class="fade-in" style="animation-delay: 0.4s;">
-                <p class="mt-6 max-w-xl mx-auto text-lg md:text-xl text-gray-400">
-                    Náš inteligentný asistent pracuje pre vás 24/7. Ušetrite čas a už nikdy nepremeškajte žiadneho pacienta.
+            <div class="animate-entry" style="animation-delay: 0.4s;">
+                <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight">
+                    Dental Practices: Stop Losing Revenue
+                </h1>
+            </div>
+            
+            <div class="animate-entry" style="animation-delay: 0.6s;">
+                <p class="mt-4 text-2xl md:text-3xl text-blue-300 font-semibold">Meet Harry, Your AI Assistant for Perfect Patient Care</p>
+            </div>
+
+            <div class="animate-entry" style="animation-delay: 0.8s;">
+                <p class="mt-8 max-w-2xl mx-auto text-lg md:text-xl text-gray-400">
+                    No more missed calls, frustrated patients, or empty chairs. With Harry, your practice runs flawlessly while patients feel truly cared for.
                 </p>
             </div>
             
-            <div class="fade-in" style="animation-delay: 0.6s;">
-                 <p class="mt-8 text-sm text-gray-500">
-                    Kliknite na ikonu telefónu a vyskúšajte si budúcnosť na vlastnej koži.
-                </p>
+            <div class="animate-entry" style="animation-delay: 1s;">
+                <p class="mt-12 text-lg md:text-xl text-gray-200 font-bold">🎂 Speak with Harry - Your Clinical AI Assistant</p>
             </div>
 
-            <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="fade-in bg-black/30 backdrop-blur-sm p-6 rounded-xl border border-gray-800" style="animation-delay: 0.8s;">
-                    <h3 class="text-lg font-bold text-white">Objednávanie 24/7</h3>
-                    <p class="mt-2 text-gray-400">Asistent dokáže objednať nových aj existujúcich pacientov kedykoľvek.</p>
-                </div>
-                <div class="fade-in bg-black/30 backdrop-blur-sm p-6 rounded-xl border border-gray-800" style="animation-delay: 1s;">
-                    <h3 class="text-lg font-bold text-white">Inteligentné Odpovede</h3>
-                    <p class="mt-2 text-gray-400">Odpovie na najčastejšie otázky o vašich službách, cenách či hodinách.</p>
-                </div>
-                <div class="fade-in bg-black/30 backdrop-blur-sm p-6 rounded-xl border border-gray-800" style="animation-delay: 1.2s;">
-                    <h3 class="text-lg font-bold text-white">Menej Stresu</h3>
-                    <p class="mt-2 text-gray-400">Váš personál sa môže naplno venovať pacientom v ambulancii.</p>
-                </div>
-            </div>
         </main>
-        
-        <footer class="mt-16 text-gray-600 fade-in" style="animation-delay: 1.4s;">
-            <p>&copy; 2025 Vaša Zubná Ambulancia. Všetky práva vyhradené.</p>
-        </footer>
     </div>
 
-    <!-- VAPI WIDGET - KÓD, KTORÝ SI POSLAL Z ICH STRÁNKY -->
+    <!-- Skript pre animáciu pozadia -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        var vapiInstance = null;
-        
-        // 👉 KROK 1: Vymeň tento text za tvoje ID asistenta
-        const assistant = "a62ccb25-e09e-474a-832c-b21b045bcca2";
-        
-        // 👉 KROK 2: Vymeň tento text za tvoj verejný API kľúč
-        const apiKey = "ebb2b07d-b81f-43b3-9503-e8523797683d";
-        
-        // Konfigurácia tlačidla
-        const buttonConfig = {
-            position: "bottom", // Zobrazí tlačidlo v strede dole
-            idle: {
-                color: "#4a4a4a", // Elegantná sivá farba
-                backgroundColor: "#ffffff"
-            }
-        };
-      
-        (function (d, t) {
-          var g = document.createElement(t),
-            s = d.getElementsByTagName(t)[0];
-          g.src =
-            "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
-          g.defer = true;
-          g.async = true;
-          s.parentNode.insertBefore(g, s);
-      
-          g.onload = function () {
-            vapiInstance = window.vapiSDK.run({
-              apiKey: apiKey,
-              assistant: assistant,
-              config: buttonConfig,
+        document.addEventListener('DOMContentLoaded', () => {
+            particlesJS('particles-js', {
+              "particles": { "number": { "value": 60, "density": { "enable": true, "value_area": 800 } }, "color": { "value": "#2563eb" }, "shape": { "type": "circle" }, "opacity": { "value": 0.3, "random": true }, "size": { "value": 3, "random": true }, "line_linked": { "enable": false }, "move": { "enable": true, "speed": 1, "direction": "none", "random": true, "straight": false, "out_mode": "out" } },
+              "interactivity": { 
+                  "detect_on": "canvas", 
+                  "events": { 
+                      "onhover": { "enable": true, "mode": "repulse" }, // Aktivovaná interaktivita
+                      "onclick": { "enable": false }, 
+                      "resize": true 
+                  },
+                  "modes": {
+                      "repulse": { "distance": 100, "duration": 0.4 }
+                  }
+              },
+              "retina_detect": true
             });
-          };
-        })(document, "script");
+        });
     </script>
     
+    <!-- TOTO JE TEN SPRÁVNY A FUNKČNÝ VAPI SKRIPT, KTORÝ SI POSLAL -->
+    <script>
+      var vapiInstance = null;
+      
+      // 👉 KROK 1: Vymeňte tento text za vaše ID asistenta
+      const assistant = "a62ccb25-e09e-474a-832c-b21b045bcca2";
+      
+      // 👉 KROK 2: Vymeňte tento text za váš verejný API kľúč
+      const apiKey = "ebb2b07d-b81f-43b3-9503-e8523797683d";
+      
+      // Konfigurácia tlačidla, aby bolo v strede
+      const buttonConfig = {
+          position: "bottom"
+      };
+    
+      (function (d, t) {
+        var g = document.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+        g.src =
+          "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+        g.defer = true;
+        g.async = true;
+        s.parentNode.insertBefore(g, s);
+    
+        g.onload = function () {
+          vapiInstance = window.vapiSDK.run({
+            apiKey: apiKey,
+            assistant: assistant,
+            config: buttonConfig,
+          });
+        };
+      })(document, "script");
+    </script>
+
 </body>
 </html>
 
