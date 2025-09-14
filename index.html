@@ -13,10 +13,10 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            /* Jemný animovaný gradient na pozadí - ZMENENÝ NA MODRÚ */
-            background: linear-gradient(-45deg, #0a192f, #112240, #0a192f, #112240);
+            /* Nový, elegantný čierny gradient */
+            background: linear-gradient(-45deg, #000000, #1a1a1a, #000000, #1a1a1a);
             background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            animation: gradientBG 20s ease infinite;
         }
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
@@ -33,69 +33,86 @@
         }
     </style>
 </head>
-<body class="text-gray-200">
+<body class="text-gray-300">
 
     <div class="min-h-screen flex flex-col items-center justify-center p-6 text-center">
         <main class="w-full max-w-3xl mx-auto">
             <div class="fade-in" style="animation-delay: 0.2s;">
                 <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight">
-                    Zoznámte sa s Vašou Novou <span class="text-blue-400">AI Recepčnou</span>
+                    Budúcnosť Vašej Recepcie je <span class="text-gray-400">Umelá Inteligencia</span>
                 </h1>
             </div>
 
             <div class="fade-in" style="animation-delay: 0.4s;">
                 <p class="mt-6 max-w-xl mx-auto text-lg md:text-xl text-gray-400">
-                    Ušetrite čas a už nikdy nepremeškajte pacienta. Náš inteligentný asistent pracuje pre vás 24/7.
+                    Náš inteligentný asistent pracuje pre vás 24/7. Ušetrite čas a už nikdy nepremeškajte žiadneho pacienta.
                 </p>
             </div>
             
             <div class="fade-in" style="animation-delay: 0.6s;">
                  <p class="mt-8 text-sm text-gray-500">
-                    Kliknite na ikonu telefónu nižšie a vyskúšajte si to.
+                    Kliknite na ikonu telefónu a vyskúšajte si budúcnosť na vlastnej koži.
                 </p>
             </div>
 
             <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="fade-in bg-gray-800/50 p-6 rounded-xl border border-gray-700/50" style="animation-delay: 0.8s;">
+                <div class="fade-in bg-black/30 backdrop-blur-sm p-6 rounded-xl border border-gray-800" style="animation-delay: 0.8s;">
                     <h3 class="text-lg font-bold text-white">Objednávanie 24/7</h3>
                     <p class="mt-2 text-gray-400">Asistent dokáže objednať nových aj existujúcich pacientov kedykoľvek.</p>
                 </div>
-                <div class="fade-in bg-gray-800/50 p-6 rounded-xl border border-gray-700/50" style="animation-delay: 1s;">
+                <div class="fade-in bg-black/30 backdrop-blur-sm p-6 rounded-xl border border-gray-800" style="animation-delay: 1s;">
                     <h3 class="text-lg font-bold text-white">Inteligentné Odpovede</h3>
                     <p class="mt-2 text-gray-400">Odpovie na najčastejšie otázky o vašich službách, cenách či hodinách.</p>
                 </div>
-                <div class="fade-in bg-gray-800/50 p-6 rounded-xl border border-gray-700/50" style="animation-delay: 1.2s;">
+                <div class="fade-in bg-black/30 backdrop-blur-sm p-6 rounded-xl border border-gray-800" style="animation-delay: 1.2s;">
                     <h3 class="text-lg font-bold text-white">Menej Stresu</h3>
                     <p class="mt-2 text-gray-400">Váš personál sa môže naplno venovať pacientom v ambulancii.</p>
                 </div>
             </div>
         </main>
         
-        <footer class="mt-16 text-gray-500 fade-in" style="animation-delay: 1.4s;">
+        <footer class="mt-16 text-gray-600 fade-in" style="animation-delay: 1.4s;">
             <p>&copy; 2025 Vaša Zubná Ambulancia. Všetky práva vyhradené.</p>
         </footer>
     </div>
 
-    <!-- VAPI WIDGET - OPRAVENÁ A SPOĽAHLIVÁ VERZIA -->
+    <!-- VAPI WIDGET - KÓD, KTORÝ SI POSLAL Z ICH STRÁNKY -->
     <script>
-      window.vapiConfig = {
-        // 👉 KROK 1: Doplň sem tvoj verejný API kľúč
-        apiKey: "ebb2b07d-b81f-43b3-9503-e8523797683d", 
+        var vapiInstance = null;
         
-        // 👉 KROK 2: Doplň sem tvoje ID asistenta
-        assistant: "a62ccb25-e09e-474a-832c-b21b045bcca2", 
+        // 👉 KROK 1: Vymeň tento text za tvoje ID asistenta
+        const assistant = "a62ccb25-e09e-474a-832c-b21b045bcca2";
+        
+        // 👉 KROK 2: Vymeň tento text za tvoj verejný API kľúč
+        const apiKey = "ebb2b07d-b81f-43b3-9503-e8523797683d";
         
         // Konfigurácia tlačidla
-        button: {
+        const buttonConfig = {
             position: "bottom", // Zobrazí tlačidlo v strede dole
             idle: {
-                color: "#2563eb" // Modrá farba
+                color: "#4a4a4a", // Elegantná sivá farba
+                backgroundColor: "#ffffff"
             }
-        }
-      };
+        };
+      
+        (function (d, t) {
+          var g = document.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+          g.src =
+            "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+          g.defer = true;
+          g.async = true;
+          s.parentNode.insertBefore(g, s);
+      
+          g.onload = function () {
+            vapiInstance = window.vapiSDK.run({
+              apiKey: apiKey,
+              assistant: assistant,
+              config: buttonConfig,
+            });
+          };
+        })(document, "script");
     </script>
-    <!-- Používame oficiálny a spoľahlivejší skript priamo od Vapi -->
-    <script src="https://cdn.vapi.ai/web/v1/vapi.js"></script>
     
 </body>
 </html>
