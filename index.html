@@ -15,6 +15,8 @@
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 
 <style>
+html { scroll-behavior: smooth; } /* plynulé prechody */
+
 body {
   font-family: 'Inter', sans-serif;
   color: #fff;
@@ -25,48 +27,39 @@ body {
 
 /* Background video + gradient + particles */
 .bg-video {
-  position: fixed;
-  top: 0; left:0;
-  width: 100%; height:100%;
-  object-fit: cover;
-  z-index: -4;
-  opacity: 0.25;
+  position: fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-4; opacity:0.25;
 }
 .bg-animated {
   position: fixed; top:0; left:0; width:100%; height:100%;
-  background: linear-gradient(-45deg, #0a0f2c, #0d1b42, #111827, #1e3a8a);
-  background-size: 400% 400%;
-  animation: gradientShift 20s ease infinite;
-  z-index:-3;
+  background: linear-gradient(-45deg,#0a0f2c,#0d1b42,#111827,#1e3a8a);
+  background-size:400% 400%; animation:gradientShift 20s ease infinite; z-index:-3;
 }
-@keyframes gradientShift {
-  0% { background-position:0% 50%; }
-  50% { background-position:100% 50%; }
-  100% { background-position:0% 50%; }
-}
+@keyframes gradientShift {0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 #particles { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-2; pointer-events:none; }
 
 /* Hero Text */
-.gradient-text { background: linear-gradient(90deg, #60a5fa, #38bdf8, #3b82f6); background-size:200% auto; color:transparent; background-clip:text; -webkit-background-clip:text; animation: shimmer 5s linear infinite; display:inline-block; }
+.gradient-text { background: linear-gradient(90deg,#60a5fa,#38bdf8,#3b82f6); background-size:200% auto; color:transparent; background-clip:text; -webkit-background-clip:text; animation: shimmer 5s linear infinite; display:inline-block; }
 @keyframes shimmer { to { background-position:200% center; } }
 .typing::after { content:"|"; animation: blink 1s infinite; }
 @keyframes blink { 50% { opacity:0; } }
 .word-fade { opacity:0; display:inline-block; animation: wordFade 1s forwards; }
 @keyframes wordFade { to { opacity:1; transform: translateY(0); } }
 
-/* Phone Mockup */
+/* Phone Mockup + Holographic + Glow */
 .phone-mockup {
   width: 100px; height:220px; border-radius:2rem;
-  background: linear-gradient(180deg, #1e3a8a,#2563eb);
-  box-shadow: 0 0 30px rgba(37,99,235,0.6);
-  position:absolute; right:5%; bottom:20%; transform-style: preserve-3d;
-  animation: phoneFloat 6s ease-in-out infinite alternate;
+  background: linear-gradient(135deg,#1e3a8a,#2563eb,#60a5fa);
+  background-size:200% 200%;
+  box-shadow:0 0 30px rgba(37,99,235,0.6);
+  position:absolute; bottom:20%; right:5%; transform-style: preserve-3d;
+  animation: phoneFloat 6s ease-in-out infinite alternate, holoPulse 4s ease-in-out infinite alternate;
   transition: all 0.3s ease;
 }
-@keyframes phoneFloat { 0%{transform:rotateY(0deg) translateY(0);} 50%{transform:rotateY(5deg) translateY(-8px);} 100%{transform:rotateY(-5deg) translateY(0);} }
-.phone-live { animation: phoneCall 0.6s infinite alternate, phoneGlow 0.8s infinite alternate; }
-@keyframes phoneCall { 0%{transform:rotateY(0deg) translateY(0);}50%{transform:rotateY(10deg) translateY(-6px);}100%{transform:rotateY(-10deg) translateY(0);} }
-@keyframes phoneGlow { 0%{box-shadow:0 0 30px rgba(37,99,235,0.6);}50%{box-shadow:0 0 50px rgba(37,99,235,1);}100%{box-shadow:0 0 30px rgba(37,99,235,0.6);} }
+@keyframes phoneFloat {0%{transform:rotateY(0deg) translateY(0);}50%{transform:rotateY(5deg) translateY(-8px);}100%{transform:rotateY(-5deg) translateY(0);}}
+@keyframes holoPulse {0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.phone-live { animation: phoneCall 0.6s infinite alternate, phoneGlow 0.8s infinite alternate, holoPulse 4s ease-in-out infinite alternate; }
+@keyframes phoneCall {0%{transform:rotateY(0deg) translateY(0);}50%{transform:rotateY(10deg) translateY(-6px);}100%{transform:rotateY(-10deg) translateY(0);} }
+@keyframes phoneGlow {0%{box-shadow:0 0 30px rgba(37,99,235,0.6);}50%{box-shadow:0 0 50px rgba(37,99,235,1);}100%{box-shadow:0 0 30px rgba(37,99,235,0.6);} }
 
 /* Glass Cards */
 .glass { background: rgba(255,255,255,0.05); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.1); transition: transform 0.4s ease, box-shadow 0.3s ease; }
@@ -78,8 +71,8 @@ body {
 .timeline-step:hover { transform: scale(1.05); box-shadow:0 0 20px rgba(37,99,235,0.5); }
 .timeline-step-icon { font-size:2rem; margin-bottom:1rem; color:#60a5fa; }
 
-/* CTA Button */
-.call-button { position:relative; font-size:1.5rem; font-weight:800; padding:1rem 2.5rem; border-radius:1rem; background:#2563eb; color:white; animation: float 3s ease-in-out infinite; transition:transform 0.3s ease, box-shadow 0.3s ease; }
+/* CTA Button + Ripple */
+.call-button { position:relative; font-size:1.5rem; font-weight:800; padding:1rem 2.5rem; border-radius:1rem; background:#2563eb; color:white; animation: float 3s ease-in-out infinite; transition:transform 0.3s ease, box-shadow 0.3s ease; cursor:pointer; }
 .call-button:hover { transform:scale(1.1); box-shadow:0 0 30px rgba(37,99,235,0.7); }
 .call-button::before { content:""; position:absolute; top:50%; left:50%; width:200%; height:200%; background:radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%); transform:translate(-50%,-50%); border-radius:50%; animation:pulse 3s infinite; z-index:-1; }
 @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);} }
@@ -133,33 +126,29 @@ body {
   <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12 gradient-text" data-aos="fade-up">How Your AI Receptionist Works</h2>
   <div class="timeline px-6">
     <div class="timeline-step" data-aos="fade-up"><div class="timeline-step-icon">📞</div><h3 class="font-bold mb-2">Patient Calls</h3><p class="text-gray-400">A patient calls your clinic number.</p></div>
-    <div class="timeline-step" data-aos="fade-up" data-aos-delay="200"><div class="timeline-step-icon">🤖</div><h3 class="font-bold mb-2">AI Greets</h3><p class="text-gray-400">AI answers with a friendly greeting instantly.</p></div>
-    <div class="timeline-step" data-aos="fade-up" data-aos-delay="400"><div class="timeline-step-icon">📋</div><h3 class="font-bold mb-2">Collects Details</h3><p class="text-gray-400">AI asks for patient name, service, and preferred time.</p></div>
-    <div class="timeline-step" data-aos="fade-up" data-aos-delay="600"><div class="timeline-step-icon">📅</div><h3 class="font-bold mb-2">Books Appointment</h3><p class="text-gray-400">AI schedules the appointment automatically.</p></div>
+    <div class="timeline-step" data-aos="fade-up" data-aos-delay="200"><div class="timeline-step-icon">🤖</div><h3 class="font-bold mb-2">AI Greets</h3><p class="text-gray-400">AI answers instantly and professionally.</p></div>
+    <div class="timeline-step" data-aos="fade-up" data-aos-delay="400"><div class="timeline-step-icon">📅</div><h3 class="font-bold mb-2">Booking</h3><p class="text-gray-400">Assistant books patient in real time.</p></div>
   </div>
 </section>
 
 <!-- CTA -->
 <section class="py-20 bg-gradient-to-br from-blue-900 via-indigo-900 to-black text-center relative">
-  <h2 class="text-4xl md:text-5xl font-extrabold mb-6 gradient-text" data-aos="zoom-in">Experience the Future of Patient Calls</h2>
+  <h2 class="text-4xl md:text-5xl font-extrabold mb-6" data-aos="zoom-in">Experience the Future of Patient Calls</h2>
   <p class="text-gray-300 mb-8 max-w-2xl mx-auto" data-aos="zoom-in" data-aos-delay="200">Click the button below to talk with your new AI receptionist.</p>
   <button class="call-button" data-aos="zoom-in" data-aos-delay="400">📞 Try the Live Demo</button>
 </section>
 
-<footer class="py-6 text-center text-gray-500 text-sm relative">&copy; 2025 Your Dental Practice. All rights reserved.</footer>
+<!-- Footer -->
+<footer class="py-6 text-center text-gray-500 text-sm relative">
+  &copy; 2025 Your Dental Practice. All rights reserved.
+</footer>
 
+<!-- AOS Init -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tsparticles@2.9.3/tsparticles.bundle.min.js"></script>
+<script>AOS.init({ duration: 1000, once: true });</script>
+
+<!-- VAPI Widget -->
 <script>
-AOS.init({ duration: 1000, once:true });
-
-// Particles
-tsParticles.load("particles", {
-  particles:{ number:{ value:80 }, color:{value:"#2563eb"}, shape:{type:"circle"}, size:{value:3}, move:{enable:true,speed:1} },
-  interactivity:{ events:{ onhover:{ enable:true, mode:"repulse" } } }, retina_detect:true
-});
-
-// VAPI Widget
 var vapiInstance=null;
 const assistant="a62ccb25-e09e-474a-832c-b21b045bcca2";
 const apiKey="ebb2b07d-b81f-43b3-9503-e8523797683d";
@@ -171,12 +160,14 @@ const buttonConfig={ position:"bottom", idle:{ color:"#2563eb", backgroundColor:
   g.onload=function(){ vapiInstance=window.vapiSDK.run({ apiKey, assistant, config:buttonConfig }); }
 })(document,"script");
 
-// Phone Live Demo Click
+// Try Live Demo Button Click
 document.querySelector('.call-button').addEventListener('click',()=> {
-  const phone = document.querySelector('.phone-mockup');
+  document.querySelector('html, body').scrollTo({top:0, behavior:'smooth'}); // scroll top
+  const phone=document.querySelector('.phone-mockup');
   phone.classList.add('phone-live');
   setTimeout(()=>phone.classList.remove('phone-live'),3000);
 });
 </script>
+
 </body>
 </html>
