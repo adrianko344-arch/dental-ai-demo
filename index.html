@@ -5,11 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Receptionist Demo</title>
   <style>
-    /* Reset */
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html {
-      scroll-behavior: smooth; /* ✅ plynulý scroll */
+      scroll-behavior: smooth; /* plynulý scroll */
     }
 
     body {
@@ -25,7 +24,6 @@
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       z-index: -1;
-      background: transparent;
     }
 
     /* Hero section */
@@ -87,7 +85,6 @@
       100% { box-shadow: 0 0 0 0 rgba(0,123,255,0); }
     }
 
-    /* Section styling */
     section {
       min-height: 100vh;
       padding: 5rem 2rem;
@@ -121,7 +118,7 @@
     <p>Our intelligent assistant works for you 24/7. Save time and never miss a patient call again.</p>
     <p>Click the phone icon below to experience the future firsthand.</p>
 
-    <!-- ✅ Only CTA button remains -->
+    <!-- ✅ CTA button to trigger assistant -->
     <div class="call-button">📞</div>
   </div>
 
@@ -134,7 +131,27 @@
     <div class="timeline-step">📅 Books directly into your calendar</div>
   </section>
 
+  <!-- ✅ VAPI embed script -->
   <script>
+    (function(d, s) {
+      var js = d.createElement(s);
+      js.src = "https://cdn.vapi.ai/vapi.js";
+      js.onload = function() {
+        window.vapiInstance = new VapiAssistant({
+          apiKey: "YOUR_PUBLIC_KEY",  // 🔑 sem vlož svoj kľúč
+          assistantId: "YOUR_ASSISTANT_ID" // 🆔 sem vlož ID asistenta
+        });
+      };
+      d.head.appendChild(js);
+    })(document, "script");
+
+    /* CTA action */
+    document.querySelector('.call-button').addEventListener('click', ()=>{
+      window.scrollTo({top:0, behavior:'smooth'});
+      if(window.vapiInstance){ vapiInstance.open(); }
+      else { alert("Assistant loading… please wait."); }
+    });
+
     /* Particles */
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
@@ -180,13 +197,6 @@
       requestAnimationFrame(animateParticles);
     }
     initParticles(); animateParticles();
-
-    /* CTA Button scroll top & open live demo */
-    document.querySelector('.call-button').addEventListener('click', ()=>{
-      window.scrollTo({top:0, behavior:'smooth'});
-      if(window.vapiInstance){ vapiInstance.open(); }
-      else { alert("Assistant loading… please wait."); }
-    });
   </script>
 </body>
 </html>
