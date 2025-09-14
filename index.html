@@ -122,7 +122,9 @@
       border-radius: 1rem;
       padding: 1.5rem;
       text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.3s ease;
+      transform: translateY(30px);
+      opacity: 0;
     }
     .timeline-step:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(37,99,235,0.5); }
     .timeline-step-icon {
@@ -249,23 +251,23 @@
   <script>
     AOS.init({ duration: 1000, once: true });
 
-    // Particle Script with mouse interaction
+    // Particle Script s odtlačením od myši
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    let mouseX = canvas.width/2;
-    let mouseY = canvas.height/2;
+    let mouseX = canvas.width / 2;
+    let mouseY = canvas.height / 2;
 
     const particles = [];
-    for(let i=0;i<80;i++){
+    for (let i = 0; i < 120; i++) {
       particles.push({
-        x: Math.random()*canvas.width,
-        y: Math.random()*canvas.height,
-        radius: Math.random()*2,
-        dx: (Math.random()-0.5)*0.5,
-        dy: (Math.random()-0.5)*0.5
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2 + 1,
+        dx: (Math.random() - 0.5) * 0.3,
+        dy: (Math.random() - 0.5) * 0.3
       });
     }
 
@@ -274,38 +276,44 @@
       mouseY = e.clientY;
     });
 
-    function draw(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      ctx.fillStyle='rgba(96,165,250,0.6)';
-      particles.forEach(p=>{
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'rgba(96,165,250,0.6)';
+      particles.forEach(p => {
         ctx.beginPath();
-        ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fill();
-        
-        // Distance-based movement
-        let distX = (mouseX - p.x) * 0.0005;
-        let distY = (mouseY - p.y) * 0.0005;
-        
-        p.x += p.dx + distX * 20;
-        p.y += p.dy + distY * 20;
 
-        if(p.x<0||p.x>canvas.width)p.dx*=-1;
-        if(p.y<0||p.y>canvas.height)p.dy*=-1;
+        // odtlacenie od myši
+        let distX = p.x - mouseX;
+        let distY = p.y - mouseY;
+        let distance = Math.sqrt(distX*distX + distY*distY);
+        if(distance < 100){ // radius účinku
+          let angle = Math.atan2(distY, distX);
+          let force = (100 - distance) / 50; // sila odtlacenia
+          p.x += Math.cos(angle) * force;
+          p.y += Math.sin(angle) * force;
+        }
+
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
       });
       requestAnimationFrame(draw);
     }
     draw();
-
-    window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 
     // Animated Counters
     const counters = document.querySelectorAll('.counter');
-    counters.forEach(counter=>{
+    counters.forEach(counter => {
       const updateCount = () => {
         const target = +counter.getAttribute('data-target');
         let count = +counter.innerText;
         const increment = target / 100;
-        if(count < target){
+        if (count < target) {
           counter.innerText = Math.ceil(count + increment);
           setTimeout(updateCount, 20);
         } else {
@@ -315,11 +323,26 @@
       updateCount();
     });
 
-    // Scroll to top on Try Live Demo
+    // Scroll na top
     const demoButton = document.querySelector('.call-button');
     demoButton.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+
+    // Timeline animácia pri scrollovaní
+    const timelineSteps = document.querySelectorAll('.timeline-step');
+    function revealTimeline() {
+      const triggerBottom = window.innerHeight * 0.85;
+      timelineSteps.forEach(step => {
+        const stepTop = step.getBoundingClientRect().top;
+        if (stepTop < triggerBottom) {
+          step.style.transform = 'translateY(0)';
+          step.style.opacity = '1';
+        }
+      });
+    }
+    window.addEventListener('scroll', revealTimeline);
+    window.addEventListener('load', revealTimeline);
   </script>
 
   <!-- VAPI WIDGET -->
