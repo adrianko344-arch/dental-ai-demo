@@ -15,109 +15,53 @@
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 
 <style>
-body {
-  font-family: 'Inter', sans-serif;
-  color: #fff;
-  overflow-x: hidden;
-  background: #000;
-  scroll-behavior: smooth;
-}
+body { font-family: 'Inter', sans-serif; color: #fff; overflow-x: hidden; background: #000; }
 
 /* Background video */
-.bg-video {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  object-fit: cover;
-  z-index: -4;
-  opacity: 0.25;
-}
+.bg-video { position: fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-4; opacity:0.25; }
 
-/* Gradient animated background */
-.bg-animated {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: linear-gradient(-45deg, #0a0f2c, #0d1b42, #111827, #1e3a8a);
-  background-size: 400% 400%;
-  animation: gradientShift 20s ease infinite;
-  z-index: -3;
-}
-@keyframes gradientShift { 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
+/* Animated gradient background */
+.bg-animated { position: fixed; top:0; left:0; width:100%; height:100%; background: linear-gradient(-45deg,#0a0f2c,#0d1b42,#111827,#1e3a8a); background-size:400% 400%; animation: gradientShift 20s ease infinite; z-index:-3; }
+@keyframes gradientShift { 0% {background-position:0% 50%;} 50% {background-position:100% 50%;} 100% {background-position:0% 50%;} }
 
 /* Particles canvas */
 #particles { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-2; pointer-events:none; }
 
 /* Gradient shimmer text */
-.gradient-text {
-  background: linear-gradient(90deg, #60a5fa, #38bdf8, #3b82f6);
-  background-size: 200% auto;
-  color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
-  animation: shimmer 5s linear infinite;
-}
+.gradient-text { background: linear-gradient(90deg, #60a5fa, #38bdf8, #3b82f6); background-size: 200% auto; color: transparent; background-clip: text; -webkit-background-clip: text; animation: shimmer 5s linear infinite; }
 @keyframes shimmer { to { background-position: 200% center; } }
 
 /* Typing effect */
 .typing::after { content:"|"; animation: blink 1s infinite; }
-@keyframes blink { 50% { opacity: 0; } }
+@keyframes blink { 50% { opacity:0; } }
 
-/* Phone */
-.phone-mockup {
-  width: 120px; height: 240px;
-  background: linear-gradient(180deg,#1e3a8a,#2563eb);
-  border-radius: 2rem;
-  box-shadow:0 0 30px rgba(37,99,235,0.6);
-  position: absolute;
-  right:50%; transform:translateX(50%);
-  bottom:25%;
-  transition: all 0.3s ease;
-}
-.phone-mockup:hover { transform:translateX(50%) scale(1.05); box-shadow:0 0 40px rgba(37,99,235,0.8); }
-
-/* Live demo animation */
-.phone-live {
-  animation: phoneGlow 0.8s infinite alternate;
-}
-@keyframes phoneGlow { 0% { box-shadow:0 0 30px rgba(37,99,235,0.6); } 50% { box-shadow:0 0 50px rgba(37,99,235,1); } 100% { box-shadow:0 0 30px rgba(37,99,235,0.6); } }
+/* Floating phone mockup */
+.phone-mockup { width: 120px; height: 240px; background: linear-gradient(180deg,#1e3a8a,#2563eb); border-radius:2rem; box-shadow: 0 0 30px rgba(37,99,235,0.6); transition: all 0.3s ease; position:relative; margin: 2rem auto; }
 
 /* CTA Button */
-.call-button {
-  position: relative;
-  font-size: 1.75rem;
-  font-weight: 800;
-  padding: 1.25rem 3rem;
-  border-radius: 1rem;
-  background: #2563eb;
-  color: white;
-  animation: float 3s ease-in-out infinite;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+.call-button { position: relative; font-size:1.75rem; font-weight:800; padding:1.25rem 3rem; border-radius:1rem; background:#2563eb; color:white; transition: transform 0.3s ease, box-shadow 0.3s ease; overflow:hidden; }
 .call-button:hover { transform: scale(1.1); box-shadow:0 0 30px rgba(37,99,235,0.7); }
-.call-button::before {
-  content:"";
-  position:absolute;
-  top:50%; left:50%;
-  width:200%; height:200%;
-  background: radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%);
-  transform: translate(-50%,-50%);
-  border-radius: 50%;
-  animation: pulse 3s infinite;
-  z-index:-1;
-}
-@keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-6px);} }
+.call-button::before { content:""; position:absolute; top:50%; left:50%; width:200%; height:200%; background: radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%); transform: translate(-50%,-50%); border-radius:50%; animation: pulse 3s infinite; z-index:-1; }
 @keyframes pulse { 0%{transform:translate(-50%,-50%) scale(0.8);opacity:0.6;} 100%{transform:translate(-50%,-50%) scale(1.8);opacity:0;} }
 
 /* Glass cards */
-.glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border:1px solid rgba(255,255,255,0.1); transition: transform 0.4s ease, box-shadow 0.3s ease; }
-.glass:hover { transform: rotate3d(1,1,0,8deg) scale(1.03); box-shadow:0 0 20px rgba(37,99,235,0.3); }
+.glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border:1px solid rgba(255,255,255,0.1); transition: transform 0.4s ease, box-shadow 0.3s ease, background 0.5s ease; }
+.glass:hover { transform: rotate3d(1,1,0,8deg) scale(1.03); box-shadow:0 0 20px rgba(37,99,235,0.3); background: linear-gradient(135deg, rgba(37,99,235,0.2), rgba(56,189,248,0.2)); }
 
-/* Timeline */
+/* Timeline steps */
 .timeline { display:flex; justify-content:center; flex-wrap:wrap; gap:2rem; padding:2rem 0; position:relative; }
-.timeline-step { flex:0 0 250px; background:rgba(255,255,255,0.05); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); border-radius:1rem; padding:1.5rem; text-align:center; transition:transform 0.3s ease, box-shadow 0.3s ease; }
-.timeline-step:hover { transform:scale(1.05); box-shadow:0 0 20px rgba(37,99,235,0.5); }
+.timeline-step { flex:0 0 250px; background:rgba(255,255,255,0.05); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); border-radius:1rem; padding:1.5rem; text-align:center; transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease; position:relative; }
+.timeline-step:hover { transform: scale(1.05); box-shadow:0 0 20px rgba(37,99,235,0.5); background: rgba(37,99,235,0.1); }
 .timeline-step-icon { font-size:2rem; margin-bottom:1rem; color:#60a5fa; }
+/* Glow line between timeline steps */
+.timeline-step::after { content:""; position:absolute; top:50%; right:-1rem; width:2rem; height:2px; background: #2563eb; box-shadow:0 0 10px #2563eb; }
+.timeline-step:last-child::after { display:none; }
+
+/* Smooth scrolling */
+html { scroll-behavior: smooth; }
+
+/* Parallax effect */
+[data-parallax] { transition: transform 0.1s ease-out; }
 </style>
 </head>
 <body>
@@ -130,25 +74,25 @@ body {
 
 <!-- Hero -->
 <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
-  <h1 class="text-5xl md:text-7xl font-black gradient-text mb-6" data-aos="fade-down">Meet Your New 24/7 <br> AI Receptionist</h1>
-  <p class="typing text-xl md:text-2xl text-gray-200" data-aos="fade-up" data-aos-delay="300">Booking patients even while you sleep</p>
-  <p class="mt-6 text-gray-400 max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="600">Our intelligent assistant works for you 24/7. Save time and never miss a patient call again.</p>
-  <p class="mt-6 text-sm text-gray-500" data-aos="fade-up" data-aos-delay="900">Click the phone icon below to experience the future firsthand.</p>
+  <h1 class="text-5xl md:text-7xl font-black gradient-text mb-6" data-aos="fade-down" data-parallax="0.3">Meet Your New 24/7 <br> AI Receptionist</h1>
+  <p class="typing text-xl md:text-2xl text-gray-200" data-aos="fade-up" data-aos-delay="300" data-parallax="0.2">Booking patients even while you sleep</p>
+  <p class="mt-6 text-gray-400 max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="600" data-parallax="0.1">Our intelligent assistant works for you 24/7. Save time and never miss a patient call again.</p>
+  <p class="mt-6 text-sm text-gray-500" data-aos="fade-up" data-aos-delay="900" data-parallax="0.05">Click the phone icon below to experience the future firsthand.</p>
   <div class="phone-mockup" data-aos="zoom-in" data-aos-delay="1200"></div>
 </section>
 
 <!-- Features -->
 <section class="py-20 bg-black/70 relative">
   <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6">
-    <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="100">
+    <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="100" data-parallax="0.05">
       <h3 class="text-xl font-bold mb-2">24/7 Appointment Booking</h3>
       <p class="text-gray-400">The assistant can book new and existing patients at any time, even after hours.</p>
     </div>
-    <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="300">
+    <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="300" data-parallax="0.05">
       <h3 class="text-xl font-bold mb-2">Intelligent Answers</h3>
       <p class="text-gray-400">It answers common questions about your services, pricing, and business hours.</p>
     </div>
-    <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="500">
+    <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="500" data-parallax="0.05">
       <h3 class="text-xl font-bold mb-2">Less Stress for Your Staff</h3>
       <p class="text-gray-400">Your staff can focus completely on the patients in your office.</p>
     </div>
@@ -157,19 +101,19 @@ body {
 
 <!-- Timeline -->
 <section class="py-20 bg-black/80 relative">
-  <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12 gradient-text" data-aos="fade-up">How Your AI Receptionist Works</h2>
+  <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12 gradient-text" data-aos="fade-up" data-parallax="0.1">How Your AI Receptionist Works</h2>
   <div class="timeline px-6">
-    <div class="timeline-step" data-aos="fade-up"><div class="timeline-step-icon">📞</div><h3 class="font-bold mb-2">Patient Calls</h3><p class="text-gray-400">A patient calls your clinic number.</p></div>
-    <div class="timeline-step" data-aos="fade-up" data-aos-delay="200"><div class="timeline-step-icon">🤖</div><h3 class="font-bold mb-2">AI Greets</h3><p class="text-gray-400">AI answers with a friendly greeting instantly.</p></div>
-    <div class="timeline-step" data-aos="fade-up" data-aos-delay="400"><div class="timeline-step-icon">📋</div><h3 class="font-bold mb-2">Collects Details</h3><p class="text-gray-400">AI asks for patient name, service, and preferred time.</p></div>
-    <div class="timeline-step" data-aos="fade-up" data-aos-delay="600"><div class="timeline-step-icon">📅</div><h3 class="font-bold mb-2">Books Appointment</h3><p class="text-gray-400">AI schedules the appointment automatically.</p></div>
+    <div class="timeline-step" data-aos="fade-up" data-parallax="0.05"><div class="timeline-step-icon">📞</div><h3 class="font-bold mb-2">Patient Calls</h3><p class="text-gray-400">A patient calls your clinic number.</p></div>
+    <div class="timeline-step" data-aos="fade-up" data-aos-delay="200" data-parallax="0.05"><div class="timeline-step-icon">🤖</div><h3 class="font-bold mb-2">AI Greets</h3><p class="text-gray-400">AI answers with a friendly greeting instantly.</p></div>
+    <div class="timeline-step" data-aos="fade-up" data-aos-delay="400" data-parallax="0.05"><div class="timeline-step-icon">📋</div><h3 class="font-bold mb-2">Collects Details</h3><p class="text-gray-400">AI asks for patient name, service, and preferred time.</p></div>
+    <div class="timeline-step" data-aos="fade-up" data-aos-delay="600" data-parallax="0.05"><div class="timeline-step-icon">📅</div><h3 class="font-bold mb-2">Books Appointment</h3><p class="text-gray-400">AI schedules the appointment automatically.</p></div>
   </div>
 </section>
 
 <!-- CTA -->
 <section class="py-20 bg-gradient-to-br from-blue-900 via-indigo-900 to-black text-center relative">
-  <h2 class="text-4xl md:text-5xl font-extrabold mb-6 gradient-text" data-aos="zoom-in">Experience the Future of Patient Calls</h2>
-  <p class="text-gray-300 mb-8 max-w-2xl mx-auto" data-aos="zoom-in" data-aos-delay="200">Click the button below to talk with your new AI receptionist.</p>
+  <h2 class="text-4xl md:text-5xl font-extrabold mb-6 gradient-text" data-aos="zoom-in" data-parallax="0.1">Experience the Future of Patient Calls</h2>
+  <p class="text-gray-300 mb-8 max-w-2xl mx-auto" data-aos="zoom-in" data-aos-delay="200" data-parallax="0.05">Click the button below to talk with your new AI receptionist.</p>
   <button class="call-button" data-aos="zoom-in" data-aos-delay="400">📞 Try the Live Demo</button>
 </section>
 
@@ -196,16 +140,21 @@ const buttonConfig={position:"bottom", idle:{color:"#2563eb", backgroundColor:"#
   g.onload=function(){vapiInstance=window.vapiSDK.run({apiKey, assistant, config:buttonConfig});}
 })(document,"script");
 
-// CTA Button opens VAPI and animates phone
+// CTA Button scroll top & open live demo
 const phone=document.querySelector('.phone-mockup');
 document.querySelector('.call-button').addEventListener('click', ()=>{
   window.scrollTo({top:0, behavior:'smooth'});
-  if(vapiInstance){ vapiInstance.open(); phone.classList.add('phone-live'); }
-  else { alert("Assistant loading… please wait."); }
+  if(vapiInstance){ vapiInstance.open(); }
+  else{ alert("Assistant loading… please wait."); }
 });
 
-// Remove animation when closed
-document.addEventListener('vapiClosed', ()=>{ phone.classList.remove('phone-live'); });
+// Parallax effect
+document.addEventListener('mousemove', e=>{
+  document.querySelectorAll('[data-parallax]').forEach(el=>{
+    const factor=parseFloat(el.getAttribute('data-parallax'));
+    el.style.transform=`translate(${(e.clientX-window.innerWidth/2)*factor*0.02}px, ${(e.clientY-window.innerHeight/2)*factor*0.02}px)`;
+  });
+});
 </script>
 </body>
 </html>
