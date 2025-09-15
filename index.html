@@ -71,18 +71,19 @@
     .typing::after { content: "|"; animation: blink 1s infinite; }
     @keyframes blink { 50% { opacity: 0; } }
 
-    /* Call button glowing sonar + dynamic pulse */
+    /* Call button glowing sonar + advanced animation */
     .call-button {
       position: relative; overflow: hidden;
       animation: float 3s ease-in-out infinite;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
+      z-index: 10;
     }
-    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
     .call-button::before {
       content: "";
       position: absolute; top: 50%; left: 50%;
-      width: 200%; height: 200%;
+      width: 250%; height: 250%;
       background: radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%);
       transform: translate(-50%, -50%);
       border-radius: 50%;
@@ -91,17 +92,9 @@
     }
     @keyframes pulse {
       0% { transform: translate(-50%, -50%) scale(0.8); opacity:0.6; }
-      100% { transform: translate(-50%, -50%) scale(1.8); opacity:0; }
+      100% { transform: translate(-50%, -50%) scale(2); opacity:0; }
     }
-    .call-button:hover {
-      transform: scale(1.15);
-      box-shadow: 0 0 30px rgba(37, 99, 235, 0.8);
-      animation: float 2.5s ease-in-out infinite, glow 1.5s ease-in-out infinite alternate;
-    }
-    @keyframes glow {
-      0% { box-shadow: 0 0 20px rgba(37,99,235,0.5); }
-      100% { box-shadow: 0 0 35px rgba(37,99,235,0.9); }
-    }
+    .call-button:hover { transform: scale(1.15) rotate(-2deg); box-shadow: 0 0 35px rgba(37, 99, 235, 0.8); }
 
     /* Glass cards tilt */
     .glass {
@@ -145,9 +138,9 @@
     /* Counter styles */
     .counter { font-size: 2rem; font-weight: bold; color: #60a5fa; }
 
-    /* Section smooth fade-in */
-    section { opacity: 0; transform: translateY(20px); transition: all 0.8s ease; }
-    section.visible { opacity: 1; transform: translateY(0); }
+    /* Smooth section transitions */
+    section { scroll-margin-top: 80px; }
+
   </style>
 </head>
 <body>
@@ -264,7 +257,7 @@
   <script>
     AOS.init({ duration: 1000, once: true });
 
-    // Particle Script - Upgraded Hive Network with Dental Icons
+    // Particle Script (enhanced)
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -273,34 +266,23 @@
     let mouseX = canvas.width / 2;
     let mouseY = canvas.height / 2;
 
-    const icons = ["🦷","😁","🪥","🔬","🏥"]; 
-    const clusters = [];
-    const clusterCount = 5;
+    const icons = ["🦷","😁","🪥","🔬","🏥"];
     const particles = [];
+    const particleCount = 150;
 
-    // Create cluster points
-    for(let i=0;i<clusterCount;i++){
-      clusters.push({
-        x: Math.random()*canvas.width,
-        y: Math.random()*canvas.height
-      });
-    }
-
-    // Create particles
-    for(let i=0;i<150;i++){
-      const cluster = clusters[Math.floor(Math.random()*clusters.length)];
+    for (let i = 0; i < particleCount; i++) {
       particles.push({
-        x: cluster.x + Math.random()*100-50,
-        y: cluster.y + Math.random()*100-50,
-        dx: (Math.random()-0.5)*0.3,
-        dy: (Math.random()-0.5)*0.3,
-        icon: icons[Math.floor(Math.random()*icons.length)],
-        cluster: cluster,
-        radius: Math.random()*2+1,
-        orbitAngle: Math.random()*Math.PI*2,
-        orbitRadius: 20 + Math.random()*30
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2 + 1,
+        dx: (Math.random() - 0.5) * 0.4,
+        dy: (Math.random() - 0.5) * 0.4,
+        type: Math.random() < 0.15 ? "icon" : "dot",
+        icon: icons[Math.floor(Math.random()*icons.length)]
       });
     }
+
+    const button = document.querySelector('.call-button');
 
     window.addEventListener('mousemove', e => {
       mouseX = e.clientX;
@@ -308,85 +290,84 @@
     });
 
     function draw() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-
-      // Draw particles
-      particles.forEach(p=>{
-        // orbit around cluster
-        p.orbitAngle += 0.01;
-        const orbitX = p.cluster.x + Math.cos(p.orbitAngle)*p.orbitRadius;
-        const orbitY = p.cluster.y + Math.sin(p.orbitAngle)*p.orbitRadius;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        if(p.type === "dot"){
+          ctx.fillStyle = 'rgba(96,165,250,0.6)';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.font = "18px Arial";
+          ctx.fillText(p.icon, p.x, p.y);
+        }
 
         // repel from mouse
-        let distX = orbitX - mouseX;
-        let distY = orbitY - mouseY;
+        let distX = p.x - mouseX;
+        let distY = p.y - mouseY;
         let distance = Math.sqrt(distX*distX + distY*distY);
-        let mx = 0, my = 0;
-        if(distance<100){
-          const angle = Math.atan2(distY,distX);
-          const force = (100-distance)/50;
-          mx = Math.cos(angle)*force;
-          my = Math.sin(angle)*force;
+        if(distance < 120){
+          let angle = Math.atan2(distY, distX);
+          let force = (120 - distance) / 60;
+          p.x += Math.cos(angle) * force;
+          p.y += Math.sin(angle) * force;
         }
 
-        p.x += (orbitX - p.x)*0.05 + mx + p.dx;
-        p.y += (orbitY - p.y)*0.05 + my + p.dy;
+        // subtle scroll drift for parallax effect
+        let scrollFactor = window.scrollY * 0.0005;
+        p.x += p.dx + scrollFactor;
+        p.y += p.dy;
 
-        // Draw icon
-        ctx.font="16px Arial";
-        ctx.fillText(p.icon,p.x,p.y);
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+
+        // orbit effect around button
+        const rect = button.getBoundingClientRect();
+        const bx = rect.left + rect.width/2;
+        const by = rect.top + rect.height/2 + window.scrollY;
+        const orbitDist = 80;
+        if (Math.random() < 0.01) {
+          const angle = Math.random()*Math.PI*2;
+          p.x = bx + Math.cos(angle)*orbitDist;
+          p.y = by + Math.sin(angle)*orbitDist;
+        }
+
       });
-
-      // Connect particles close to each other
-      for(let i=0;i<particles.length;i++){
-        for(let j=i+1;j<particles.length;j++){
-          const pi = particles[i];
-          const pj = particles[j];
-          const dx = pi.x-pj.x;
-          const dy = pi.y-pj.y;
-          const dist = Math.sqrt(dx*dx+dy*dy);
-          if(dist<80){
-            ctx.strokeStyle = 'rgba(37,99,235,'+((80-dist)/80)*0.3+')';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(pi.x,pi.y);
-            ctx.lineTo(pj.x,pj.y);
-            ctx.stroke();
-          }
-        }
-      }
-
       requestAnimationFrame(draw);
     }
     draw();
 
-    window.addEventListener('resize', ()=>{
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
+    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 
     // Animated Counters
     const counters = document.querySelectorAll('.counter');
-    counters.forEach(counter=>{
-      const updateCount = ()=>{
-        const target=+counter.getAttribute('data-target');
-        let count=+counter.innerText;
-        const increment = target/100;
-        if(count<target){
-          counter.innerText=Math.ceil(count+increment);
-          setTimeout(updateCount,20);
-        } else counter.innerText = target;
-      }
+    counters.forEach(counter => {
+      const updateCount = () => {
+        const target = +counter.getAttribute('data-target');
+        let count = +counter.innerText;
+        const increment = target / 100;
+        if (count < target) {
+          counter.innerText = Math.ceil(count + increment);
+          setTimeout(updateCount, 20);
+        } else {
+          counter.innerText = target;
+        }
+      };
       updateCount();
+    });
+
+    // Scroll to top on demo button click
+    button.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
     // Timeline animation on scroll
     const timelineSteps = document.querySelectorAll('.timeline-step');
     function revealTimeline() {
       const triggerBottom = window.innerHeight * 0.85;
-      timelineSteps.forEach(step=>{
+      timelineSteps.forEach(step => {
         const stepTop = step.getBoundingClientRect().top;
-        if(stepTop<triggerBottom){
+        if (stepTop < triggerBottom) {
           step.style.transform = 'translateY(0)';
           step.style.opacity = '1';
         }
@@ -394,25 +375,6 @@
     }
     window.addEventListener('scroll', revealTimeline);
     window.addEventListener('load', revealTimeline);
-
-    // Section fade-in
-    const sections = document.querySelectorAll('section');
-    function fadeSections(){
-      sections.forEach(sec=>{
-        const top = sec.getBoundingClientRect().top;
-        if(top < window.innerHeight*0.9){
-          sec.classList.add('visible');
-        }
-      });
-    }
-    window.addEventListener('scroll', fadeSections);
-    window.addEventListener('load', fadeSections);
-
-    // Scroll to top on demo button click
-    const demoButton = document.querySelector('.call-button');
-    demoButton.addEventListener('click', ()=>{
-      window.scrollTo({top:0,behavior:'smooth'});
-    });
   </script>
 
   <!-- VAPI WIDGET -->
@@ -420,10 +382,7 @@
     var vapiInstance = null;
     const assistant = "a62ccb25-e09e-474a-832c-b21b045bcca2";
     const apiKey = "ebb2b07d-b81f-43b3-9503-e8523797683d";
-    const buttonConfig = {
-      position: "bottom",
-      idle: { color: "#2563eb", backgroundColor: "#ffffff" }
-    };
+    const buttonConfig = { position: "bottom", idle: { color: "#2563eb", backgroundColor: "#ffffff" } };
     (function(d,t){
       var g=document.createElement(t), s=d.getElementsByTagName(t)[0];
       g.src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
@@ -433,5 +392,6 @@
       }
     })(document,"script");
   </script>
+
 </body>
 </html>
