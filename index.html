@@ -20,7 +20,6 @@
       background: #000; 
       color: #fff;
       overflow-x: hidden;
-      scroll-behavior: smooth;
     }
 
     /* Background video & gradient */
@@ -71,16 +70,14 @@
     .typing::after { content: "|"; animation: blink 1s infinite; }
     @keyframes blink { 50% { opacity: 0; } }
 
-    /* Call button glowing sonar + upgraded hover */
+    /* Call button glowing sonar */
     .call-button {
       position: relative; overflow: hidden;
-      animation: float 3s ease-in-out infinite, entrance 1s ease forwards;
+      animation: float 3s ease-in-out infinite;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
     }
     @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-    @keyframes entrance { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
     .call-button::before {
       content: "";
       position: absolute; top: 50%; left: 50%;
@@ -95,10 +92,7 @@
       0% { transform: translate(-50%, -50%) scale(0.8); opacity:0.6; }
       100% { transform: translate(-50%, -50%) scale(1.8); opacity:0; }
     }
-    .call-button:hover {
-      transform: scale(1.15) rotate(-1deg);
-      box-shadow: 0 0 35px rgba(37, 99, 235, 0.7);
-    }
+    .call-button:hover { transform: scale(1.1); box-shadow: 0 0 25px rgba(37, 99, 235, 0.6); }
 
     /* Glass cards tilt */
     .glass {
@@ -106,9 +100,9 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       transform-style: preserve-3d;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      transition: transform 0.4s ease;
     }
-    .glass:hover { transform: rotate3d(1,1,0,8deg) scale(1.03); box-shadow: 0 0 20px rgba(37,99,235,0.5); }
+    .glass:hover { transform: rotate3d(1,1,0,8deg) scale(1.03); }
 
     /* Timeline section */
     .timeline {
@@ -141,20 +135,6 @@
 
     /* Counter styles */
     .counter { font-size: 2rem; font-weight: bold; color: #60a5fa; }
-
-    /* Smooth section spacing */
-    section { scroll-margin-top: 80px; }
-
-    /* Section entrance animations */
-    .fade-slide {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-    .fade-slide.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
   </style>
 </head>
 <body>
@@ -167,23 +147,23 @@
   <canvas id="particles"></canvas>
 
   <!-- Hero -->
-  <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative fade-slide">
+  <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
     <h1 class="text-5xl md:text-7xl font-black gradient-text mb-6" data-aos="fade-down" data-aos-delay="100">
       Meet Your New 24/7 <br> AI Receptionist
     </h1>
-    <p class="typing text-xl md:text-2xl text-gray-200 mb-4" data-aos="fade-up" data-aos-delay="400">
+    <p class="typing text-xl md:text-2xl text-gray-200" data-aos="fade-up" data-aos-delay="400">
       Booking patients even while you sleep
     </p>
-    <p class="text-gray-400 max-w-xl mx-auto mb-2" data-aos="fade-up" data-aos-delay="700">
+    <p class="mt-6 text-gray-400 max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="700">
       Our intelligent assistant works for you 24/7. Save time and never miss a patient call again.
     </p>
-    <p class="text-sm text-gray-500" data-aos="fade-up" data-aos-delay="900">
+    <p class="mt-6 text-sm text-gray-500" data-aos="fade-up" data-aos-delay="900">
       Click the phone icon below to experience the future firsthand.
     </p>
   </section>
 
   <!-- Features -->
-  <section class="py-20 bg-black/70 relative fade-slide">
+  <section class="py-20 bg-black/70 relative">
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6">
       <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="100">
         <h3 class="text-xl font-bold mb-2">24/7 Appointment Booking</h3>
@@ -201,7 +181,7 @@
   </section>
 
   <!-- Live Call Flow Timeline -->
-  <section class="py-20 bg-black/80 fade-slide">
+  <section class="py-20 bg-black/80">
     <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12 gradient-text" data-aos="fade-up">How Your AI Receptionist Works</h2>
     <div class="timeline px-6">
       <div class="timeline-step" data-aos="fade-right">
@@ -233,7 +213,7 @@
   </section>
 
   <!-- Animated Counters -->
-  <section class="py-20 bg-black/70 text-center fade-slide">
+  <section class="py-20 bg-black/70 text-center">
     <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6">
       <div data-aos="fade-up" data-aos-delay="100">
         <div class="counter" data-target="120">0</div>
@@ -251,7 +231,7 @@
   </section>
 
   <!-- CTA -->
-  <section class="py-20 bg-gradient-to-br from-blue-900 via-indigo-900 to-black text-center relative fade-slide">
+  <section class="py-20 bg-gradient-to-br from-blue-900 via-indigo-900 to-black text-center relative">
     <h2 class="text-4xl md:text-5xl font-extrabold mb-6" data-aos="zoom-in" data-aos-delay="100">Experience the Future of Patient Calls</h2>
     <p class="text-gray-300 mb-8 max-w-2xl mx-auto" data-aos="zoom-in" data-aos-delay="300">
       Click the button below to talk with your new AI receptionist.
@@ -271,39 +251,66 @@
   <script>
     AOS.init({ duration: 1000, once: true });
 
-    // Particle Script (unchanged)
+    // Particle Script (evenly spread + icons + floating + depth + mouse repel)
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+
     let mouseX = canvas.width / 2;
     let mouseY = canvas.height / 2;
-    const icons = ["🦷","😁","🪥"];
+
+    const icons = ["🦷","😁","🪥","🔬","🏥"];
     const particles = [];
-    for (let i = 0; i < 120; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 2 + 1,
-        dx: (Math.random() - 0.5) * 0.3,
-        dy: (Math.random() - 0.5) * 0.3,
-        type: Math.random() < 0.15 ? "icon" : "dot",
-        icon: icons[Math.floor(Math.random()*icons.length)]
-      });
+    const cols = 15;
+    const rows = 10;
+    const gapX = canvas.width / cols;
+    const gapY = canvas.height / rows;
+
+    for (let i = 0; i < cols; i++) {
+      for (let j = 0; j < rows; j++) {
+        const x = i * gapX + Math.random() * gapX * 0.5;
+        const y = j * gapY + Math.random() * gapY * 0.5;
+        const type = Math.random() < 0.2 ? "icon" : "dot";
+        particles.push({
+          x, y,
+          baseX: x, baseY: y,
+          dx: (Math.random() - 0.5) * 0.3,
+          dy: (Math.random() - 0.5) * 0.3,
+          radius: Math.random() * 2 + 1,
+          type,
+          icon: icons[Math.floor(Math.random()*icons.length)],
+          angle: Math.random() * 2 * Math.PI,
+          speed: 0.01 + Math.random()*0.02
+        });
+      }
     }
-    window.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+    window.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach(p => {
         if(p.type === "dot"){
           ctx.fillStyle = 'rgba(96,165,250,0.6)';
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          const pulsate = 0.5 + 0.5 * Math.sin(Date.now()/500 + p.x);
+          ctx.arc(p.x, p.y, p.radius * pulsate, 0, Math.PI * 2);
           ctx.fill();
         } else {
-          ctx.font = "16px Arial";
-          ctx.fillText(p.icon, p.x, p.y);
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.angle);
+          ctx.font = `${16 + Math.sin(Date.now()/1000+p.x)*2}px Arial`;
+          ctx.fillText(p.icon, 0, 0);
+          ctx.restore();
+          p.angle += p.speed;
         }
+
+        // repel from mouse
         let distX = p.x - mouseX;
         let distY = p.y - mouseY;
         let distance = Math.sqrt(distX*distX + distY*distY);
@@ -313,7 +320,10 @@
           p.x += Math.cos(angle) * force;
           p.y += Math.sin(angle) * force;
         }
-        p.x += p.dx; p.y += p.dy;
+
+        p.x += p.dx;
+        p.y += p.dy;
+
         if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
       });
@@ -339,6 +349,12 @@
       updateCount();
     });
 
+    // Scroll to top on demo button click
+    const demoButton = document.querySelector('.call-button');
+    demoButton.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
     // Timeline animation on scroll
     const timelineSteps = document.querySelectorAll('.timeline-step');
     function revealTimeline() {
@@ -353,22 +369,6 @@
     }
     window.addEventListener('scroll', revealTimeline);
     window.addEventListener('load', revealTimeline);
-
-    // Fade-slide section animation
-    const fadeSections = document.querySelectorAll('.fade-slide');
-    function checkFadeSections() {
-      fadeSections.forEach(sec => {
-        const top = sec.getBoundingClientRect().top;
-        if(top < window.innerHeight - 100) sec.classList.add('visible');
-      });
-    }
-    window.addEventListener('scroll', checkFadeSections);
-    window.addEventListener('load', checkFadeSections);
-
-    // Demo button scroll
-    const demoButton = document.querySelector('.call-button');
-    demoButton.addEventListener('click', () => { window.scrollTo({ top: 0, behavior: 'smooth' }); });
-
   </script>
 
   <!-- VAPI WIDGET -->
@@ -376,14 +376,20 @@
     var vapiInstance = null;
     const assistant = "a62ccb25-e09e-474a-832c-b21b045bcca2";
     const apiKey = "ebb2b07d-b81f-43b3-9503-e8523797683d";
-    const buttonConfig = { position: "bottom", idle: { color: "#2563eb", backgroundColor: "#ffffff" } };
+    const buttonConfig = {
+      position: "bottom",
+      idle: { color: "#2563eb", backgroundColor: "#ffffff" }
+    };
     (function(d,t){
       var g=document.createElement(t), s=d.getElementsByTagName(t)[0];
       g.src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
       g.defer=true; g.async=true; s.parentNode.insertBefore(g,s);
-      g.onload=function(){ vapiInstance = window.vapiSDK.run({ apiKey, assistant, config:buttonConfig }); }
+      g.onload=function(){
+        vapiInstance = window.vapiSDK.run({ apiKey, assistant, config:buttonConfig });
+      }
     })(document,"script");
   </script>
 
 </body>
 </html>
+
