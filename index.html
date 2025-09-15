@@ -70,20 +70,17 @@
     .typing::after { content: "|"; animation: blink 1s infinite; }
     @keyframes blink { 50% { opacity: 0; } }
 
-    /* Call button glowing + sweep shine */
+    /* Call button glowing sonar */
     .call-button {
-      position: relative; 
-      overflow: hidden;
+      position: relative; overflow: hidden;
       animation: float 3s ease-in-out infinite;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
     }
     @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-
     .call-button::before {
       content: "";
-      position: absolute; 
-      top: -50%; left: -50%;
+      position: absolute; top: 50%; left: 50%;
       width: 200%; height: 200%;
       background: radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%);
       transform: translate(-50%, -50%);
@@ -95,27 +92,7 @@
       0% { transform: translate(-50%, -50%) scale(0.8); opacity:0.6; }
       100% { transform: translate(-50%, -50%) scale(1.8); opacity:0; }
     }
-
-    /* Sweep shine */
-    .call-button::after {
-      content: "";
-      position: absolute;
-      top: 0; left: -75%;
-      width: 50%; height: 100%;
-      background: linear-gradient(120deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.05) 80%);
-      transform: skewX(-25deg);
-      animation: sweep 4s infinite;
-    }
-    @keyframes sweep {
-      0% { left: -75%; }
-      50% { left: 125%; }
-      100% { left: 125%; }
-    }
-
-    .call-button:hover { 
-      transform: scale(1.1); 
-      box-shadow: 0 0 30px rgba(37, 99, 235, 0.8); 
-    }
+    .call-button:hover { transform: scale(1.1); box-shadow: 0 0 25px rgba(37, 99, 235, 0.6); }
 
     /* Glass cards tilt */
     .glass {
@@ -158,6 +135,7 @@
 
     /* Counter styles */
     .counter { font-size: 2rem; font-weight: bold; color: #60a5fa; }
+
   </style>
 </head>
 <body>
@@ -259,7 +237,7 @@
     <p class="text-gray-300 mb-8 max-w-2xl mx-auto" data-aos="zoom-in" data-aos-delay="300">
       Click the button below to talk with your new AI receptionist.
     </p>
-    <button class="call-button px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-lg transition shadow-lg" data-aos="zoom-in" data-aos-delay="600">
+    <button class="call-button px-10 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-lg transition shadow-lg hover:scale-110 hover:shadow-2xl" data-aos="zoom-in" data-aos-delay="600">
       📞 Try the Live Demo
     </button>
   </section>
@@ -283,15 +261,23 @@
     let mouseX = canvas.width / 2;
     let mouseY = canvas.height / 2;
 
-    const icons = ["🦷","😁","🪥"]; // tooth, smile, toothbrush
+    const icons = ["🦷","😁","🪥"];
     const particles = [];
-    for (let i = 0; i < 120; i++) {
+    const particleCount = 120;
+
+    // evenly distribute initial positions
+    const cols = Math.ceil(Math.sqrt(particleCount * canvas.width / canvas.height));
+    const rows = Math.ceil(particleCount / cols);
+
+    for (let i = 0; i < particleCount; i++) {
+      const col = i % cols;
+      const row = Math.floor(i / cols);
       particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
+        x: (col + 0.5) * canvas.width / cols,
+        y: (row + 0.5) * canvas.height / rows,
         radius: Math.random() * 2 + 1,
-        dx: (Math.random() - 0.5) * 0.4,
-        dy: (Math.random() - 0.5) * 0.4,
+        dx: (Math.random() - 0.5) * 0.3,
+        dy: (Math.random() - 0.5) * 0.3,
         type: Math.random() < 0.15 ? "icon" : "dot",
         icon: icons[Math.floor(Math.random()*icons.length)]
       });
@@ -315,13 +301,12 @@
           ctx.fillText(p.icon, p.x, p.y);
         }
 
-        // repel from mouse
         let distX = p.x - mouseX;
         let distY = p.y - mouseY;
         let distance = Math.sqrt(distX*distX + distY*distY);
         if(distance < 100){
           let angle = Math.atan2(distY, distX);
-          let force = (100 - distance) / 30;
+          let force = (100 - distance) / 50;
           p.x += Math.cos(angle) * force;
           p.y += Math.sin(angle) * force;
         }
@@ -335,10 +320,7 @@
       requestAnimationFrame(draw);
     }
     draw();
-    window.addEventListener('resize', () => { 
-      canvas.width = window.innerWidth; 
-      canvas.height = window.innerHeight; 
-    });
+    window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 
     // Animated Counters
     const counters = document.querySelectorAll('.counter');
