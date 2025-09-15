@@ -107,7 +107,7 @@
     /* Timeline section */
     .timeline {
       display: flex;
-      justify-content: center; /* center horizontally */
+      justify-content: center;
       overflow-x: auto;
       padding: 2rem 0;
       scroll-snap-type: x mandatory;
@@ -251,7 +251,7 @@
   <script>
     AOS.init({ duration: 1000, once: true });
 
-    // Particle Script s odtlačením od myši
+    // Particle Script (with dental icons + repel from mouse)
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -260,6 +260,7 @@
     let mouseX = canvas.width / 2;
     let mouseY = canvas.height / 2;
 
+    const icons = ["🦷","😁","🪥"]; // tooth, smile, toothbrush
     const particles = [];
     for (let i = 0; i < 120; i++) {
       particles.push({
@@ -267,7 +268,9 @@
         y: Math.random() * canvas.height,
         radius: Math.random() * 2 + 1,
         dx: (Math.random() - 0.5) * 0.3,
-        dy: (Math.random() - 0.5) * 0.3
+        dy: (Math.random() - 0.5) * 0.3,
+        type: Math.random() < 0.15 ? "icon" : "dot",
+        icon: icons[Math.floor(Math.random()*icons.length)]
       });
     }
 
@@ -278,19 +281,24 @@
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = 'rgba(96,165,250,0.6)';
       particles.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fill();
+        if(p.type === "dot"){
+          ctx.fillStyle = 'rgba(96,165,250,0.6)';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.font = "16px Arial";
+          ctx.fillText(p.icon, p.x, p.y);
+        }
 
-        // odtlacenie od myši
+        // repel from mouse
         let distX = p.x - mouseX;
         let distY = p.y - mouseY;
         let distance = Math.sqrt(distX*distX + distY*distY);
-        if(distance < 100){ // radius účinku
+        if(distance < 100){
           let angle = Math.atan2(distY, distX);
-          let force = (100 - distance) / 50; // sila odtlacenia
+          let force = (100 - distance) / 50;
           p.x += Math.cos(angle) * force;
           p.y += Math.sin(angle) * force;
         }
@@ -323,13 +331,13 @@
       updateCount();
     });
 
-    // Scroll na top
+    // Scroll to top on demo button click
     const demoButton = document.querySelector('.call-button');
     demoButton.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // Timeline animácia pri scrollovaní
+    // Timeline animation on scroll
     const timelineSteps = document.querySelectorAll('.timeline-step');
     function revealTimeline() {
       const triggerBottom = window.innerHeight * 0.85;
@@ -366,3 +374,4 @@
 
 </body>
 </html>
+
