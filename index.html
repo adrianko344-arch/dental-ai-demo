@@ -71,49 +71,47 @@
     .typing::after { content: "|"; animation: blink 1s infinite; }
     @keyframes blink { 50% { opacity: 0; } }
 
-    /* Call button glowing + better animation */
+    /* Call button glowing sonar + pulse with smaller size and unique animation */
     .call-button {
-      position: relative; overflow: hidden;
-      cursor: pointer;
-      padding: 12px 24px;
-      font-size: 1.5rem;
-      border-radius: 9999px;
-      background-color: #2563eb;
-      color: white;
-      font-weight: bold;
-      display: inline-block;
+      position: relative; 
+      overflow: hidden;
+      animation: float 2.5s ease-in-out infinite alternate;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-      animation: floatBtn 3s ease-in-out infinite;
+      cursor: pointer;
+      font-size: 1.75rem;
+      padding: 0.75rem 3rem;
     }
+    @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-4px); } 100% { transform: translateY(0); } }
+
     .call-button::before {
       content: "";
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 220%; height: 220%;
+      position: absolute; top: 50%; left: 50%;
+      width: 200%; height: 200%;
       background: radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%);
       transform: translate(-50%, -50%);
       border-radius: 50%;
-      animation: pulseBtn 2.5s infinite;
+      animation: pulse 3s infinite;
       z-index: -1;
     }
-    @keyframes floatBtn {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
-    }
-    @keyframes pulseBtn {
-      0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.6; }
-      100% { transform: translate(-50%, -50%) scale(1.8); opacity: 0; }
+    @keyframes pulse {
+      0% { transform: translate(-50%, -50%) scale(0.8); opacity:0.6; }
+      100% { transform: translate(-50%, -50%) scale(1.8); opacity:0; }
     }
     .call-button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 30px rgba(37,99,235,0.7);
+      transform: scale(1.15);
+      box-shadow: 0 0 30px rgba(37, 99, 235, 0.8);
+      animation: float 2.5s ease-in-out infinite alternate, glow 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes glow {
+      0% { box-shadow: 0 0 20px rgba(37,99,235,0.5); }
+      100% { box-shadow: 0 0 35px rgba(37,99,235,0.9); }
     }
 
     /* Glass cards tilt */
     .glass {
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255,255,255,0.1);
       transform-style: preserve-3d;
       transition: transform 0.4s ease;
     }
@@ -166,7 +164,7 @@
   <canvas id="particles"></canvas>
 
   <!-- Hero -->
-  <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
+  <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative" id="hero">
     <h1 class="text-5xl md:text-7xl font-black gradient-text mb-6" data-aos="fade-down" data-aos-delay="100">
       Meet Your New 24/7 <br> AI Receptionist
     </h1>
@@ -250,7 +248,7 @@
     <h2 class="text-4xl md:text-5xl font-bold mb-8 gradient-text">Try the Live Demo</h2>
     <p class="text-gray-400 mb-12 max-w-xl mx-auto">Experience the future of patient communication now. Click below to test our AI receptionist in action.</p>
     <div data-aos="zoom-in" data-aos-delay="200">
-      <div class="call-button" id="tryDemoBtn">
+      <div class="call-button bg-blue-600 hover:bg-blue-700 text-white rounded-full inline-block" id="demoButton">
         📞 Try Live Demo
       </div>
     </div>
@@ -261,12 +259,12 @@
     © 2025 ScaleEasy. All rights reserved.
   </footer>
 
-  <!-- Scripts -->
+  <!-- AOS -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>AOS.init();</script>
 
+  <!-- Section fade-in -->
   <script>
-    // Section fade-in
     const sections = document.querySelectorAll("section");
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -274,8 +272,10 @@
       });
     }, { threshold: 0.2 });
     sections.forEach(sec => observer.observe(sec));
+  </script>
 
-    // Counters
+  <!-- Counters -->
+  <script>
     function animateCounter(id, target) {
       const el = document.getElementById(id);
       let count = 0;
@@ -292,13 +292,15 @@
     animateCounter("counter1", 1200);
     animateCounter("counter2", 3400);
     animateCounter("counter3", 850);
+  </script>
 
-    // Particle background: zdola nahor s rotaciou, žiarou, fade out
+  <!-- Particle background improved -->
+  <script>
     const canvas = document.getElementById("particles");
     const ctx = canvas.getContext("2d");
     let particles = [];
     let width, height;
-    const icons = ["🦷", "💉", "🦠", "🔬", "🏥"];
+    const icons = ["🦷","💉","🔬","🏥"]; // removed bacteria
 
     function resize() {
       width = canvas.width = window.innerWidth;
@@ -309,45 +311,51 @@
 
     class Particle {
       constructor() {
+        this.reset();
+      }
+      reset() {
         this.x = Math.random() * width;
         this.y = height + Math.random() * 50; // start slightly below
-        this.vx = (Math.random() - 0.5) * 0.2;
-        this.vy = - (0.3 + Math.random() * 0.5); // move up
-        this.size = 10 + Math.random() * 20;
-        this.opacity = 0;
-        this.fadeIn = 0.01 + Math.random()*0.02;
-        this.icon = icons[Math.floor(Math.random() * icons.length)];
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = - (Math.random() * 1 + 0.2);
+        this.size = Math.random() * 24 + 8;
         this.angle = Math.random() * Math.PI * 2;
-        this.spin = (Math.random()-0.5)*0.05;
-        this.glow = 0.2 + Math.random()*0.3;
+        this.opacity = Math.random() * 0.5 + 0.3;
+        this.isIcon = Math.random() < 0.4;
+        if(this.isIcon) this.icon = icons[Math.floor(Math.random()*icons.length)];
+        this.glow = Math.random()*15 + 5;
+      }
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.opacity;
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        if(this.isIcon && this.icon){
+          ctx.font = `${this.size}px Arial`;
+          ctx.fillText(this.icon, -this.size/2, this.size/2);
+        } else {
+          let gradient = ctx.createRadialGradient(0,0,this.size*0.1,0,0,this.size);
+          gradient.addColorStop(0, "rgba(96,165,250,0.7)");
+          gradient.addColorStop(1, "rgba(96,165,250,0)");
+          ctx.fillStyle = gradient;
+          ctx.beginPath();
+          ctx.arc(0,0,this.size,0,Math.PI*2);
+          ctx.fill();
+        }
+        ctx.restore();
       }
       update() {
         this.x += this.vx;
         this.y += this.vy;
-        this.angle += this.spin;
-        this.opacity += this.fadeIn;
-        if(this.opacity > 1) this.opacity = 1;
-        if(this.y < -50) { 
-          this.y = height + Math.random()*50; 
-          this.opacity = 0; 
-        }
-      }
-      draw() {
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.angle);
-        ctx.globalAlpha = this.opacity;
-        ctx.font = `${this.size}px Arial`;
-        ctx.shadowColor = `rgba(96,165,250,${this.glow})`;
-        ctx.shadowBlur = 15;
-        ctx.fillText(this.icon, -this.size/2, this.size/2);
-        ctx.restore();
+        this.angle += 0.01;
+        this.opacity -= 0.002;
+        if(this.y < -50 || this.opacity <= 0) this.reset();
       }
     }
 
     function init() {
       particles = [];
-      for(let i=0;i<25;i++) particles.push(new Particle());
+      for(let i=0;i<80;i++) particles.push(new Particle());
     }
 
     function animate() {
@@ -358,12 +366,6 @@
 
     init();
     animate();
-
-    // Scroll to top on Try Demo click
-    document.getElementById("tryDemoBtn").addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-
   </script>
 
   <!-- VAPI Widget -->
@@ -376,7 +378,13 @@
         position: "right",
         button: { icon: "phone" }
       });
+
+      // Scroll to top on demo button click
+      document.getElementById("demoButton").addEventListener("click", () => {
+        document.getElementById("hero").scrollIntoView({ behavior: "smooth" });
+      });
     });
   </script>
+
 </body>
 </html>
