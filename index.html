@@ -4,106 +4,45 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AI Receptionist Demo</title>
-
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-
 <style>
-body {
-  font-family: 'Inter', sans-serif;
-  background: #000;
-  color: #fff;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
-
-/* Background layers */
-.bg-video {position: fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-3; opacity:0.25;}
-.bg-animated {position: fixed; top:0; left:0; width:100%; height:100%; background: linear-gradient(-45deg,#0a0f2c,#0d1b42,#111827,#1e3a8a); background-size:400% 400%; animation: gradientShift 30s ease infinite; z-index:-4;}
-@keyframes gradientShift {0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
-
-/* Particles canvas */
-#particles {position: fixed; top:0; left:0; width:100%; height:100%; z-index:-2; pointer-events:none;}
-
-/* Gradient shimmer text */
-.gradient-text {background:linear-gradient(90deg,#60a5fa,#38bdf8,#3b82f6); background-size:200% auto; color:transparent; background-clip:text; -webkit-background-clip:text; animation: shimmer 5s linear infinite;}
-@keyframes shimmer {to{background-position:200% center;}}
-
-/* Typing effect */
-.typing::after { content:"|"; animation: blink 1s infinite; }
-@keyframes blink {50%{opacity:0;}}
-
-/* Call button */
-.call-button {
-  position: relative; 
-  overflow:hidden; 
-  animation: float 3s ease-in-out infinite; 
-  transition: transform 0.3s ease, box-shadow 0.3s ease; 
-  cursor:pointer; 
-  display:inline-flex; 
-  align-items:center;
-  font-weight:bold;
-}
-.call-button::before {
-  content:""; 
-  position:absolute; 
-  top:50%; 
-  left:50%; 
-  width:200%; 
-  height:200%; 
-  background:radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%); 
-  transform:translate(-50%,-50%); 
-  border-radius:50%; 
-  animation:pulse 3s infinite; 
-  z-index:-1;
-}
-.call-button:hover {transform:scale(1.15); box-shadow:0 0 30px rgba(37,99,235,0.8); animation:float 2.5s ease-in-out infinite, glow 1.5s ease-in-out infinite alternate;}
-@keyframes glow {0%{box-shadow:0 0 20px rgba(37,99,235,0.5);}100%{box-shadow:0 0 35px rgba(37,99,235,0.9);}}
-@keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
-
-/* Button shine */
-.shine {
-  position: absolute;
-  top: 0; left: -75%;
-  width: 50%; height: 100%;
-  background: linear-gradient(120deg, rgba(255,255,255,0.2), rgba(255,255,255,0.6), rgba(255,255,255,0.2));
-  transform: skewX(-25deg);
-  pointer-events:none;
-  animation: shineAnim 2s infinite;
-}
-@keyframes shineAnim {0%{left:-75%;}100%{left:125%;}}
-
-/* Glass cards */
-.glass {background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border:1px solid rgba(255,255,255,0.1); transform-style: preserve-3d; transition: transform 0.4s ease;}
-.glass:hover {transform: rotate3d(1,1,0,8deg) scale(1.03);}
-
-/* Timeline */
-.timeline {display:flex; justify-content:center; overflow-x:auto; padding:2rem 0; scroll-snap-type:x mandatory; gap:2rem;}
-.timeline-step {flex:0 0 250px; scroll-snap-align:start; background:rgba(255,255,255,0.05); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); border-radius:1rem; padding:1.5rem; text-align:center; transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.3s ease; transform: translateY(30px); opacity:0;}
-.timeline-step:hover {transform:scale(1.05); box-shadow:0 0 20px rgba(37,99,235,0.5);}
-.timeline-step-icon {font-size:2rem; margin-bottom:1rem; color:#60a5fa;}
-
-/* Counter */
-.counter {font-size:2rem; font-weight:bold; color:#60a5fa;}
-
-/* Section fade-in */
-section {opacity:0; transform:translateY(20px); transition: all 0.8s ease;}
-section.visible {opacity:1; transform:translateY(0);}
-
-/* Demo section background */
-#demo-section {background: linear-gradient(180deg, #1e0033,#0a001a,#000814); padding:8rem 1rem; text-align:center;}
+body{font-family:'Inter',sans-serif;background:#000;color:#fff;overflow-x:hidden;scroll-behavior:smooth;}
+.bg-video{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-3;opacity:0.25;}
+.bg-animated{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(-45deg,#0a0f2c,#0d1b42,#111827,#1e3a8a);background-size:400% 400%;animation:gradientShift 30s ease infinite;z-index:-4;}
+@keyframes gradientShift{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none;}
+.gradient-text{background:linear-gradient(90deg,#60a5fa,#38bdf8,#3b82f6);background-size:200% auto;color:transparent;background-clip:text;-webkit-background-clip:text;animation:shimmer 5s linear infinite;}
+@keyframes shimmer{to{background-position:200% center;}}
+.typing::after{content:"|";animation:blink 1s infinite;}
+@keyframes blink{50%{opacity:0;}}
+.call-button{position:relative;overflow:hidden;animation:float 3s ease-in-out infinite;transition:transform 0.3s ease,box-shadow 0.3s ease;cursor:pointer;display:inline-flex;align-items:center;font-weight:bold;}
+.call-button::before{content:"";position:absolute;top:50%;left:50%;width:200%;height:200%;background:radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%);transform:translate(-50%,-50%);border-radius:50%;animation:pulse 3s infinite;z-index:-1;}
+.call-button:hover{transform:scale(1.15);box-shadow:0 0 30px rgba(37,99,235,0.8);animation:float 2.5s ease-in-out infinite,glow 1.5s ease-in-out infinite alternate;}
+@keyframes glow{0%{box-shadow:0 0 20px rgba(37,99,235,0.5);}100%{box-shadow:0 0 35px rgba(37,99,235,0.9);}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.shine{position:absolute;top:0;left:-75%;width:50%;height:100%;background:linear-gradient(120deg, rgba(255,255,255,0.2), rgba(255,255,255,0.6), rgba(255,255,255,0.2));transform:skewX(-25deg);pointer-events:none;animation:shineAnim 2s infinite;}
+@keyframes shineAnim{0%{left:-75%;}100%{left:125%;}}
+.glass{background: rgba(255,255,255,0.05);backdrop-filter: blur(10px);border:1px solid rgba(255,255,255,0.1);transform-style: preserve-3d;transition: transform 0.4s ease;}
+.glass:hover{transform: rotate3d(1,1,0,8deg) scale(1.03);}
+.timeline{display:flex;justify-content:center;overflow-x:auto;padding:2rem 0;scroll-snap-type:x mandatory;gap:2rem;}
+.timeline-step{flex:0 0 250px;scroll-snap-align:start;background:rgba(255,255,255,0.05);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);border-radius:1rem;padding:1.5rem;text-align:center;transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.3s ease;transform: translateY(30px);opacity:0;}
+.timeline-step:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(37,99,235,0.5);}
+.timeline-step-icon{font-size:2rem;margin-bottom:1rem;color:#60a5fa;}
+.counter{font-size:2rem;font-weight:bold;color:#60a5fa;}
+section{opacity:0;transform:translateY(20px);transition: all 0.8s ease;}
+section.visible{opacity:1;transform:translateY(0);}
+#demo-section{background: linear-gradient(180deg, #1e0033,#0a001a,#000814); padding:8rem 1rem; text-align:center;}
 </style>
 </head>
 <body>
-
 <div class="bg-animated"></div>
 <video autoplay muted loop class="bg-video">
   <source src="https://cdn.coverr.co/videos/coverr-digital-globe-network-3832/1080p.mp4" type="video/mp4">
 </video>
 <canvas id="particles"></canvas>
 
-<!-- Hero -->
 <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative" id="top-section">
 <h1 class="text-5xl md:text-7xl font-black gradient-text mb-6" data-aos="fade-down" data-aos-delay="100">Meet Your New 24/7 <br> AI Receptionist</h1>
 <p class="typing text-xl md:text-2xl text-gray-200" data-aos="fade-up" data-aos-delay="400">Booking patients even while you sleep</p>
@@ -111,7 +50,6 @@ section.visible {opacity:1; transform:translateY(0);}
 <p class="mt-6 text-sm text-gray-500" data-aos="fade-up" data-aos-delay="900">Click the button below to experience the future firsthand.</p>
 </section>
 
-<!-- Features -->
 <section class="py-20 bg-black/70 relative">
 <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6">
   <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="100">
@@ -129,44 +67,25 @@ section.visible {opacity:1; transform:translateY(0);}
 </div>
 </section>
 
-<!-- Timeline -->
 <section class="py-20">
 <h2 class="text-4xl font-bold text-center mb-10 gradient-text">How It Works</h2>
 <div class="timeline px-6">
-  <div class="timeline-step" data-aos="fade-up" data-aos-delay="100">
-    <div class="timeline-step-icon">📞</div>
-    <h3 class="font-bold mb-2">Step 1</h3>
-    <p>Patient calls your clinic number.</p>
-  </div>
-  <div class="timeline-step" data-aos="fade-up" data-aos-delay="300">
-    <div class="timeline-step-icon">🤖</div>
-    <h3 class="font-bold mb-2">Step 2</h3>
-    <p>AI receptionist answers instantly.</p>
-  </div>
-  <div class="timeline-step" data-aos="fade-up" data-aos-delay="500">
-    <div class="timeline-step-icon">📅</div>
-    <h3 class="font-bold mb-2">Step 3</h3>
-    <p>Books appointment in your calendar.</p>
-  </div>
-  <div class="timeline-step" data-aos="fade-up" data-aos-delay="700">
-    <div class="timeline-step-icon">✅</div>
-    <h3 class="font-bold mb-2">Step 4</h3>
-    <p>Patient receives confirmation.</p>
-  </div>
+  <div class="timeline-step" data-aos="fade-up" data-aos-delay="100"><div class="timeline-step-icon">📞</div><h3 class="font-bold mb-2">Step 1</h3><p>Patient calls your clinic number.</p></div>
+  <div class="timeline-step" data-aos="fade-up" data-aos-delay="300"><div class="timeline-step-icon">🤖</div><h3 class="font-bold mb-2">Step 2</h3><p>AI receptionist answers instantly.</p></div>
+  <div class="timeline-step" data-aos="fade-up" data-aos-delay="500"><div class="timeline-step-icon">📅</div><h3 class="font-bold mb-2">Step 3</h3><p>Books appointment in your calendar.</p></div>
+  <div class="timeline-step" data-aos="fade-up" data-aos-delay="700"><div class="timeline-step-icon">✅</div><h3 class="font-bold mb-2">Step 4</h3><p>Patient receives confirmation.</p></div>
 </div>
 </section>
 
-<!-- Counters -->
 <section class="py-20 bg-black/70 text-center">
 <h2 class="text-4xl font-bold mb-12 gradient-text">Our Impact</h2>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
-  <div><div class="counter" id="counter1">0</div><p class="text-gray-400 mt-2">Appointments Booked</p></div>
-  <div><div class="counter" id="counter2">0</div><p class="text-gray-400 mt-2">Patient Calls Answered</p></div>
-  <div><div class="counter" id="counter3">0</div><p class="text-gray-400 mt-2">Hours Saved</p></div>
+  <div><div class="counter" data-target="1200">0</div><p class="text-gray-400 mt-2">Appointments Booked</p></div>
+  <div><div class="counter" data-target="3400">0</div><p class="text-gray-400 mt-2">Patient Calls Answered</p></div>
+  <div><div class="counter" data-target="850">0</div><p class="text-gray-400 mt-2">Hours Saved</p></div>
 </div>
 </section>
 
-<!-- Demo section -->
 <section id="demo-section">
 <h2 class="text-4xl md:text-5xl font-bold mb-8 gradient-text">Try the Live Demo</h2>
 <p class="text-gray-400 mb-12 max-w-xl mx-auto">Experience the future of patient communication now. Click below to test our AI receptionist in action.</p>
@@ -183,27 +102,24 @@ section.visible {opacity:1; transform:translateY(0);}
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>AOS.init();</script>
 
-<!-- Section fade-in -->
 <script>
+// Fade-in sections
 const sections=document.querySelectorAll("section");
 const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add("visible");});},{threshold:0.2});
 sections.forEach(sec=>observer.observe(sec));
-</script>
 
-<!-- Counters animate on visibility -->
-<script>
+// Counters animate on visibility
 const counters=document.querySelectorAll(".counter");
 const counterObserver=new IntersectionObserver(entries=>{
     entries.forEach(entry=>{
         if(entry.isIntersecting && !entry.target.dataset.animated){
             entry.target.dataset.animated=true;
-            let target=parseInt(entry.target.textContent) || 0;
-            let final=parseInt(entry.target.id==="counter1"?1200:entry.target.id==="counter2"?3400:850);
-            let count=0; let step=final/200;
+            const final=parseInt(entry.target.dataset.target);
+            let count=0;
             const interval=setInterval(()=>{
-                count+=step;
-                if(count>=final){count=final; clearInterval(interval);}
-                entry.target.textContent=Math.floor(count);
+                count+=Math.ceil(final/200);
+                if(count>=final){count=final;clearInterval(interval);}
+                entry.target.textContent=count;
             },20);
         }
     });
@@ -211,25 +127,25 @@ const counterObserver=new IntersectionObserver(entries=>{
 counters.forEach(c=>counterObserver.observe(c));
 </script>
 
-<!-- Particles -->
 <script>
+// Particles
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
 let width,height;
 let particles=[];
-
 const icons=["🦷","💉","🔬","🏥"];
-
 function resize(){width=canvas.width=window.innerWidth;height=canvas.height=window.innerHeight;}
-window.addEventListener("resize",resize);
-resize();
+window.addEventListener("resize",resize);resize();
 
 class Particle{
     constructor(isIcon=false){
+        this.reset(isIcon);
+    }
+    reset(isIcon){
         this.x=Math.random()*width;
         this.y=height+Math.random()*50;
         this.vx=(Math.random()-0.5)*0.5;
-        this.vy=0.5+Math.random()*1;
+        this.vy=0.5+Math.random()*1.5;
         this.size=isIcon?20+Math.random()*12:Math.random()*3+1;
         this.opacity=0;
         this.fadeInSpeed=0.01+Math.random()*0.02;
@@ -258,10 +174,8 @@ class Particle{
     update(mouse){
         this.x+=this.vx;
         this.y-=this.vy;
-        this.opacity+=this.fadeInSpeed;
-        if(this.opacity>1)this.opacity=1;
-
-        // repel from mouse
+        this.opacity-=0.002; // postupne mizne
+        if(this.opacity<0)this.opacity=0;
         if(mouse){
             let dx=this.x-mouse.x;
             let dy=this.y-mouse.y;
@@ -271,19 +185,7 @@ class Particle{
                 this.y+=dy/dist*2;
             }
         }
-
-        if(this.y+this.size<0)this.reset();
-    }
-    reset(){
-        this.x=Math.random()*width;
-        this.y=height+Math.random()*50;
-        this.vx=(Math.random()-0.5)*0.5;
-        this.vy=0.5+Math.random()*1;
-        this.size=this.isIcon?20+Math.random()*12:Math.random()*3+1;
-        this.opacity=0;
-        this.fadeInSpeed=0.01+Math.random()*0.02;
-        this.icon=this.isIcon?icons[Math.floor(Math.random()*icons.length)]:null;
-        this.angle=Math.random()*Math.PI*2;
+        if(this.y+this.size<0 || this.opacity<=0) this.reset(this.isIcon);
     }
 }
 
@@ -307,8 +209,8 @@ function animate(){
 animate();
 </script>
 
-<!-- VAPI Widget -->
 <script>
+// VAPI Widget
 var vapiInstance=null;
 const assistant="a62ccb25-e09e-474a-832c-b21b045bcca2";
 const apiKey="ebb2b07d-b81f-43b3-9503-e8523797683d";
@@ -327,10 +229,9 @@ const apiKey="ebb2b07d-b81f-43b3-9503-e8523797683d";
 })(document,"script");
 </script>
 
-<!-- Scroll Try Demo to top -->
 <script>
+// Scroll Try Demo to top
 document.getElementById("demo-button").addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"});});
 </script>
-
 </body>
 </html>
