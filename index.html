@@ -78,9 +78,8 @@ section.visible {opacity:1; transform:translateY(0);}
 <p class="mt-6 text-gray-400 max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="700">Our intelligent assistant works for you 24/7. Save time and never miss a patient call again.</p>
 <p class="mt-6 text-sm text-gray-500" data-aos="fade-up" data-aos-delay="900">Click the phone icon below to experience the future firsthand.</p>
 
-<!-- VAPI phone icon centered under hero -->
-<div id="vapi-phone" style="margin-top:2rem; z-index:9999; font-size:3rem; color:#3b82f6;">📞</div>
-
+<!-- VAPI widget only -->
+<div id="vapi-phone" style="margin-top:2rem; z-index:9999;"></div>
 </section>
 
 <!-- Features -->
@@ -154,14 +153,12 @@ section.visible {opacity:1; transform:translateY(0);}
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>AOS.init();</script>
 
-<!-- Section fade-in -->
 <script>
 const sections=document.querySelectorAll("section");
 const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add("visible");});},{threshold:0.2});
 sections.forEach(sec=>observer.observe(sec));
 </script>
 
-<!-- Counters animate sequentially -->
 <script>
 function animateCounter(id,target,delay=0){setTimeout(()=>{const el=document.getElementById(id);let count=0;const step=target/200;const interval=setInterval(()=>{count+=step;if(count>=target){count=target;clearInterval(interval);}el.textContent=Math.floor(count);},20);},delay);}
 animateCounter("counter1",1200,0);
@@ -169,48 +166,50 @@ animateCounter("counter2",3400,400);
 animateCounter("counter3",850,800);
 </script>
 
-<!-- Particles -->
+<!-- Particles & icons -->
 <script>
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
 let particles=[],width,height;
-const icons=["🦷","💉","🔬","🏥","📞"];
+const icons=["🦷","💉","🔬","🏥"];
 
 function resize(){width=canvas.width=window.innerWidth;height=canvas.height=window.innerHeight;}
 window.addEventListener("resize",resize);
 resize();
 
 class Particle{
-    constructor(x,y,icon=null,isIcon=false){this.reset(x,y,icon,isIcon);}
-    reset(x=null,y=null,icon=null,isIcon=false){
-        this.x = x!==null ? x : Math.random()*width;
-        this.y = y!==null ? y : height + Math.random()*50;
-        this.vx = (Math.random()-0.5)*0.5;
-        this.vy = Math.random()*1 + 0.5;
-        this.isIcon = isIcon;
-        this.icon = isIcon ? (icon ? icon : icons[Math.floor(Math.random()*icons.length)]) : null;
-        this.size = isIcon ? 20+Math.random()*10 : Math.random()*3+1;
-        this.opacity = 0;
-        this.fadeInSpeed = 0.01 + Math.random()*0.02;
-        this.angle = Math.random()*Math.PI*2;
+    constructor(){
+        this.reset();
+    }
+    reset(){
+        this.x=Math.random()*width;
+        this.y=height+Math.random()*50;
+        this.vx=(Math.random()-0.5)*0.7;
+        this.vy=Math.random()*0.5 + Math.random()*0.5;
+        this.isIcon=Math.random()<0.4; 
+        this.icon=this.isIcon?icons[Math.floor(Math.random()*icons.length)]:null;
+        this.size=this.isIcon?20+Math.random()*12:Math.random()*3+1;
+        this.opacity=0;
+        this.fadeSpeed=0.01+Math.random()*0.02;
+        this.angle=Math.random()*Math.PI*2;
     }
     update(){
-        this.x += this.vx;
-        this.y -= this.vy;
-        this.opacity += this.fadeInSpeed;
+        this.x+=this.vx;
+        this.y-=this.vy;
+        this.opacity+=this.fadeSpeed;
         if(this.opacity>1) this.opacity=1;
         if(this.y + this.size < 0) this.reset();
     }
     draw(){
         ctx.save();
         ctx.translate(this.x,this.y);
-        ctx.globalAlpha = this.opacity;
+        ctx.globalAlpha=this.opacity;
         if(this.isIcon && this.icon){
             ctx.rotate(this.angle);
             ctx.font=`${this.size}px Arial`;
-            ctx.fillStyle = (this.icon==="📞") ? "#3b82f6" : "white";
+            ctx.fillStyle="white";
             ctx.fillText(this.icon,-this.size/2,this.size/2);
-            this.angle += 0.01;
+            this.angle+=0.01;
         } else {
             ctx.beginPath();
             ctx.arc(0,0,this.size,0,Math.PI*2);
@@ -223,11 +222,8 @@ class Particle{
 
 function initParticles(){
     particles=[];
-    for(let i=0;i<25;i++){
-        particles.push(new Particle(Math.random()*width,height+Math.random()*50,icons[Math.floor(Math.random()*icons.length)],true));
-    }
-    for(let i=0;i<75;i++){
-        particles.push(new Particle(Math.random()*width,height+Math.random()*50,null,false));
+    for(let i=0;i<100;i++){
+        particles.push(new Particle());
     }
 }
 
@@ -241,12 +237,24 @@ initParticles();
 animateParticles();
 </script>
 
-<!-- VAPI Widget centered -->
+<!-- VAPI Widget -->
 <script>
 var vapiInstance=null;
 const assistant="a62ccb25-e09e-474a-832c-b21b045bcca2";
 const apiKey="ebb2b07d-b81f-43b3-9503-e8523797683d";
-(function(d,t){var g=document.createElement(t),s=d.getElementsByTagName(t)[0];g.src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";g.defer=true;g.async=true;s.parentNode.insertBefore(g,s);g.onload=function(){vapiInstance=window.vapiSDK.run({apiKey:apiKey,assistant:assistant,config:{button:{icon:"phone",position:"center"}}});};})(document,"script");
+(function(d,t){
+    var g=document.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+    g.defer=true; g.async=true;
+    s.parentNode.insertBefore(g,s);
+    g.onload=function(){
+        vapiInstance=window.vapiSDK.run({
+            apiKey:apiKey,
+            assistant:assistant,
+            config:{button:{icon:"phone",position:"center",color:"#3b82f6"}}
+        });
+    };
+})(document,"script");
 </script>
 
 <!-- Scroll Try Demo to top -->
