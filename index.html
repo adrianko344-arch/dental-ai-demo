@@ -1,390 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Receptionist Demo</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Receptionist Demo</title>
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
 
-  <!-- AOS Animations -->
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+<!-- AOS Animations -->
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #000; 
-      color: #fff;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-    }
+<style>
+body { font-family:'Inter',sans-serif; background:#000; color:#fff; overflow-x:hidden; scroll-behavior:smooth; }
 
-    /* Background video & animated gradient overlay */
-    .bg-video {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      z-index: -3;
-      opacity: 0.25;
-    }
-    .bg-animated {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: linear-gradient(-45deg, #0a0f2c, #0d1b42, #111827, #1e3a8a);
-      background-size: 400% 400%;
-      animation: gradientShift 30s ease infinite;
-      z-index: -4;
-    }
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+/* Background video & animated gradient overlay */
+.bg-video { position:fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-3; opacity:0.25; }
+.bg-animated { position:fixed; top:0; left:0; width:100%; height:100%; background:linear-gradient(-45deg,#0a0f2c,#0d1b42,#111827,#1e3a8a); background-size:400% 400%; animation:gradientShift 30s ease infinite; z-index:-4; }
+@keyframes gradientShift {0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 
-    /* Particle canvas */
-    #particles {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: -2;
-      pointer-events: none;
-    }
+/* Gradient shimmer text */
+.gradient-text { background: linear-gradient(90deg,#60a5fa,#38bdf8,#3b82f6); background-size:200% auto; color:transparent; background-clip:text; -webkit-background-clip:text; animation:shimmer 5s linear infinite; }
+@keyframes shimmer { to{background-position:200% center;} }
 
-    /* Gradient shimmer text */
-    .gradient-text {
-      background: linear-gradient(90deg, #60a5fa, #38bdf8, #3b82f6);
-      background-size: 200% auto;
-      color: transparent;
-      background-clip: text;
-      -webkit-background-clip: text;
-      animation: shimmer 5s linear infinite;
-    }
-    @keyframes shimmer { to { background-position: 200% center; } }
+/* Typing effect */
+.typing::after { content:"|"; animation:blink 1s infinite; }
+@keyframes blink {50%{opacity:0;}}
 
-    /* Typing effect */
-    .typing::after { content: "|"; animation: blink 1s infinite; }
-    @keyframes blink { 50% { opacity: 0; } }
+/* Call button glowing sonar + pulse */
+.call-button { position:relative; overflow:hidden; animation:float 3s ease-in-out infinite; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor:pointer; }
+@keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);} }
+.call-button::before { content:""; position:absolute; top:50%; left:50%; width:200%; height:200%; background:radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%); transform:translate(-50%, -50%); border-radius:50%; animation:pulse 3s infinite; z-index:-1; }
+@keyframes pulse {0%{transform:translate(-50%,-50%) scale(0.8); opacity:0.6;}100%{transform:translate(-50%,-50%) scale(1.8); opacity:0;} }
+.call-button:hover { transform:scale(1.15); box-shadow:0 0 30px rgba(37,99,235,0.8); animation: float 2.5s ease-in-out infinite, glow 1.5s ease-in-out infinite alternate;}
+@keyframes glow {0%{box-shadow:0 0 20px rgba(37,99,235,0.5);}100%{box-shadow:0 0 35px rgba(37,99,235,0.9);}}
 
-    /* Call button glowing sonar + pulse with smaller size and unique animation */
-    .call-button {
-      position: relative; 
-      overflow: hidden;
-      animation: float 2.5s ease-in-out infinite alternate;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: pointer;
-      font-size: 1.75rem;
-      padding: 0.75rem 3rem;
-    }
-    @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-4px); } 100% { transform: translateY(0); } }
+/* Glass cards tilt */
+.glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border:1px solid rgba(255,255,255,0.1); transform-style: preserve-3d; transition: transform 0.4s ease; }
+.glass:hover { transform: rotate3d(1,1,0,8deg) scale(1.03); }
 
-    .call-button::before {
-      content: "";
-      position: absolute; top: 50%; left: 50%;
-      width: 200%; height: 200%;
-      background: radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%);
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      animation: pulse 3s infinite;
-      z-index: -1;
-    }
-    @keyframes pulse {
-      0% { transform: translate(-50%, -50%) scale(0.8); opacity:0.6; }
-      100% { transform: translate(-50%, -50%) scale(1.8); opacity:0; }
-    }
-    .call-button:hover {
-      transform: scale(1.15);
-      box-shadow: 0 0 30px rgba(37, 99, 235, 0.8);
-      animation: float 2.5s ease-in-out infinite alternate, glow 1.5s ease-in-out infinite alternate;
-    }
-    @keyframes glow {
-      0% { box-shadow: 0 0 20px rgba(37,99,235,0.5); }
-      100% { box-shadow: 0 0 35px rgba(37,99,235,0.9); }
-    }
+/* Timeline section */
+.timeline { display:flex; justify-content:center; overflow-x:auto; padding:2rem 0; scroll-snap-type:x mandatory; gap:2rem; }
+.timeline-step { flex:0 0 250px; scroll-snap-align:start; background:rgba(255,255,255,0.05); backdrop-filter: blur(8px); border:1px solid rgba(255,255,255,0.1); border-radius:1rem; padding:1.5rem; text-align:center; transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.3s ease; transform: translateY(30px); opacity:0; }
+.timeline-step:hover { transform: scale(1.05); box-shadow:0 0 20px rgba(37,99,235,0.5); }
+.timeline-step-icon { font-size:2rem; margin-bottom:1rem; color:#60a5fa; }
 
-    /* Glass cards tilt */
-    .glass {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.1);
-      transform-style: preserve-3d;
-      transition: transform 0.4s ease;
-    }
-    .glass:hover { transform: rotate3d(1,1,0,8deg) scale(1.03); }
+/* Counter styles */
+.counter { font-size:2rem; font-weight:bold; color:#60a5fa; }
 
-    /* Timeline section */
-    .timeline {
-      display: flex;
-      justify-content: center;
-      overflow-x: auto;
-      padding: 2rem 0;
-      scroll-snap-type: x mandatory;
-      gap: 2rem;
-    }
-    .timeline-step {
-      flex: 0 0 250px;
-      scroll-snap-align: start;
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      text-align: center;
-      transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.3s ease;
-      transform: translateY(30px);
-      opacity: 0;
-    }
-    .timeline-step:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(37,99,235,0.5); }
-    .timeline-step-icon {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      color: #60a5fa;
-    }
+/* Section smooth fade-in */
+section { opacity:0; transform:translateY(20px); transition: all 0.8s ease; }
+section.visible { opacity:1; transform:translateY(0); }
 
-    /* Counter styles */
-    .counter { font-size: 2rem; font-weight: bold; color: #60a5fa; }
-
-    /* Section smooth fade-in */
-    section { opacity: 0; transform: translateY(20px); transition: all 0.8s ease; }
-    section.visible { opacity: 1; transform: translateY(0); }
-  </style>
+/* Try Live Demo Section gradient background */
+.try-demo { background: linear-gradient(135deg, #1f0534, #4b0f6c, #0d1b42); }
+</style>
 </head>
 <body>
 
-  <!-- Background layers -->
-  <div class="bg-animated"></div>
-  <video autoplay muted loop class="bg-video">
-    <source src="https://cdn.coverr.co/videos/coverr-digital-globe-network-3832/1080p.mp4" type="video/mp4">
-  </video>
-  <canvas id="particles"></canvas>
+<!-- Background layers -->
+<div class="bg-animated"></div>
+<video autoplay muted loop class="bg-video">
+  <source src="https://cdn.coverr.co/videos/coverr-digital-globe-network-3832/1080p.mp4" type="video/mp4">
+</video>
+<canvas id="particles"></canvas>
 
-  <!-- Hero -->
-  <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative" id="hero">
-    <h1 class="text-5xl md:text-7xl font-black gradient-text mb-6" data-aos="fade-down" data-aos-delay="100">
-      Meet Your New 24/7 <br> AI Receptionist
-    </h1>
-    <p class="typing text-xl md:text-2xl text-gray-200" data-aos="fade-up" data-aos-delay="400">
-      Booking patients even while you sleep
-    </p>
-    <p class="mt-6 text-gray-400 max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="700">
-      Our intelligent assistant works for you 24/7. Save time and never miss a patient call again.
-    </p>
-    <p class="mt-6 text-sm text-gray-500" data-aos="fade-up" data-aos-delay="900">
-      Click the phone icon below to experience the future firsthand.
-    </p>
-  </section>
+<!-- Hero -->
+<section class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
+  <h1 class="text-5xl md:text-7xl font-black gradient-text mb-6" data-aos="fade-down" data-aos-delay="100">
+    Meet Your New 24/7 <br> AI Receptionist
+  </h1>
+  <p class="typing text-xl md:text-2xl text-gray-200" data-aos="fade-up" data-aos-delay="400">
+    Booking patients even while you sleep
+  </p>
+  <p class="mt-6 text-gray-400 max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="700">
+    Our intelligent assistant works for you 24/7. Save time and never miss a patient call again.
+  </p>
+  <p class="mt-6 text-sm text-gray-500" data-aos="fade-up" data-aos-delay="900">
+    Click the phone icon below to experience the future firsthand.
+  </p>
+</section>
 
-  <!-- Features -->
-  <section class="py-20 bg-black/70 relative">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6">
-      <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="100">
-        <h3 class="text-xl font-bold mb-2">24/7 Appointment Booking</h3>
-        <p class="text-gray-400">The assistant can book new and existing patients at any time, even after hours.</p>
-      </div>
-      <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="300">
-        <h3 class="text-xl font-bold mb-2">Intelligent Answers</h3>
-        <p class="text-gray-400">It answers common questions about your services, pricing, and business hours.</p>
-      </div>
-      <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="500">
-        <h3 class="text-xl font-bold mb-2">Less Stress for Your Staff</h3>
-        <p class="text-gray-400">Your staff can focus completely on patients while the AI handles the phone.</p>
-      </div>
+<!-- Features -->
+<section class="py-20 bg-black/70 relative">
+  <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6">
+    <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="100">
+      <h3 class="text-xl font-bold mb-2">24/7 Appointment Booking</h3>
+      <p class="text-gray-400">The assistant can book new and existing patients at any time, even after hours.</p>
     </div>
-  </section>
-
-  <!-- Timeline -->
-  <section class="py-20">
-    <h2 class="text-4xl font-bold text-center mb-10 gradient-text">How It Works</h2>
-    <div class="timeline px-6">
-      <div class="timeline-step" data-aos="fade-up" data-aos-delay="100">
-        <div class="timeline-step-icon">📞</div>
-        <h3 class="font-bold mb-2">Step 1</h3>
-        <p>Patient calls your clinic number.</p>
-      </div>
-      <div class="timeline-step" data-aos="fade-up" data-aos-delay="300">
-        <div class="timeline-step-icon">🤖</div>
-        <h3 class="font-bold mb-2">Step 2</h3>
-        <p>AI receptionist answers instantly.</p>
-      </div>
-      <div class="timeline-step" data-aos="fade-up" data-aos-delay="500">
-        <div class="timeline-step-icon">📅</div>
-        <h3 class="font-bold mb-2">Step 3</h3>
-        <p>Books appointment in your calendar.</p>
-      </div>
-      <div class="timeline-step" data-aos="fade-up" data-aos-delay="700">
-        <div class="timeline-step-icon">✅</div>
-        <h3 class="font-bold mb-2">Step 4</h3>
-        <p>Patient receives confirmation.</p>
-      </div>
+    <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="300">
+      <h3 class="text-xl font-bold mb-2">Intelligent Answers</h3>
+      <p class="text-gray-400">It answers common questions about your services, pricing, and business hours.</p>
     </div>
-  </section>
-
-  <!-- Counters -->
-  <section class="py-20 bg-black/70 text-center">
-    <h2 class="text-4xl font-bold mb-12 gradient-text">Our Impact</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
-      <div>
-        <div class="counter" id="counter1">0</div>
-        <p class="text-gray-400 mt-2">Appointments Booked</p>
-      </div>
-      <div>
-        <div class="counter" id="counter2">0</div>
-        <p class="text-gray-400 mt-2">Patient Calls Answered</p>
-      </div>
-      <div>
-        <div class="counter" id="counter3">0</div>
-        <p class="text-gray-400 mt-2">Hours Saved</p>
-      </div>
+    <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="500">
+      <h3 class="text-xl font-bold mb-2">Less Stress for Your Staff</h3>
+      <p class="text-gray-400">Your staff can focus completely on patients while the AI handles the phone.</p>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- CTA -->
-  <section class="py-20 text-center relative">
-    <h2 class="text-4xl md:text-5xl font-bold mb-8 gradient-text">Try the Live Demo</h2>
-    <p class="text-gray-400 mb-12 max-w-xl mx-auto">Experience the future of patient communication now. Click below to test our AI receptionist in action.</p>
-    <div data-aos="zoom-in" data-aos-delay="200">
-      <div class="call-button bg-blue-600 hover:bg-blue-700 text-white rounded-full inline-block" id="demoButton">
-        📞 Try Live Demo
-      </div>
+<!-- Timeline -->
+<section class="py-20">
+  <h2 class="text-4xl font-bold text-center mb-10 gradient-text">How It Works</h2>
+  <div class="timeline px-6">
+    <div class="timeline-step" data-aos="fade-up" data-aos-delay="100">
+      <div class="timeline-step-icon">📞</div>
+      <h3 class="font-bold mb-2">Step 1</h3>
+      <p>Patient calls your clinic number.</p>
     </div>
-  </section>
+    <div class="timeline-step" data-aos="fade-up" data-aos-delay="300">
+      <div class="timeline-step-icon">🤖</div>
+      <h3 class="font-bold mb-2">Step 2</h3>
+      <p>AI receptionist answers instantly.</p>
+    </div>
+    <div class="timeline-step" data-aos="fade-up" data-aos-delay="500">
+      <div class="timeline-step-icon">📅</div>
+      <h3 class="font-bold mb-2">Step 3</h3>
+      <p>Books appointment in your calendar.</p>
+    </div>
+    <div class="timeline-step" data-aos="fade-up" data-aos-delay="700">
+      <div class="timeline-step-icon">✅</div>
+      <h3 class="font-bold mb-2">Step 4</h3>
+      <p>Patient receives confirmation.</p>
+    </div>
+  </div>
+</section>
 
-  <!-- Footer -->
-  <footer class="py-10 bg-black/80 text-center text-gray-500 text-sm">
-    © 2025 ScaleEasy. All rights reserved.
-  </footer>
+<!-- Counters -->
+<section class="py-20 bg-black/70 text-center">
+  <h2 class="text-4xl font-bold mb-12 gradient-text">Our Impact</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
+    <div>
+      <div class="counter" id="counter1">0</div>
+      <p class="text-gray-400 mt-2">Appointments Booked</p>
+    </div>
+    <div>
+      <div class="counter" id="counter2">0</div>
+      <p class="text-gray-400 mt-2">Patient Calls Answered</p>
+    </div>
+    <div>
+      <div class="counter" id="counter3">0</div>
+      <p class="text-gray-400 mt-2">Hours Saved</p>
+    </div>
+  </div>
+</section>
 
-  <!-- AOS -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>AOS.init();</script>
+<!-- Try Live Demo -->
+<section class="py-20 text-center try-demo relative">
+  <h2 class="text-4xl md:text-5xl font-bold mb-8 gradient-text">Try the Live Demo</h2>
+  <p class="text-gray-400 mb-12 max-w-xl mx-auto">Experience the future of patient communication now. Click below to test our AI receptionist in action.</p>
+  <div data-aos="zoom-in" data-aos-delay="200">
+    <div class="call-button bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 rounded-full text-2xl font-bold inline-block" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+      📞 Try Live Demo
+    </div>
+  </div>
+</section>
 
-  <!-- Section fade-in -->
-  <script>
-    const sections = document.querySelectorAll("section");
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add("visible");
-      });
-    }, { threshold: 0.2 });
-    sections.forEach(sec => observer.observe(sec));
-  </script>
+<!-- Footer -->
+<footer class="py-10 bg-black/80 text-center text-gray-500 text-sm">
+  © 2025 ScaleEasy. All rights reserved.
+</footer>
 
-  <!-- Counters -->
-  <script>
-    function animateCounter(id, target) {
-      const el = document.getElementById(id);
-      let count = 0;
-      const step = target / 200;
-      const interval = setInterval(() => {
-        count += step;
-        if (count >= target) {
-          count = target;
-          clearInterval(interval);
-        }
-        el.textContent = Math.floor(count);
-      }, 20);
-    }
-    animateCounter("counter1", 1200);
-    animateCounter("counter2", 3400);
-    animateCounter("counter3", 850);
-  </script>
+<!-- AOS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>AOS.init();</script>
 
-  <!-- Particle background improved -->
-  <script>
-    const canvas = document.getElementById("particles");
-    const ctx = canvas.getContext("2d");
-    let particles = [];
-    let width, height;
-    const icons = ["🦷","💉","🔬","🏥"]; // removed bacteria
+<!-- Section fade-in -->
+<script>
+const sections = document.querySelectorAll("section");
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{ if(entry.isIntersecting) entry.target.classList.add("visible"); });
+},{threshold:0.2});
+sections.forEach(sec=>observer.observe(sec));
+</script>
 
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resize);
-    resize();
+<!-- Counters animation po krokoch -->
+<script>
+function animateCounterStep(id,target,delay){
+  setTimeout(()=>{
+    const el=document.getElementById(id);
+    let count=0;
+    const step=target/100;
+    const interval=setInterval(()=>{
+      count+=step;
+      if(count>=target){ count=target; clearInterval(interval); }
+      el.textContent=Math.floor(count);
+    },20);
+  },delay);
+}
+animateCounterStep("counter1",1200,200);
+animateCounterStep("counter2",3400,700);
+animateCounterStep("counter3",850,1200);
+</script>
 
-    class Particle {
-      constructor() {
-        this.reset();
-      }
-      reset() {
-        this.x = Math.random() * width;
-        this.y = height + Math.random() * 50; // start slightly below
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = - (Math.random() * 1 + 0.2);
-        this.size = Math.random() * 24 + 8;
-        this.angle = Math.random() * Math.PI * 2;
-        this.opacity = Math.random() * 0.5 + 0.3;
-        this.isIcon = Math.random() < 0.4;
-        if(this.isIcon) this.icon = icons[Math.floor(Math.random()*icons.length)];
-        this.glow = Math.random()*15 + 5;
-      }
-      draw() {
-        ctx.save();
-        ctx.globalAlpha = this.opacity;
-        ctx.translate(this.x, this.y);
-        ctx.rotate(this.angle);
-        if(this.isIcon && this.icon){
-          ctx.font = `${this.size}px Arial`;
-          ctx.fillText(this.icon, -this.size/2, this.size/2);
-        } else {
-          let gradient = ctx.createRadialGradient(0,0,this.size*0.1,0,0,this.size);
-          gradient.addColorStop(0, "rgba(96,165,250,0.7)");
-          gradient.addColorStop(1, "rgba(96,165,250,0)");
-          ctx.fillStyle = gradient;
-          ctx.beginPath();
-          ctx.arc(0,0,this.size,0,Math.PI*2);
-          ctx.fill();
-        }
-        ctx.restore();
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.angle += 0.01;
-        this.opacity -= 0.002;
-        if(this.y < -50 || this.opacity <= 0) this.reset();
-      }
-    }
+<!-- Particle background s hĺbkou -->
+<script>
+const canvas=document.getElementById("particles");
+const ctx=canvas.getContext("2d");
+let w,h;
+const layers=[];
+const icons=["🦷","💉","🔬","🏥"];
+function resize(){ w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; }
+window.addEventListener("resize",resize); resize();
 
-    function init() {
-      particles = [];
-      for(let i=0;i<80;i++) particles.push(new Particle());
-    }
-
-    function animate() {
-      ctx.clearRect(0,0,width,height);
-      particles.forEach(p => { p.update(); p.draw(); });
-      requestAnimationFrame(animate);
-    }
-
-    init();
-    animate();
-  </script>
-
-  <!-- VAPI Widget -->
-  <script src="https://cdn.jsdelivr.net/npm/@vapi-ai/web/dist/widget.umd.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      window.vapi.init({
-        apiKey: "ebb2b07d-b81f-43b3-9503-e8523797683d",
-        assistantId: "a62ccb25-e09e-474a-832c-b21b045bcca2",
-        position: "right",
-        button: { icon: "phone" }
-      });
-
-      // Scroll to top on demo button click
-      document.getElementById("demoButton").addEventListener("click", () => {
-        document.getElementById("hero").scrollIntoView({ behavior: "smooth" });
-      });
+class ParticleLayer{
+  constructor(depth){
+    this.depth=depth;
+    this.particles=[];
+    for(let i=0;i<35;i++){ this.particles.push(this.createParticle()); }
+  }
+  createParticle(){
+    return {
+      x:Math.random()*w,
+      y:h+Math.random()*50,
+      vx:(Math.random()-0.5)*(0.2*this.depth),
+      vy:-(Math.random()*0.5*this.depth+0.2),
+      size:Math.random()*(16*this.depth)+4,
+      angle:Math.random()*Math.PI*2,
+      opacity:Math.random()*0.5+0.3,
+      glow:Math.random()*15+5,
+      isIcon:Math.random()<0.4,
+      icon:icons[Math.floor(Math.random()*icons.length)]
+    };
+  }
+  updateDraw(){
+    this.particles.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy; p.angle+=0.01*this.depth; p.opacity-=0.001*this.depth;
+      if(p.y<-50||p.opacity<=0){ Object.assign(p,this.createParticle()); }
+      ctx.save(); ctx.globalAlpha=p.opacity; ctx.translate(p.x,p.y); ctx.rotate(p.angle);
+      if(p.isIcon){ ctx.font=`${p.size}px Arial`; ctx.fillText(p.icon,-p.size/2,p.size/2); } 
+      else { const grad=ctx.createRadialGradient(0,0,p.size*0.1,0,0,p.size); grad.addColorStop(0,`rgba(96,165,250,${p.opacity})`); grad.addColorStop(1,"rgba(96,165,250,0)"); ctx.fillStyle=grad; ctx.beginPath(); ctx.arc(0,0,p.size,0,Math.PI*2); ctx.fill(); }
+      ctx.restore();
     });
-  </script>
+  }
+}
 
+for(let i=1;i<=3;i++){ layers.push(new ParticleLayer(i)); }
+
+function animateParticles(){ ctx.clearRect(0,0,w,h); layers.forEach(l=>l.updateDraw()); requestAnimationFrame(animateParticles); }
+animateParticles();
+</script>
+
+<!-- VAPI Widget -->
+<script src="https://cdn.jsdelivr.net/npm/@vapi-ai/web/dist/widget.umd.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  window.vapi.init({
+    apiKey:"demo",
+    assistantId:"a62ccb25-e09e-474a-832c-b21b045bcca2",
+    position:"right",
+    button:{icon:"phone"}
+  });
+});
+</script>
 </body>
 </html>
