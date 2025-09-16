@@ -43,6 +43,7 @@ body {
   cursor:pointer; 
   display:inline-flex; 
   align-items:center;
+  font-weight:bold;
 }
 .call-button::before {
   content:""; 
@@ -170,7 +171,7 @@ section.visible {opacity:1; transform:translateY(0);}
 <h2 class="text-4xl md:text-5xl font-bold mb-8 gradient-text">Try the Live Demo</h2>
 <p class="text-gray-400 mb-12 max-w-xl mx-auto">Experience the future of patient communication now. Click below to test our AI receptionist in action.</p>
 <div data-aos="zoom-in" data-aos-delay="200" style="position:relative; display:inline-block;">
-  <div id="demo-button" class="call-button bg-blue-900 text-white px-12 py-6 rounded-full text-2xl font-bold">
+  <div id="demo-button" class="call-button bg-blue-900 text-white px-12 py-4 rounded-full text-xl font-bold">
     <span style="margin-right:8px;">📞</span>Try Live Demo
     <div class="shine"></div>
   </div>
@@ -182,115 +183,131 @@ section.visible {opacity:1; transform:translateY(0);}
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>AOS.init();</script>
 
+<!-- Section fade-in -->
 <script>
-// Section fade-in
 const sections=document.querySelectorAll("section");
 const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add("visible");});},{threshold:0.2});
 sections.forEach(sec=>observer.observe(sec));
-
-// Counters animate when visible
-function animateCounter(id,target){const el=document.getElementById(id);let count=0;const step=target/200;const interval=setInterval(()=>{count+=step;if(count>=target){count=target;clearInterval(interval);}el.textContent=Math.floor(count);},20);}
-const impactObserver=new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{if(entry.isIntersecting){
-    animateCounter("counter1",1200);
-    animateCounter("counter2",3400);
-    animateCounter("counter3",850);
-    impactObserver.unobserve(entry.target);
-  }});
-},{threshold:0.5});
-impactObserver.observe(document.querySelector(".py-20.bg-black/70.text-center"));
-
-// Scroll Try Demo to top
-document.getElementById("demo-button").addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"});});
 </script>
 
-<!-- Particles with fade and mouse repulsion -->
+<!-- Counters animate on visibility -->
+<script>
+const counters=document.querySelectorAll(".counter");
+const counterObserver=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+        if(entry.isIntersecting && !entry.target.dataset.animated){
+            entry.target.dataset.animated=true;
+            let target=parseInt(entry.target.textContent) || 0;
+            let final=parseInt(entry.target.id==="counter1"?1200:entry.target.id==="counter2"?3400:850);
+            let count=0; let step=final/200;
+            const interval=setInterval(()=>{
+                count+=step;
+                if(count>=final){count=final; clearInterval(interval);}
+                entry.target.textContent=Math.floor(count);
+            },20);
+        }
+    });
+},{threshold:0.5});
+counters.forEach(c=>counterObserver.observe(c));
+</script>
+
+<!-- Particles -->
 <script>
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
 let width,height;
 let particles=[];
+
 const icons=["🦷","💉","🔬","🏥"];
-let mouse={x:null,y:null};
-canvas.addEventListener("mousemove",(e)=>{mouse.x=e.clientX;mouse.y=e.clientY;});
+
 function resize(){width=canvas.width=window.innerWidth;height=canvas.height=window.innerHeight;}
 window.addEventListener("resize",resize);
 resize();
 
 class Particle{
-  constructor(x,y,icon=null,isIcon=false){
-    this.x=x; this.y=y; this.icon=icon; this.isIcon=isIcon;
-    this.vx=(Math.random()-0.5)*0.7; this.vy=0.5+Math.random()*1;
-    this.size=isIcon?20+Math.random()*12:Math.random()*3+1;
-    this.opacity=0;
-    this.angle=Math.random()*Math.PI*2;
-    this.fadeInSpeed=0.01+Math.random()*0.02;
-  }
-  draw(){
-    ctx.save();
-    ctx.translate(this.x,this.y);
-    ctx.globalAlpha=this.opacity;
-    if(this.isIcon && this.icon){
-      ctx.rotate(this.angle);
-      ctx.font=`${this.size}px Arial`;
-      ctx.fillText(this.icon,-this.size/2,this.size/2);
-      this.angle+=0.01;
-    } else {
-      ctx.beginPath();
-      ctx.arc(0,0,this.size,0,Math.PI*2);
-      ctx.fillStyle="rgba(96,165,250,0.5)";
-      ctx.fill();
+    constructor(isIcon=false){
+        this.x=Math.random()*width;
+        this.y=height+Math.random()*50;
+        this.vx=(Math.random()-0.5)*0.5;
+        this.vy=0.5+Math.random()*1;
+        this.size=isIcon?20+Math.random()*12:Math.random()*3+1;
+        this.opacity=0;
+        this.fadeInSpeed=0.01+Math.random()*0.02;
+        this.icon=isIcon?icons[Math.floor(Math.random()*icons.length)]:null;
+        this.isIcon=isIcon;
+        this.angle=Math.random()*Math.PI*2;
     }
-    ctx.restore();
-  }
-  update(){
-    // move
-    this.x+=this.vx; this.y-=this.vy;
-    // fade out gradually
-    this.opacity+=this.fadeInSpeed;
-    if(this.opacity>1)this.opacity=1;
-    if(this.y<height*0.2)this.opacity-=0.005; // gradual fade near top
-    if(this.opacity<=0)this.reset();
-    // mouse repulsion
-    if(mouse.x && mouse.y){
-      let dx=this.x-mouse.x;
-      let dy=this.y-mouse.y;
-      let dist=Math.sqrt(dx*dx+dy*dy);
-      if(dist<80){
-        let force=(80-dist)/80*2;
-        this.x+=dx/dist*force;
-        this.y+=dy/dist*force;
-      }
+    draw(){
+        ctx.save();
+        ctx.translate(this.x,this.y);
+        ctx.globalAlpha=this.opacity;
+        if(this.isIcon && this.icon){
+            ctx.rotate(this.angle);
+            ctx.font=`${this.size}px Arial`;
+            ctx.fillStyle="#60a5fa";
+            ctx.fillText(this.icon,-this.size/2,this.size/2);
+            this.angle+=0.01;
+        } else {
+            ctx.beginPath();
+            ctx.arc(0,0,this.size,0,Math.PI*2);
+            ctx.fillStyle="rgba(37,99,235,0.5)";
+            ctx.fill();
+        }
+        ctx.restore();
     }
-    if(this.y+this.size<0)this.reset();
-  }
-  reset(){
-    this.x=Math.random()*width;
-    this.y=height+Math.random()*50;
-    this.vx=(Math.random()-0.5)*0.7; this.vy=0.5+Math.random()*1;
-    this.size=this.isIcon?20+Math.random()*12:Math.random()*3+1;
-    this.icon=this.isIcon?icons[Math.floor(Math.random()*icons.length)]:null;
-    this.opacity=0;
-    this.fadeInSpeed=0.01+Math.random()*0.02;
-    this.angle=Math.random()*Math.PI*2;
-  }
+    update(mouse){
+        this.x+=this.vx;
+        this.y-=this.vy;
+        this.opacity+=this.fadeInSpeed;
+        if(this.opacity>1)this.opacity=1;
+
+        // repel from mouse
+        if(mouse){
+            let dx=this.x-mouse.x;
+            let dy=this.y-mouse.y;
+            let dist=Math.sqrt(dx*dx+dy*dy);
+            if(dist<80){
+                this.x+=dx/dist*2;
+                this.y+=dy/dist*2;
+            }
+        }
+
+        if(this.y+this.size<0)this.reset();
+    }
+    reset(){
+        this.x=Math.random()*width;
+        this.y=height+Math.random()*50;
+        this.vx=(Math.random()-0.5)*0.5;
+        this.vy=0.5+Math.random()*1;
+        this.size=this.isIcon?20+Math.random()*12:Math.random()*3+1;
+        this.opacity=0;
+        this.fadeInSpeed=0.01+Math.random()*0.02;
+        this.icon=this.isIcon?icons[Math.floor(Math.random()*icons.length)]:null;
+        this.angle=Math.random()*Math.PI*2;
+    }
 }
 
-function init(){
-  particles=[];
-  for(let i=0;i<50;i++)particles.push(new Particle(Math.random()*width,height+Math.random()*100,icons[Math.floor(Math.random()*icons.length)],true));
-  for(let i=0;i<100;i++)particles.push(new Particle(Math.random()*width,height+Math.random()*100,null,false));
+function spawnParticles(){
+    if(Math.random()<0.05)particles.push(new Particle(true));
+    if(Math.random()<0.2)particles.push(new Particle(false));
 }
+
+let mouse=null;
+canvas.addEventListener("mousemove",(e)=>{mouse={x:e.clientX,y:e.clientY};});
+canvas.addEventListener("mouseleave",()=>{mouse=null;});
+
 function animate(){
-  ctx.clearRect(0,0,width,height);
-  particles.forEach(p=>{p.update();p.draw();});
-  requestAnimationFrame(animate);
+    ctx.clearRect(0,0,width,height);
+    spawnParticles();
+    particles.forEach(p=>p.update(mouse));
+    particles.forEach(p=>p.draw());
+    requestAnimationFrame(animate);
 }
-init();
+
 animate();
 </script>
 
-<!-- VAPI Widget centered -->
+<!-- VAPI Widget -->
 <script>
 var vapiInstance=null;
 const assistant="a62ccb25-e09e-474a-832c-b21b045bcca2";
@@ -304,10 +321,15 @@ const apiKey="ebb2b07d-b81f-43b3-9503-e8523797683d";
         vapiInstance=window.vapiSDK.run({
             apiKey:apiKey,
             assistant:assistant,
-            config:{button:{icon:"phone",position:"center",color:"#1E40AF"}} // modrá farba
+            config:{button:{icon:"phone",position:"center",color:"#1E40AF"}} // MODRÁ
         });
     };
 })(document,"script");
+</script>
+
+<!-- Scroll Try Demo to top -->
+<script>
+document.getElementById("demo-button").addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"});});
 </script>
 
 </body>
