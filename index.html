@@ -16,12 +16,11 @@ body {
   color: #fff;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  transition: background 1s ease;
 }
 
 /* Background layers */
 .bg-video {position: fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-3; opacity:0.25;}
-.bg-animated {position: fixed; top:0; left:0; width:100%; height:100%; background: linear-gradient(-45deg,#0a0f2c,#0d1b42,#111827,#1e3a8a); background-size:400% 400%; animation: gradientShift 40s ease infinite; z-index:-4;}
+.bg-animated {position: fixed; top:0; left:0; width:100%; height:100%; background: linear-gradient(-45deg,#0a0f2c,#0d1b42,#111827,#1e3a8a); background-size:400% 400%; animation: gradientShift 30s ease infinite; z-index:-4;}
 @keyframes gradientShift {0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 
 /* Particles canvas */
@@ -43,26 +42,39 @@ body {
   transition: transform 0.3s ease, box-shadow 0.3s ease; 
   cursor:pointer; 
   display:inline-flex; 
-  align-items:center; 
-  justify-content:center;
-  gap:0.5rem;
+  align-items:center;
 }
-.call-button:hover {transform:scale(1.1); box-shadow:0 0 25px rgba(37,99,235,0.8);}
-@keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
-.call-button::after {
+.call-button::before {
   content:""; 
   position:absolute; 
-  top:0; left:-75%; 
-  width:50%; 
-  height:100%; 
-  background: linear-gradient(120deg, rgba(255,255,255,0.1), rgba(255,255,255,0.5), rgba(255,255,255,0.1)); 
-  transform: skewX(-25deg); 
-  animation: shine 2s infinite;
+  top:50%; 
+  left:50%; 
+  width:200%; 
+  height:200%; 
+  background:radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%); 
+  transform:translate(-50%,-50%); 
+  border-radius:50%; 
+  animation:pulse 3s infinite; 
+  z-index:-1;
 }
-@keyframes shine {0%{left:-75%;}100%{left:125%;}}
+.call-button:hover {transform:scale(1.15); box-shadow:0 0 30px rgba(37,99,235,0.8); animation:float 2.5s ease-in-out infinite, glow 1.5s ease-in-out infinite alternate;}
+@keyframes glow {0%{box-shadow:0 0 20px rgba(37,99,235,0.5);}100%{box-shadow:0 0 35px rgba(37,99,235,0.9);}}
+@keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+
+/* Button shine */
+.shine {
+  position: absolute;
+  top: 0; left: -75%;
+  width: 50%; height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.2), rgba(255,255,255,0.6), rgba(255,255,255,0.2));
+  transform: skewX(-25deg);
+  pointer-events:none;
+  animation: shineAnim 2s infinite;
+}
+@keyframes shineAnim {0%{left:-75%;}100%{left:125%;}}
 
 /* Glass cards */
-.glass {background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border:1px solid rgba(255,255,255,0.1); transform-style: preserve-3d; transition: transform 0.4s ease, opacity 0.8s ease;}
+.glass {background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border:1px solid rgba(255,255,255,0.1); transform-style: preserve-3d; transition: transform 0.4s ease;}
 .glass:hover {transform: rotate3d(1,1,0,8deg) scale(1.03);}
 
 /* Timeline */
@@ -75,7 +87,7 @@ body {
 .counter {font-size:2rem; font-weight:bold; color:#60a5fa;}
 
 /* Section fade-in */
-section {opacity:0; transform:translateY(20px); transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);}
+section {opacity:0; transform:translateY(20px); transition: all 0.8s ease;}
 section.visible {opacity:1; transform:translateY(0);}
 
 /* Demo section background */
@@ -95,11 +107,7 @@ section.visible {opacity:1; transform:translateY(0);}
 <h1 class="text-5xl md:text-7xl font-black gradient-text mb-6" data-aos="fade-down" data-aos-delay="100">Meet Your New 24/7 <br> AI Receptionist</h1>
 <p class="typing text-xl md:text-2xl text-gray-200" data-aos="fade-up" data-aos-delay="400">Booking patients even while you sleep</p>
 <p class="mt-6 text-gray-400 max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="700">Our intelligent assistant works for you 24/7. Save time and never miss a patient call again.</p>
-<p class="mt-6 text-sm text-gray-500" data-aos="fade-up" data-aos-delay="900">Click the phone icon below to experience the future firsthand.</p>
-
-<!-- VAPI phone widget -->
-<div id="vapi-phone" style="margin-top:2rem; z-index:9999;"></div>
-
+<p class="mt-6 text-sm text-gray-500" data-aos="fade-up" data-aos-delay="900">Click the button below to experience the future firsthand.</p>
 </section>
 
 <!-- Features -->
@@ -161,9 +169,10 @@ section.visible {opacity:1; transform:translateY(0);}
 <section id="demo-section">
 <h2 class="text-4xl md:text-5xl font-bold mb-8 gradient-text">Try the Live Demo</h2>
 <p class="text-gray-400 mb-12 max-w-xl mx-auto">Experience the future of patient communication now. Click below to test our AI receptionist in action.</p>
-<div data-aos="zoom-in" data-aos-delay="200">
-  <div id="demo-button" class="call-button bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-full text-xl font-bold">
-    📞 Try Live Demo
+<div data-aos="zoom-in" data-aos-delay="200" style="position:relative; display:inline-block;">
+  <div id="demo-button" class="call-button bg-blue-900 text-white px-12 py-6 rounded-full text-2xl font-bold">
+    <span style="margin-right:8px;">📞</span>Try Live Demo
+    <div class="shine"></div>
   </div>
 </div>
 </section>
@@ -188,7 +197,7 @@ animateCounter("counter2",3400,400);
 animateCounter("counter3",850,800);
 </script>
 
-<!-- Particles + icons -->
+<!-- Particles -->
 <script>
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
@@ -200,38 +209,25 @@ window.addEventListener("resize",resize);
 resize();
 
 class Particle{
-    constructor(){this.reset();}
-    reset(){
-        this.x=Math.random()*width;
-        this.y=height+Math.random()*50;
+    constructor(x,y,icon=null,isIcon=false){
+        this.x=x;
+        this.y=y;
         this.vx=(Math.random()-0.5)*0.7;
-        this.vy=Math.random()*0.5 + Math.random()*0.5;
-        this.isIcon=Math.random()<0.4; 
-        this.icon=this.isIcon?icons[Math.floor(Math.random()*icons.length)]:null;
-        this.size=this.isIcon?20+Math.random()*12:Math.random()*3+1;
+        this.vy=0.5 + Math.random()*1;
+        this.icon=icon;
+        this.isIcon=isIcon;
+        this.size=isIcon?20+Math.random()*12:Math.random()*3+1;
         this.opacity=0;
-        this.fadeSpeed=0.01+Math.random()*0.02;
         this.angle=Math.random()*Math.PI*2;
-        this.glow=Math.random()*10 + 5;
-        this.glowColor=this.isIcon?"#60a5fa":"white";
-    }
-    update(){
-        this.x+=this.vx;
-        this.y-=this.vy;
-        this.opacity+=this.fadeSpeed;
-        if(this.opacity>1) this.opacity=1;
-        if(this.y + this.size < 0) this.reset();
+        this.fadeInSpeed=0.01+Math.random()*0.02;
     }
     draw(){
         ctx.save();
         ctx.translate(this.x,this.y);
         ctx.globalAlpha=this.opacity;
-        ctx.shadowBlur=this.glow;
-        ctx.shadowColor=this.isIcon?this.glowColor:"white";
         if(this.isIcon && this.icon){
             ctx.rotate(this.angle);
             ctx.font=`${this.size}px Arial`;
-            ctx.fillStyle="#60a5fa";
             ctx.fillText(this.icon,-this.size/2,this.size/2);
             this.angle+=0.01;
         } else {
@@ -242,25 +238,59 @@ class Particle{
         }
         ctx.restore();
     }
+    update(){
+        this.x+=this.vx;
+        this.y-=this.vy;
+        this.opacity+=this.fadeInSpeed;
+        if(this.opacity>1)this.opacity=1;
+        if(this.y+this.size<0)this.reset();
+    }
+    reset(){
+        this.x=Math.random()*width;
+        this.y=height+Math.random()*50;
+        this.vx=(Math.random()-0.5)*0.7;
+        this.vy=0.5 + Math.random()*1;
+        this.size=this.isIcon?20+Math.random()*12:Math.random()*3+1;
+        this.icon=this.isIcon?icons[Math.floor(Math.random()*icons.length)]:null;
+        this.opacity=0;
+        this.fadeInSpeed=0.01+Math.random()*0.02;
+        this.angle=Math.random()*Math.PI*2;
+    }
 }
 
-function initParticles(){particles=[];for(let i=0;i<120;i++){particles.push(new Particle());}}
-function animateParticles(){ctx.clearRect(0,0,width,height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animateParticles);}
-initParticles();animateParticles();
+function init(){
+    particles=[];
+    for(let i=0;i<30;i++)particles.push(new Particle(Math.random()*width,height+Math.random()*100,icons[Math.floor(Math.random()*icons.length)],true));
+    for(let i=0;i<80;i++)particles.push(new Particle(Math.random()*width,height+Math.random()*100,null,false));
+}
+
+function animate(){
+    ctx.clearRect(0,0,width,height);
+    particles.forEach(p=>{p.update();p.draw();});
+    requestAnimationFrame(animate);
+}
+
+init();
+animate();
 </script>
 
-<!-- VAPI Widget -->
+<!-- VAPI Widget centered -->
 <script>
 var vapiInstance=null;
 const assistant="a62ccb25-e09e-474a-832c-b21b045bcca2";
 const apiKey="ebb2b07d-b81f-43b3-9503-e8523797683d";
 (function(d,t){
-  var g=document.createElement(t),s=d.getElementsByTagName(t)[0];
-  g.src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
-  g.defer=true; g.async=true; s.parentNode.insertBefore(g,s);
-  g.onload=function(){
-    vapiInstance=window.vapiSDK.run({apiKey:apiKey,assistant:assistant,config:{button:{icon:"phone",position:"center",color:"#1e40af"}}});
-  };
+    var g=document.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+    g.defer=true; g.async=true;
+    s.parentNode.insertBefore(g,s);
+    g.onload=function(){
+        vapiInstance=window.vapiSDK.run({
+            apiKey:apiKey,
+            assistant:assistant,
+            config:{button:{icon:"phone",position:"center",color:"#1E40AF"}} // modrá farba
+        });
+    };
 })(document,"script");
 </script>
 
