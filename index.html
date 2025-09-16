@@ -8,35 +8,37 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
 <style>
-body{font-family:'Inter',sans-serif;background:#000;color:#fff;overflow-x:hidden;scroll-behavior:smooth;}
-.bg-video{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-3;opacity:0.25;}
-.bg-animated{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(-45deg,#0a0f2c,#0d1b42,#111827,#1e3a8a);background-size:400% 400%;animation:gradientShift 30s ease infinite;z-index:-4;}
-@keyframes gradientShift{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
-#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2;pointer-events:none;}
-.gradient-text{background:linear-gradient(90deg,#60a5fa,#38bdf8,#3b82f6);background-size:200% auto;color:transparent;background-clip:text;-webkit-background-clip:text;animation:shimmer 5s linear infinite;}
-@keyframes shimmer{to{background-position:200% center;}}
-.typing::after{content:"|";animation:blink 1s infinite;}
-@keyframes blink{50%{opacity:0;}}
-.call-button{position:relative;overflow:hidden;animation:float 3s ease-in-out infinite;transition:transform 0.3s ease,box-shadow 0.3s ease;cursor:pointer;display:inline-flex;align-items:center;font-weight:bold;}
-.call-button::before{content:"";position:absolute;top:50%;left:50%;width:200%;height:200%;background:radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%);transform:translate(-50%,-50%);border-radius:50%;animation:pulse 3s infinite;z-index:-1;}
-.call-button:hover{transform:scale(1.15);box-shadow:0 0 30px rgba(37,99,235,0.8);animation:float 2.5s ease-in-out infinite,glow 1.5s ease-in-out infinite alternate;}
-@keyframes glow{0%{box-shadow:0 0 20px rgba(37,99,235,0.5);}100%{box-shadow:0 0 35px rgba(37,99,235,0.9);}}
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
-.shine{position:absolute;top:0;left:-75%;width:50%;height:100%;background:linear-gradient(120deg, rgba(255,255,255,0.2), rgba(255,255,255,0.6), rgba(255,255,255,0.2));transform:skewX(-25deg);pointer-events:none;animation:shineAnim 2s infinite;}
-@keyframes shineAnim{0%{left:-75%;}100%{left:125%;}}
-.glass{background: rgba(255,255,255,0.05);backdrop-filter: blur(10px);border:1px solid rgba(255,255,255,0.1);transform-style: preserve-3d;transition: transform 0.4s ease;}
-.glass:hover{transform: rotate3d(1,1,0,8deg) scale(1.03);}
-.timeline{display:flex;justify-content:center;overflow-x:auto;padding:2rem 0;scroll-snap-type:x mandatory;gap:2rem;}
-.timeline-step{flex:0 0 250px;scroll-snap-align:start;background:rgba(255,255,255,0.05);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);border-radius:1rem;padding:1.5rem;text-align:center;transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.3s ease;transform: translateY(30px);opacity:0;}
-.timeline-step:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(37,99,235,0.5);}
-.timeline-step-icon{font-size:2rem;margin-bottom:1rem;color:#60a5fa;}
-.counter{font-size:2rem;font-weight:bold;color:#60a5fa;}
-section{opacity:0;transform:translateY(20px);transition: all 0.8s ease;}
-section.visible{opacity:1;transform:translateY(0);}
-#demo-section{background: linear-gradient(180deg, #1e0033,#0a001a,#000814); padding:8rem 1rem; text-align:center;}
+body {font-family:'Inter',sans-serif; background:#000; color:#fff; overflow-x:hidden; scroll-behavior:smooth;}
+.bg-video {position:fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:-3; opacity:0.25;}
+.bg-animated {position:fixed; top:0; left:0; width:100%; height:100%; background: linear-gradient(-45deg,#0a0f2c,#0d1b42,#111827,#1e3a8a); background-size:400% 400%; animation:gradientShift 30s ease infinite; z-index:-4;}
+@keyframes gradientShift {0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+#particles {position: fixed; top:0; left:0; width:100%; height:100%; z-index:-2; pointer-events:none;}
+.gradient-text {background:linear-gradient(90deg,#60a5fa,#38bdf8,#3b82f6); background-size:200% auto; color:transparent; background-clip:text; -webkit-background-clip:text; animation:shimmer 5s linear infinite;}
+@keyframes shimmer {to{background-position:200% center;}}
+.typing::after { content:"|"; animation: blink 1s infinite; }
+@keyframes blink {50%{opacity:0;}}
+.call-button {position: relative; overflow:hidden; animation: float 3s ease-in-out infinite; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor:pointer; display:inline-flex; align-items:center;}
+.call-button::before {content:""; position:absolute; top:50%; left:50%; width:200%; height:200%; background:radial-gradient(circle, rgba(37,99,235,0.3) 20%, transparent 70%); transform:translate(-50%,-50%); border-radius:50%; animation:pulse 3s infinite; z-index:-1;}
+@keyframes pulse {0%{transform:translate(-50%,-50%) scale(0.8);opacity:0.6;}100%{transform:translate(-50%,-50%) scale(1.8);opacity:0;}}
+.call-button:hover {transform:scale(1.15); box-shadow:0 0 30px rgba(37,99,235,0.8); animation:float 2.5s ease-in-out infinite, glow 1.5s ease-in-out infinite alternate;}
+@keyframes glow {0%{box-shadow:0 0 20px rgba(37,99,235,0.5);}100%{box-shadow:0 0 35px rgba(37,99,235,0.9);}}
+@keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.shine {position:absolute; top:0; left:-75%; width:50%; height:100%; background: linear-gradient(120deg, rgba(255,255,255,0.2), rgba(255,255,255,0.6), rgba(255,255,255,0.2)); transform: skewX(-25deg); pointer-events:none; animation: shineAnim 2s infinite;}
+@keyframes shineAnim {0%{left:-75%;}100%{left:125%;}}
+.glass {background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border:1px solid rgba(255,255,255,0.1); transform-style: preserve-3d; transition: transform 0.4s ease;}
+.glass:hover {transform: rotate3d(1,1,0,8deg) scale(1.03);}
+.timeline {display:flex; justify-content:center; overflow-x:auto; padding:2rem 0; scroll-snap-type:x mandatory; gap:2rem;}
+.timeline-step {flex:0 0 250px; scroll-snap-align:start; background:rgba(255,255,255,0.05); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.1); border-radius:1rem; padding:1.5rem; text-align:center; transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.3s ease; transform: translateY(30px); opacity:0;}
+.timeline-step:hover {transform:scale(1.05); box-shadow:0 0 20px rgba(37,99,235,0.5);}
+.timeline-step-icon {font-size:2rem; margin-bottom:1rem; color:#60a5fa;}
+.counter {font-size:2rem; font-weight:bold; color:#60a5fa;}
+section {opacity:0; transform:translateY(20px); transition: all 0.8s ease;}
+section.visible {opacity:1; transform:translateY(0);}
+#demo-section {background: linear-gradient(180deg, #1e0033,#0a001a,#000814); padding:8rem 1rem; text-align:center;}
 </style>
 </head>
 <body>
+
 <div class="bg-animated"></div>
 <video autoplay muted loop class="bg-video">
   <source src="https://cdn.coverr.co/videos/coverr-digital-globe-network-3832/1080p.mp4" type="video/mp4">
@@ -70,19 +72,35 @@ section.visible{opacity:1;transform:translateY(0);}
 <section class="py-20">
 <h2 class="text-4xl font-bold text-center mb-10 gradient-text">How It Works</h2>
 <div class="timeline px-6">
-  <div class="timeline-step" data-aos="fade-up" data-aos-delay="100"><div class="timeline-step-icon">📞</div><h3 class="font-bold mb-2">Step 1</h3><p>Patient calls your clinic number.</p></div>
-  <div class="timeline-step" data-aos="fade-up" data-aos-delay="300"><div class="timeline-step-icon">🤖</div><h3 class="font-bold mb-2">Step 2</h3><p>AI receptionist answers instantly.</p></div>
-  <div class="timeline-step" data-aos="fade-up" data-aos-delay="500"><div class="timeline-step-icon">📅</div><h3 class="font-bold mb-2">Step 3</h3><p>Books appointment in your calendar.</p></div>
-  <div class="timeline-step" data-aos="fade-up" data-aos-delay="700"><div class="timeline-step-icon">✅</div><h3 class="font-bold mb-2">Step 4</h3><p>Patient receives confirmation.</p></div>
+  <div class="timeline-step" data-aos="fade-up" data-aos-delay="100">
+    <div class="timeline-step-icon">📞</div>
+    <h3 class="font-bold mb-2">Step 1</h3>
+    <p>Patient calls your clinic number.</p>
+  </div>
+  <div class="timeline-step" data-aos="fade-up" data-aos-delay="300">
+    <div class="timeline-step-icon">🤖</div>
+    <h3 class="font-bold mb-2">Step 2</h3>
+    <p>AI receptionist answers instantly.</p>
+  </div>
+  <div class="timeline-step" data-aos="fade-up" data-aos-delay="500">
+    <div class="timeline-step-icon">📅</div>
+    <h3 class="font-bold mb-2">Step 3</h3>
+    <p>Books appointment in your calendar.</p>
+  </div>
+  <div class="timeline-step" data-aos="fade-up" data-aos-delay="700">
+    <div class="timeline-step-icon">✅</div>
+    <h3 class="font-bold mb-2">Step 4</h3>
+    <p>Patient receives confirmation.</p>
+  </div>
 </div>
 </section>
 
 <section class="py-20 bg-black/70 text-center">
 <h2 class="text-4xl font-bold mb-12 gradient-text">Our Impact</h2>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
-  <div><div class="counter" data-target="1200">0</div><p class="text-gray-400 mt-2">Appointments Booked</p></div>
-  <div><div class="counter" data-target="3400">0</div><p class="text-gray-400 mt-2">Patient Calls Answered</p></div>
-  <div><div class="counter" data-target="850">0</div><p class="text-gray-400 mt-2">Hours Saved</p></div>
+  <div><div class="counter" id="counter1">0</div><p class="text-gray-400 mt-2">Appointments Booked</p></div>
+  <div><div class="counter" id="counter2">0</div><p class="text-gray-400 mt-2">Patient Calls Answered</p></div>
+  <div><div class="counter" id="counter3">0</div><p class="text-gray-400 mt-2">Hours Saved</p></div>
 </div>
 </section>
 
@@ -90,7 +108,7 @@ section.visible{opacity:1;transform:translateY(0);}
 <h2 class="text-4xl md:text-5xl font-bold mb-8 gradient-text">Try the Live Demo</h2>
 <p class="text-gray-400 mb-12 max-w-xl mx-auto">Experience the future of patient communication now. Click below to test our AI receptionist in action.</p>
 <div data-aos="zoom-in" data-aos-delay="200" style="position:relative; display:inline-block;">
-  <div id="demo-button" class="call-button bg-blue-900 text-white px-12 py-4 rounded-full text-xl font-bold">
+  <div id="demo-button" class="call-button bg-blue-900 text-white px-10 py-4 rounded-full text-2xl font-bold">
     <span style="margin-right:8px;">📞</span>Try Live Demo
     <div class="shine"></div>
   </div>
@@ -103,135 +121,142 @@ section.visible{opacity:1;transform:translateY(0);}
 <script>AOS.init();</script>
 
 <script>
-// Fade-in sections
 const sections=document.querySelectorAll("section");
-const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add("visible");});},{threshold:0.2});
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting) entry.target.classList.add("visible");
+  });
+},{threshold:0.2});
 sections.forEach(sec=>observer.observe(sec));
-
-// Counters animate on visibility
-const counters=document.querySelectorAll(".counter");
-const counterObserver=new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-        if(entry.isIntersecting && !entry.target.dataset.animated){
-            entry.target.dataset.animated=true;
-            const final=parseInt(entry.target.dataset.target);
-            let count=0;
-            const interval=setInterval(()=>{
-                count+=Math.ceil(final/200);
-                if(count>=final){count=final;clearInterval(interval);}
-                entry.target.textContent=count;
-            },20);
-        }
-    });
-},{threshold:0.5});
-counters.forEach(c=>counterObserver.observe(c));
 </script>
 
 <script>
-// Particles
+function animateCounter(id,target){
+  const el=document.getElementById(id);
+  let counted=false;
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting && !counted){
+        counted=true;
+        let count=0;
+        const step=target/200;
+        const interval=setInterval(()=>{
+          count+=step;
+          if(count>=target){count=target; clearInterval(interval);}
+          el.textContent=Math.floor(count);
+        },20);
+      }
+    });
+  },{threshold:0.5});
+  observer.observe(el);
+}
+animateCounter("counter1",1200);
+animateCounter("counter2",3400);
+animateCounter("counter3",850);
+</script>
+
+<script>
 const canvas=document.getElementById("particles");
 const ctx=canvas.getContext("2d");
 let width,height;
 let particles=[];
 const icons=["🦷","💉","🔬","🏥"];
+const mouse={x:0,y:0};
+
 function resize(){width=canvas.width=window.innerWidth;height=canvas.height=window.innerHeight;}
-window.addEventListener("resize",resize);resize();
+window.addEventListener("resize",resize);
+resize();
+
+document.addEventListener("mousemove", e=>{mouse.x=e.clientX; mouse.y=e.clientY;});
 
 class Particle{
-    constructor(isIcon=false){
-        this.reset(isIcon);
+  constructor(isIcon){
+    this.isIcon=isIcon;
+    this.reset();
+  }
+  reset(){
+    this.x=Math.random()*width;
+    this.y=height + Math.random()*50;
+    this.vx=(Math.random()-0.5)*0.5;
+    this.vy=0.5 + Math.random()*1.5;
+    this.size=this.isIcon ? 20+Math.random()*12 : Math.random()*3+1;
+    this.opacity=0;
+    this.icon=this.isIcon ? icons[Math.floor(Math.random()*icons.length)] : null;
+    this.angle=Math.random()*Math.PI*2;
+    this.fadeIn=0.01+Math.random()*0.02;
+  }
+  update(){
+    // repel from mouse
+    const dx=this.x - mouse.x;
+    const dy=this.y - mouse.y;
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<50){this.vx+=dx*0.01; this.vy+=dy*0.01;}
+    
+    this.x+=this.vx;
+    this.y-=this.vy;
+    if(this.opacity<1) this.opacity+=this.fadeIn;
+    if(this.y+this.size<0 || this.opacity<=0) this.reset();
+    // fade out at top
+    this.opacity=Math.max(0, Math.min(1, 1 - this.y/height));
+  }
+  draw(){
+    ctx.save();
+    ctx.translate(this.x,this.y);
+    ctx.globalAlpha=this.opacity;
+    if(this.isIcon && this.icon){
+      ctx.rotate(this.angle);
+      ctx.font=`${this.size}px Arial`;
+      ctx.fillText(this.icon,-this.size/2,this.size/2);
+      this.angle+=0.01;
+    } else {
+      ctx.beginPath();
+      ctx.arc(0,0,this.size,0,Math.PI*2);
+      ctx.fillStyle="rgba(37,99,235,0.5)";
+      ctx.fill();
     }
-    reset(isIcon){
-        this.x=Math.random()*width;
-        this.y=height+Math.random()*50;
-        this.vx=(Math.random()-0.5)*0.5;
-        this.vy=0.5+Math.random()*1.5;
-        this.size=isIcon?20+Math.random()*12:Math.random()*3+1;
-        this.opacity=0;
-        this.fadeInSpeed=0.01+Math.random()*0.02;
-        this.icon=isIcon?icons[Math.floor(Math.random()*icons.length)]:null;
-        this.isIcon=isIcon;
-        this.angle=Math.random()*Math.PI*2;
-    }
-    draw(){
-        ctx.save();
-        ctx.translate(this.x,this.y);
-        ctx.globalAlpha=this.opacity;
-        if(this.isIcon && this.icon){
-            ctx.rotate(this.angle);
-            ctx.font=`${this.size}px Arial`;
-            ctx.fillStyle="#60a5fa";
-            ctx.fillText(this.icon,-this.size/2,this.size/2);
-            this.angle+=0.01;
-        } else {
-            ctx.beginPath();
-            ctx.arc(0,0,this.size,0,Math.PI*2);
-            ctx.fillStyle="rgba(37,99,235,0.5)";
-            ctx.fill();
-        }
-        ctx.restore();
-    }
-    update(mouse){
-        this.x+=this.vx;
-        this.y-=this.vy;
-        this.opacity-=0.002; // postupne mizne
-        if(this.opacity<0)this.opacity=0;
-        if(mouse){
-            let dx=this.x-mouse.x;
-            let dy=this.y-mouse.y;
-            let dist=Math.sqrt(dx*dx+dy*dy);
-            if(dist<80){
-                this.x+=dx/dist*2;
-                this.y+=dy/dist*2;
-            }
-        }
-        if(this.y+this.size<0 || this.opacity<=0) this.reset(this.isIcon);
-    }
+    ctx.restore();
+  }
 }
 
-function spawnParticles(){
-    if(Math.random()<0.05)particles.push(new Particle(true));
-    if(Math.random()<0.2)particles.push(new Particle(false));
+function initParticles(){
+  particles=[];
+  for(let i=0;i<50;i++) particles.push(new Particle(true));
+  for(let i=0;i<100;i++) particles.push(new Particle(false));
 }
-
-let mouse=null;
-canvas.addEventListener("mousemove",(e)=>{mouse={x:e.clientX,y:e.clientY};});
-canvas.addEventListener("mouseleave",()=>{mouse=null;});
 
 function animate(){
-    ctx.clearRect(0,0,width,height);
-    spawnParticles();
-    particles.forEach(p=>p.update(mouse));
-    particles.forEach(p=>p.draw());
-    requestAnimationFrame(animate);
+  ctx.clearRect(0,0,width,height);
+  particles.forEach(p=>{p.update(); p.draw();});
+  requestAnimationFrame(animate);
 }
 
+initParticles();
 animate();
 </script>
 
 <script>
-// VAPI Widget
 var vapiInstance=null;
 const assistant="a62ccb25-e09e-474a-832c-b21b045bcca2";
 const apiKey="ebb2b07d-b81f-43b3-9503-e8523797683d";
 (function(d,t){
-    var g=document.createElement(t),s=d.getElementsByTagName(t)[0];
-    g.src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
-    g.defer=true; g.async=true;
-    s.parentNode.insertBefore(g,s);
-    g.onload=function(){
-        vapiInstance=window.vapiSDK.run({
-            apiKey:apiKey,
-            assistant:assistant,
-            config:{button:{icon:"phone",position:"center",color:"#1E40AF"}} // MODRÁ
-        });
-    };
+  var g=document.createElement(t), s=d.getElementsByTagName(t)[0];
+  g.src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+  g.defer=true; g.async=true;
+  s.parentNode.insertBefore(g,s);
+  g.onload=function(){
+    vapiInstance=window.vapiSDK.run({
+      apiKey:apiKey,
+      assistant:assistant,
+      config:{button:{icon:"phone",position:"center",color:"#1E40AF"}} // modrá farba
+    });
+  };
 })(document,"script");
 </script>
 
 <script>
-// Scroll Try Demo to top
-document.getElementById("demo-button").addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"});});
+document.getElementById("demo-button").addEventListener("click",()=>{
+  window.scrollTo({top:0, behavior:"smooth"});
+});
 </script>
 </body>
 </html>
