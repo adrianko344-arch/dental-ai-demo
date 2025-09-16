@@ -17,7 +17,7 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: #000;
+      background: #000; 
       color: #fff;
       overflow-x: hidden;
       scroll-behavior: smooth;
@@ -25,16 +25,14 @@
 
     /* Background video & animated gradient overlay */
     .bg-video {
-      position: fixed;
-      top: 0; left: 0;
+      position: fixed; top: 0; left: 0;
       width: 100%; height: 100%;
       object-fit: cover;
       z-index: -3;
       opacity: 0.25;
     }
     .bg-animated {
-      position: fixed;
-      top: 0; left: 0;
+      position: fixed; top: 0; left: 0;
       width: 100%; height: 100%;
       background: linear-gradient(-45deg, #0a0f2c, #0d1b42, #111827, #1e3a8a);
       background-size: 400% 400%;
@@ -45,6 +43,15 @@
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
+    }
+
+    /* Particle canvas */
+    #particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -2;
+      pointer-events: none;
     }
 
     /* Gradient shimmer text */
@@ -68,6 +75,7 @@
       animation: float 3s ease-in-out infinite;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
+      display: inline-block;
     }
     @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
     .call-button::before {
@@ -140,9 +148,11 @@
     section { opacity: 0; transform: translateY(20px); transition: all 0.8s ease; }
     section.visible { opacity: 1; transform: translateY(0); }
 
-    /* Try Live Demo section background */
-    .demo-section {
-      background: linear-gradient(180deg, #1f0533, #2a0948, #111827);
+    /* Try Live Demo section gradient background */
+    #demo-section {
+      background: linear-gradient(180deg, #1e0033, #0a001a, #000814);
+      padding: 8rem 1rem;
+      text-align: center;
     }
   </style>
 </head>
@@ -169,7 +179,6 @@
     <p class="mt-6 text-sm text-gray-500" data-aos="fade-up" data-aos-delay="900">
       Click the phone icon below to experience the future firsthand.
     </p>
-    <div id="vapi-button" class="absolute top-4 right-6"></div>
   </section>
 
   <!-- Features -->
@@ -222,26 +231,26 @@
     <h2 class="text-4xl font-bold mb-12 gradient-text">Our Impact</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
       <div>
-        <div class="counter" data-target="1200">0</div>
+        <div class="counter" id="counter1">0</div>
         <p class="text-gray-400 mt-2">Appointments Booked</p>
       </div>
       <div>
-        <div class="counter" data-target="3400">0</div>
+        <div class="counter" id="counter2">0</div>
         <p class="text-gray-400 mt-2">Patient Calls Answered</p>
       </div>
       <div>
-        <div class="counter" data-target="850">0</div>
+        <div class="counter" id="counter3">0</div>
         <p class="text-gray-400 mt-2">Hours Saved</p>
       </div>
     </div>
   </section>
 
   <!-- Try Live Demo -->
-  <section class="py-20 text-center demo-section relative">
+  <section id="demo-section">
     <h2 class="text-4xl md:text-5xl font-bold mb-8 gradient-text">Try the Live Demo</h2>
     <p class="text-gray-400 mb-12 max-w-xl mx-auto">Experience the future of patient communication now. Click below to test our AI receptionist in action.</p>
     <div data-aos="zoom-in" data-aos-delay="200">
-      <div id="try-demo" class="call-button bg-blue-600 hover:bg-blue-700 text-white px-10 py-5 rounded-full text-2xl font-bold inline-block">
+      <div id="scroll-demo-btn" class="call-button bg-blue-600 hover:bg-blue-700 text-white px-12 py-6 rounded-full text-2xl font-bold">
         📞 Try Live Demo
       </div>
     </div>
@@ -252,7 +261,7 @@
     © 2025 ScaleEasy. All rights reserved.
   </footer>
 
-  <!-- Scripts -->
+  <!-- AOS -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>AOS.init();</script>
 
@@ -267,21 +276,23 @@
     sections.forEach(sec => observer.observe(sec));
   </script>
 
-  <!-- Counters animation sequential -->
+  <!-- Counters -->
   <script>
-    const counters = document.querySelectorAll(".counter");
-    counters.forEach((counter, index) => {
-      let target = +counter.dataset.target;
-      let count = 0;
-      const step = target / 200;
+    function animateCounter(id, target, delay = 0) {
       setTimeout(() => {
+        const el = document.getElementById(id);
+        let count = 0;
+        const step = target / 200;
         const interval = setInterval(() => {
           count += step;
           if (count >= target) { count = target; clearInterval(interval); }
-          counter.textContent = Math.floor(count);
+          el.textContent = Math.floor(count);
         }, 20);
-      }, index * 400);
-    });
+      }, delay);
+    }
+    animateCounter("counter1", 1200, 0);
+    animateCounter("counter2", 3400, 300);
+    animateCounter("counter3", 850, 600);
   </script>
 
   <!-- Particle background -->
@@ -290,99 +301,75 @@
     const ctx = canvas.getContext("2d");
     let particles = [];
     let width, height;
-    const icons = ["🦷", "💉", "🔬", "🏥"];
-
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
+    const icons = ["🦷", "💉", "🔬", "🏥"]; // removed bacteria
+    function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
     window.addEventListener("resize", resize);
     resize();
 
     class Particle {
       constructor() {
-        this.x = Math.random() * width;
-        this.y = height + Math.random() * 100;
-        this.vy = - (Math.random() * 0.7 + 0.2);
-        this.vx = (Math.random() - 0.5) * 0.3;
-        this.size = Math.random() * 24 + 8;
-        this.icon = icons[Math.floor(Math.random() * icons.length)];
-        this.opacity = Math.random() * 0.5 + 0.5;
-        this.glow = Math.random() * 0.8 + 0.3;
-        this.angle = Math.random() * Math.PI * 2;
+        this.x = Math.random()*width;
+        this.y = height + Math.random()*100; // start slightly below
+        this.vx = (Math.random()-0.5)*0.5;
+        this.vy = -(Math.random()*1+0.3); // float upwards
+        this.size = Math.random()*10 + 4;
+        this.icon = icons[Math.floor(Math.random()*icons.length)];
+        this.angle = Math.random()*Math.PI*2;
+        this.opacity = 1;
+        this.glow = Math.random()*0.4 + 0.3;
       }
       draw() {
         ctx.save();
+        ctx.globalAlpha = this.opacity;
         ctx.translate(this.x, this.y);
         ctx.rotate(this.angle);
-        ctx.globalAlpha = this.opacity;
-        ctx.shadowColor = "rgba(96,165,250," + this.glow + ")";
-        ctx.shadowBlur = 15;
         ctx.font = `${this.size}px Arial`;
+        ctx.fillStyle = `rgba(96,165,250,${this.glow})`;
         ctx.fillText(this.icon, -this.size/2, this.size/2);
         ctx.restore();
       }
       update() {
-        this.y += this.vy;
         this.x += this.vx;
+        this.y += this.vy;
         this.angle += 0.01;
         this.opacity -= 0.002;
-        if (this.y < -50 || this.opacity <= 0) {
-          this.x = Math.random() * width;
-          this.y = height + Math.random() * 50;
-          this.vy = - (Math.random() * 0.7 + 0.2);
-          this.vx = (Math.random() - 0.5) * 0.3;
-          this.size = Math.random() * 24 + 8;
-          this.opacity = Math.random() * 0.5 + 0.5;
-          this.glow = Math.random() * 0.8 + 0.3;
-          this.angle = Math.random() * Math.PI * 2;
-        }
+        if(this.opacity <=0) { this.y = height + Math.random()*50; this.x = Math.random()*width; this.opacity=1; this.size=Math.random()*10+4; }
       }
     }
 
-    function initParticles() {
-      particles = [];
-      for (let i=0; i<40; i++) {
-        particles.push(new Particle());
-      }
-    }
-
-    function animate() {
-      ctx.clearRect(0,0,width,height);
-      particles.forEach(p => { p.update(); p.draw(); });
-      requestAnimationFrame(animate);
-    }
-
+    function initParticles() { particles = []; for(let i=0;i<50;i++) particles.push(new Particle()); }
+    function animateParticles() { ctx.clearRect(0,0,width,height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animateParticles); }
     initParticles();
-    animate();
+    animateParticles();
   </script>
 
-  <!-- VAPI Widget -->
+  <!-- VAPI Widget + scroll -->
   <script>
-    const vapiAssistantId = "a62ccb25-e09e-474a-832c-b21b045bcca2";
-    const vapiApiKey = "ebb2b07d-b81f-43b3-9503-e8523797683d";
+    const assistantId = "a62ccb25-e09e-474a-832c-b21b045bcca2";
+    const apiKey = "ebb2b07d-b81f-43b3-9503-e8523797683d";
 
-    (function(d,t){
+    var vapiInstance = null;
+    (function(d, t){
       var g = document.createElement(t), s = d.getElementsByTagName(t)[0];
       g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
-      g.defer = true; g.async = true;
-      s.parentNode.insertBefore(g,s);
+      g.defer=true; g.async=true; s.parentNode.insertBefore(g,s);
       g.onload = function(){
-        window.vapiInstance = window.vapiSDK.run({
-          apiKey: vapiApiKey,
-          assistant: vapiAssistantId,
-          config: { position: "right", button: { icon: "phone" } }
+        vapiInstance = window.vapiSDK.run({
+          apiKey: apiKey,
+          assistant: assistantId,
+          config: { position: "right", button: { icon:"phone" } }
         });
-      }
+      };
     })(document,"script");
 
-    // Scroll on Try Live Demo click
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("try-demo").addEventListener("click", () => {
-        const btn = document.querySelector("#vapi-button button") || document.querySelector(".vapi-button");
-        if(btn) btn.scrollIntoView({ behavior: "smooth", block: "center" });
-      });
+    // Scroll Try Live Demo button to phone icon
+    document.getElementById("scroll-demo-btn").addEventListener("click",()=>{
+      const phoneBtn = document.querySelector(".vapi-button");
+      if(phoneBtn){
+        phoneBtn.scrollIntoView({behavior:"smooth", block:"center"});
+      }
     });
   </script>
+
 </body>
 </html>
