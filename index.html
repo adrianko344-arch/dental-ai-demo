@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
 
   <style>
-    :root { --accent-blue: #1E40AF; } /* modrá farba pre widget + efekty */
+    :root { --accent-blue: #1E40AF; }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -64,10 +64,15 @@
     @keyframes shimmer { to { background-position: 200% center; } }
 
     /* Typing effect */
-    .typing::after { content: "|"; animation: blink 1s infinite; }
-    @keyframes blink { 50% { opacity: 0; } }
+    .typing::after {
+      content: "|";
+      display: inline-block;
+      margin-left: 2px;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink { 0%,50%,100%{opacity:1} 25%,75%{opacity:0} }
 
-    /* Call button (Try Live Demo) */
+    /* Call button */
     .call-button {
       position: relative;
       overflow: hidden;
@@ -169,9 +174,7 @@
     <h1 class="text-5xl md:text-7xl font-black gradient-text mb-6" data-aos="fade-down" data-aos-delay="100">
       Meet Your New 24/7 <br> AI Receptionist
     </h1>
-    <p id="animated-typing" class="typing text-xl md:text-2xl text-gray-200" data-aos="fade-up" data-aos-delay="400">
-  Booking patients even while you sleep
-</p>
+    <p id="animated-typing" class="typing text-xl md:text-2xl text-gray-200" data-aos="fade-up" data-aos-delay="400"></p>
     <p class="mt-6 text-gray-400 max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="700">
       Our intelligent assistant works for you 24/7. Save time and never miss a patient call again.
     </p>
@@ -307,7 +310,7 @@
     counters.forEach(c => counterObserver.observe(c));
   </script>
 
-  <!-- Particles canvas script (continuous, bottom->top, fade out at top, repel from mouse, random spawn waves) -->
+  <!-- Particles canvas script -->
   <script>
     (function(){
       const canvas = document.getElementById('particles');
@@ -315,69 +318,52 @@
       let W = canvas.width = window.innerWidth;
       let H = canvas.height = window.innerHeight;
 
-      const ICONS = ['🦷','🪥','😁','🔬','🏥']; // dental-friendly icons (no bacteria)
+      const ICONS = ['🦷','🪥','😁','🔬','🏥'];
       const particles = [];
       const MAX_PARTICLES = 220;
       const mouse = { x: -9999, y: -9999 };
 
       window.addEventListener('resize', ()=>{ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; });
-
-      // track mouse for repel
       window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
       window.addEventListener('mouseleave', ()=>{ mouse.x = -9999; mouse.y = -9999; });
 
       class P {
-        constructor(isIcon){
-          this.reset(isIcon);
-        }
+        constructor(isIcon){ this.reset(isIcon); }
         reset(isIcon){
           this.isIcon = !!isIcon;
           this.x = Math.random() * W;
           this.y = H + (Math.random() * 60);
           this.vx = (Math.random() - 0.5) * (this.isIcon ? 0.8 : 0.6);
-          this.vy = 0.6 + Math.random() * (this.isIcon ? 2.2 : 1.2); // icons can be faster
+          this.vy = 0.6 + Math.random() * (this.isIcon ? 2.2 : 1.2);
           this.baseSize = this.isIcon ? 18 + Math.random() * 22 : 1 + Math.random() * 3;
           this.size = this.baseSize;
           this.icon = this.isIcon ? ICONS[Math.floor(Math.random()*ICONS.length)] : null;
           this.angle = Math.random() * Math.PI * 2;
           this.spin = (Math.random() - 0.5) * 0.02;
-          this.alpha = 1; // start opaque at bottom
+          this.alpha = 1;
           this.seed = Math.random() * 1000;
           this.spawnTime = performance.now();
         }
         update(dt){
-          // repel from mouse
           const dx = this.x - mouse.x;
           const dy = this.y - mouse.y;
           const dist = Math.sqrt(dx*dx + dy*dy);
           if (dist < 90){
             const force = (90 - dist) / 90 * 2.2;
-            // push away
             this.vx += (dx/dist) * force * 0.08;
             this.vy += (dy/dist) * force * 0.02;
           }
 
-          // natural movement
           this.x += this.vx;
-          this.y -= this.vy; // going upwards
-
-          // gentle horizontal drift damping
+          this.y -= this.vy;
           this.vx *= 0.995;
-
-          // rotation
           this.angle += this.spin;
-
-          // size pulse (subtle)
           const t = (performance.now() - this.spawnTime) * 0.002;
           this.size = this.baseSize * (1 + Math.sin(t + this.seed) * 0.05);
-
-          // opacity decreases as y approaches top (y/H), clamp between 0..1
           this.alpha = Math.max(0, Math.min(1, this.y / H));
 
-          // recycle when completely off-top or alpha very small
           if (this.y + this.size < -20 || this.alpha <= 0.02 || this.x < -100 || this.x > W + 100) {
             this.reset(this.isIcon);
-            // keep them starting near bottom again
             this.y = H + Math.random() * 120;
           }
         }
@@ -390,11 +376,9 @@
             ctx.font = `${Math.round(this.size)}px serif`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            // slight glow for icons
             ctx.fillStyle = "rgba(255,255,255,0.9)";
             ctx.fillText(this.icon, 0, 0);
           } else {
-            // small dot
             ctx.beginPath();
             ctx.arc(this.x, this.y, Math.max(0.6, this.size), 0, Math.PI*2);
             ctx.fillStyle = `rgba(30,64,175,${0.5 * this.alpha})`;
@@ -404,10 +388,7 @@
         }
       }
 
-      // spawn waves randomly and continuously
       function spawnWave(){
-        // spawn a random count of icons and dots with randomness
-        const iconChance = 0.25;
         const iconCount = Math.random() < 0.5 ? 1 : Math.floor(1 + Math.random()*3);
         for (let i = 0; i < iconCount; i++){
           if (particles.length < MAX_PARTICLES) particles.push(new P(true));
@@ -418,34 +399,26 @@
         }
       }
 
-      // schedule waves at irregular intervals to avoid "all at once"
       (function scheduleSpawn(){
         spawnWave();
-        // next wave in 200ms..1200ms
         const next = 200 + Math.random()*1000;
         setTimeout(scheduleSpawn, next);
       })();
 
-      // main loop
       function loop(){
         ctx.clearRect(0,0,W,H);
-        const now = performance.now();
         for (let i = 0; i < particles.length; i++){
           const p = particles[i];
           p.update();
           p.draw(ctx);
         }
-
-        // keep array from growing too much
         if (particles.length > MAX_PARTICLES) particles.splice(0, particles.length - MAX_PARTICLES);
-
         requestAnimationFrame(loop);
       }
 
-      // init with some steady particles so page doesn't look empty
       for (let i=0;i<60;i++){
         particles.push(new P(Math.random() < 0.28));
-        particles[i].y = H - Math.random() * 220; // some already in flight
+        particles[i].y = H - Math.random() * 220;
       }
       loop();
     })();
@@ -461,89 +434,71 @@
       g.src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
       g.defer=true; g.async=true; s.parentNode.insertBefore(g,s);
       g.onload=function(){
-        // configure button color to blue (#1E40AF)
         try {
           vapiInstance = window.vapiSDK.run({
             apiKey: apiKey,
             assistant: assistant,
             config: {
-              button: {
-                position: "right", // floating on the right, color set via idle
-                idle: { color: "#1E40AF", backgroundColor: "#ffffff" }
-              }
+              button: { position: "right", idle: { color: "#1E40AF", backgroundColor: "#ffffff" } }
             }
           });
-        } catch(e){
-          console.warn("VAPI init failed:", e);
-        }
+        } catch(e){ console.warn("VAPI init failed:", e); }
       };
     })(document,"script");
   </script>
 
-  <!-- Try Live Demo button: scroll to top + open widget (if available) -->
+  <!-- Try Live Demo button -->
   <script>
     document.getElementById('demo-button').addEventListener('click', () => {
-      // scroll to very top
       window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      // try to open the vapi widget once loaded
       setTimeout(() => {
         try {
-          if (vapiInstance && typeof vapiInstance.open === 'function') {
-            vapiInstance.open();
-          } else if (window.vapi && typeof window.vapi.open === 'function') {
-            window.vapi.open();
-          } else if (window.vapiSDK && window.vapiSDK.open) {
-            window.vapiSDK.open && window.vapiSDK.open();
-          }
-        } catch (e) {
-          // ignore if not ready
-        }
-      }, 420); // small delay to allow scroll; still immediate action on click
+          if (vapiInstance && typeof vapiInstance.open === 'function') vapiInstance.open();
+          else if (window.vapi && typeof window.vapi.open === 'function') window.vapi.open();
+          else if (window.vapiSDK && window.vapiSDK.open) window.vapiSDK.open && window.vapiSDK.open();
+        } catch (e) {}
+      }, 420);
     });
   </script>
+
+  <!-- Typing effect -->
   <script>
-  const typingElement = document.getElementById('animated-typing');
-  const sentences = [
-    "Booking patients even while you sleep",
-    "Never miss a patient call again",
-    "Your clinic works 24/7 automatically",
-    "Appointments booked without lifting a finger"
-  ];
+    const typingElement = document.getElementById('animated-typing');
+    const sentences = [
+      "Booking patients even while you sleep",
+      "Never miss a patient call again",
+      "Your clinic works 24/7 automatically",
+      "Appointments booked without lifting a finger"
+    ];
 
-  let currentSentence = 0;
-  let charIndex = 0;
-  let deleting = false;
-  const typingSpeed = 60;
-  const deletingSpeed = 40;
-  const pauseTime = 1500;
+    let currentSentence = 0;
+    let charIndex = 0;
+    let deleting = false;
+    const typingSpeed = 60;
+    const deletingSpeed = 40;
+    const pauseTime = 1500;
 
-  function type() {
-    const sentence = sentences[currentSentence];
-    if (!deleting) {
-      typingElement.textContent = sentence.substring(0, charIndex + 1);
-      charIndex++;
-      if (charIndex === sentence.length) {
-        deleting = true;
-        setTimeout(type, pauseTime);
+    function type() {
+      const sentence = sentences[currentSentence];
+      if (!deleting) {
+        typingElement.textContent = sentence.substring(0, charIndex + 1);
+        charIndex++;
+        if (charIndex === sentence.length) {
+          deleting = true;
+          setTimeout(type, pauseTime);
+        } else { setTimeout(type, typingSpeed); }
       } else {
-        setTimeout(type, typingSpeed);
-      }
-    } else {
-      typingElement.textContent = sentence.substring(0, charIndex - 1);
-      charIndex--;
-      if (charIndex === 0) {
-        deleting = false;
-        currentSentence = (currentSentence + 1) % sentences.length;
-        setTimeout(type, typingSpeed);
-      } else {
-        setTimeout(type, deletingSpeed);
+        typingElement.textContent = sentence.substring(0, charIndex - 1);
+        charIndex--;
+        if (charIndex === 0) {
+          deleting = false;
+          currentSentence = (currentSentence + 1) % sentences.length;
+          setTimeout(type, typingSpeed);
+        } else { setTimeout(type, deletingSpeed); }
       }
     }
-  }
-
-  type();
-</script>
+    type();
+  </script>
 
 </body>
 </html>
