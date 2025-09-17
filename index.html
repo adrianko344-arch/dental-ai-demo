@@ -26,22 +26,48 @@
     }
 
     /* Background video & animated gradient */
-    .bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -3; opacity: 0.25; }
-    .bg-animated { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(-45deg, #0a0f2c, #0d1b42, #111827, #1e3a8a); background-size: 400% 400%; animation: gradientShift 30s ease infinite; z-index: -4; }
+    .bg-video {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: -3;
+      opacity: 0.25;
+    }
+    .bg-animated {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(-45deg, #0a0f2c, #0d1b42, #111827, #1e3a8a);
+      background-size: 400% 400%;
+      animation: gradientShift 30s ease infinite;
+      z-index: -4;
+    }
     @keyframes gradientShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
 
     /* Particle canvas */
-    #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; }
+    #particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -2;
+      pointer-events: none;
+    }
 
     /* Gradient shimmer text */
-    .gradient-text { background: linear-gradient(90deg, #60a5fa, #38bdf8, #3b82f6); background-size: 200% auto; color: transparent; background-clip: text; -webkit-background-clip: text; animation: shimmer 5s linear infinite; }
+    .gradient-text {
+      background: linear-gradient(90deg, #60a5fa, #38bdf8, #3b82f6);
+      background-size: 200% auto;
+      color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
+      animation: shimmer 5s linear infinite;
+    }
     @keyframes shimmer { to { background-position: 200% center; } }
 
     /* Typing effect */
     .typing::after { content: "|"; animation: blink 1s infinite; }
     @keyframes blink { 50% { opacity: 0; } }
 
-    /* Call button (Try Live Demo) */
+    /* Call button */
     .call-button {
       position: relative;
       overflow: hidden;
@@ -53,20 +79,62 @@
       gap: 10px;
     }
     @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-    .call-button::before { content: ""; position: absolute; top: 50%; left: 50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(30,64,175,0.22) 20%, transparent 70%); transform: translate(-50%,-50%); border-radius: 50%; animation: pulse 3s infinite; z-index: -1; }
+    .call-button::before {
+      content: "";
+      position: absolute; top: 50%; left: 50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle, rgba(30,64,175,0.22) 20%, transparent 70%);
+      transform: translate(-50%,-50%);
+      border-radius: 50%;
+      animation: pulse 3s infinite;
+      z-index: -1;
+    }
     @keyframes pulse { 0%{transform:translate(-50%,-50%) scale(0.8); opacity:0.5} 100%{transform:translate(-50%,-50%) scale(1.8); opacity:0} }
-    .shine { position: absolute; top: 0; left: -80%; width: 50%; height: 100%; background: linear-gradient(120deg, rgba(255,255,255,0.08), rgba(255,255,255,0.28), rgba(255,255,255,0.08)); transform: skewX(-25deg); pointer-events: none; animation: shineMove 1.8s infinite; }
+    .shine {
+      position: absolute;
+      top: 0; left: -80%;
+      width: 50%; height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.08), rgba(255,255,255,0.28), rgba(255,255,255,0.08));
+      transform: skewX(-25deg);
+      pointer-events: none;
+      animation: shineMove 1.8s infinite;
+    }
     @keyframes shineMove { 0%{left:-80%} 100%{left:120%} }
     .call-button.small { padding: 10px 22px; font-size: 18px; border-radius: 999px; }
     .call-button .icon { font-size: 20px; }
 
     /* Glass cards */
-    .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); transform-style: preserve-3d; transition: transform 0.4s ease; }
+    .glass {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.08);
+      transform-style: preserve-3d;
+      transition: transform 0.4s ease;
+    }
     .glass:hover { transform: rotate3d(1,1,0,8deg) scale(1.03); }
 
     /* Timeline */
-    .timeline { display: flex; justify-content: center; overflow-x: auto; padding: 2rem 0; scroll-snap-type: x mandatory; gap: 2rem; }
-    .timeline-step { flex: 0 0 250px; scroll-snap-align: start; background: rgba(255,255,255,0.04); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1.5rem; text-align: center; transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.3s ease; transform: translateY(30px); opacity: 0; }
+    .timeline {
+      display: flex;
+      justify-content: center;
+      overflow-x: auto;
+      padding: 2rem 0;
+      scroll-snap-type: x mandatory;
+      gap: 2rem;
+    }
+    .timeline-step {
+      flex: 0 0 250px;
+      scroll-snap-align: start;
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.3s ease;
+      transform: translateY(30px);
+      opacity: 0;
+    }
     .timeline-step:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(30,64,175,0.45); }
     .timeline-step-icon { font-size: 2rem; margin-bottom: 1rem; color: #60a5fa; }
 
@@ -81,10 +149,6 @@
     #demo-section { background: linear-gradient(180deg, #1e0033, #0a001a, #000814); padding: 6rem 1rem; text-align:center; }
 
     footer { color: #9ca3af; }
-
-    /* Typing span cursor */
-    #animated-typing { display: inline-block; position: relative; }
-    #animated-typing #cursor { position: absolute; right: -2px; top: 0; font-weight: 900; }
   </style>
 </head>
 
@@ -102,8 +166,8 @@
     <h1 class="text-5xl md:text-7xl font-black gradient-text mb-6" data-aos="fade-down" data-aos-delay="100">
       Meet Your New 24/7 <br> AI Receptionist
     </h1>
-    <p id="animated-typing" class="text-xl md:text-2xl text-gray-200" data-aos="fade-up" data-aos-delay="400">
-      <span id="text"></span><span id="cursor">|</span>
+    <p id="animated-typing" class="typing text-xl md:text-2xl text-gray-200" data-aos="fade-up" data-aos-delay="400">
+      Booking patients even while you sleep
     </p>
     <p class="mt-6 text-gray-400 max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="700">
       Our intelligent assistant works for you 24/7. Save time and never miss a patient call again.
@@ -205,10 +269,14 @@
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>AOS.init({ duration: 900, once: true });</script>
 
-  <!-- Section observer & counters -->
+  <!-- Section visibility observer & counters -->
   <script>
     const sections = document.querySelectorAll('section');
-    const secObserver = new IntersectionObserver((entries)=> { entries.forEach(e=>{ if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.18 });
+    const secObserver = new IntersectionObserver((entries)=> {
+      entries.forEach(e=>{
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.18 });
     sections.forEach(s => secObserver.observe(s));
 
     const counters = document.querySelectorAll('.counter');
@@ -221,7 +289,12 @@
           const step = Math.max(1, Math.round(target / 120));
           const iv = setInterval(()=> {
             current += step;
-            if (current >= target) { entry.target.textContent = target; clearInterval(iv); } else { entry.target.textContent = current; }
+            if (current >= target) {
+              entry.target.textContent = target;
+              clearInterval(iv);
+            } else {
+              entry.target.textContent = current;
+            }
           }, 18);
         }
       });
@@ -231,74 +304,109 @@
 
   <!-- Particles script -->
   <script>
-    (function(){ const canvas = document.getElementById('particles'); const ctx = canvas.getContext('2d'); let W = canvas.width = window.innerWidth; let H = canvas.height = window.innerHeight;
-      const ICONS = ['🦷','🪥','😁','🔬','🏥']; const particles = []; const MAX_PARTICLES = 220; const mouse = { x: -9999, y: -9999 };
+    (function(){
+      const canvas = document.getElementById('particles');
+      const ctx = canvas.getContext('2d');
+      let W = canvas.width = window.innerWidth;
+      let H = canvas.height = window.innerHeight;
+
+      const ICONS = ['🦷','🪥','😁','🔬','🏥'];
+      const particles = [];
+      const MAX_PARTICLES = 220;
+      const mouse = { x: -9999, y: -9999 };
+
       window.addEventListener('resize', ()=>{ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; });
       window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
       window.addEventListener('mouseleave', ()=>{ mouse.x = -9999; mouse.y = -9999; });
 
-      class P { constructor(isIcon){ this.reset(isIcon); } reset(isIcon){ this.isIcon = !!isIcon; this.x = Math.random()*W; this.y = H+(Math.random()*60); this.vx=(Math.random()-0.5)*(this.isIcon?0.8:0.6); this.vy=0.6+Math.random()*(this.isIcon?2.2:1.2); this.baseSize=this.isIcon?18+Math.random()*22:1+Math.random()*3; this.size=this.baseSize; this.icon=this.isIcon?ICONS[Math.floor(Math.random()*ICONS.length)]:null; this.angle=Math.random()*Math.PI*2; this.spin=(Math.random()-0.5)*0.02; this.alpha=1; this.seed=Math.random()*1000; this.spawnTime=performance.now(); } update(){ const dx=this.x-mouse.x; const dy=this.y-mouse.y; const dist=Math.sqrt(dx*dx+dy*dy); if(dist<90){ const force=(90-dist)/90*2.2; this.vx+=(dx/dist)*force*0.08; this.vy+=(dy/dist)*force*0.02; } this.x+=this.vx; this.y-=this.vy; this.vx*=0.995; this.angle+=this.spin; const t=(performance.now()-this.spawnTime)*0.002; this.size=this.baseSize*(1+Math.sin(t+this.seed)*0.05); this.alpha=Math.max(0,Math.min(1,this.y/H)); if(this.y+this.size<-20||this.alpha<=0.02||this.x<-100||this.x>W+100){ this.reset(this.isIcon); this.y=H+Math.random()*120; } } draw(ctx){ ctx.save(); ctx.globalAlpha=this.alpha; if(this.isIcon&&this.icon){ ctx.translate(this.x,this.y); ctx.rotate(this.angle); ctx.font=`${Math.round(this.size)}px serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillStyle="rgba(255,255,255,0.9)"; ctx.fillText(this.icon,0,0); } else { ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fillStyle="rgba(255,255,255,0.05)"; ctx.fill(); } ctx.restore(); } }
-      for(let i=0;i<MAX_PARTICLES;i++){ particles.push(new P(Math.random()<0.15)); }
-      function anim(){ ctx.clearRect(0,0,W,H); particles.forEach(p=>{p.update();p.draw(ctx);}); requestAnimationFrame(anim); } anim();
+      class P {
+        constructor(isIcon){ this.reset(isIcon); }
+        reset(isIcon){
+          this.isIcon = !!isIcon;
+          this.x = Math.random() * W;
+          this.y = H + (Math.random() * 60);
+          this.vx = (Math.random() - 0.5) * (this.isIcon ? 0.8 : 0.6);
+          this.vy = 0.6 + Math.random() * (this.isIcon ? 2.2 : 1.2);
+          this.baseSize = this.isIcon ? 18 + Math.random() * 22 : 1 + Math.random() * 3;
+          this.size = this.baseSize;
+          this.icon = this.isIcon ? ICONS[Math.floor(Math.random()*ICONS.length)] : null;
+          this.angle = Math.random() * Math.PI * 2;
+          this.spin = (Math.random() - 0.5) * 0.02;
+          this.alpha = 1;
+          this.seed = Math.random() * 1000;
+          this.spawnTime = performance.now();
+        }
+        update(dt){
+          const dx = this.x - mouse.x;
+          const dy = this.y - mouse.y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 90){
+            const force = (90 - dist) / 90 * 2.2;
+            this.vx += (dx/dist) * force * 0.08;
+            this.vy += (dy/dist) * force * 0.02;
+          }
+
+          this.x += this.vx;
+          this.y -= this.vy;
+          this.vx *= 0.995;
+          this.angle += this.spin;
+
+          const t = (performance.now() - this.spawnTime) * 0.002;
+          this.size = this.baseSize * (1 + Math.sin(t + this.seed) * 0.05);
+
+          this.alpha = 1 - (H - this.y) / H;
+
+          if(this.y < -50 || this.x < -50 || this.x > W+50) this.reset(this.isIcon);
+        }
+        draw(ctx){
+          ctx.save();
+          ctx.globalAlpha = this.alpha;
+          ctx.translate(this.x,this.y);
+          ctx.rotate(this.angle);
+          if(this.isIcon){
+            ctx.font = `${this.size}px serif`;
+            ctx.fillText(this.icon,0,0);
+          } else {
+            ctx.fillStyle = `rgba(255,255,255,${0.18*Math.random()+0.05})`;
+            ctx.beginPath();
+            ctx.arc(0,0,this.size,0,Math.PI*2);
+            ctx.fill();
+          }
+          ctx.restore();
+        }
+      }
+
+      for(let i=0;i<MAX_PARTICLES;i++) particles.push(new P(Math.random()<0.14));
+
+      function anim(){
+        ctx.clearRect(0,0,W,H);
+        const dt = 0.016;
+        particles.forEach(p=>{p.update(dt);p.draw(ctx);});
+        requestAnimationFrame(anim);
+      }
+      anim();
     })();
   </script>
 
-  <!-- Typing effect with gradient per sentence + cursor pause -->
+  <!-- Typing animation -->
   <script>
-    const typingElement = document.getElementById('text');
-    const cursorEl = document.getElementById('cursor');
+    const phrases = ["Booking patients even while you sleep", "Never miss a call again", "Your 24/7 AI receptionist"];
+    const el = document.getElementById('animated-typing');
+    let i=0, j=0, forward=true;
 
-    const sentences = [
-      { text: "Booking patients even while you sleep", gradient: "linear-gradient(90deg, #60a5fa, #3b82f6)" },
-      { text: "Never miss a patient call again", gradient: "linear-gradient(90deg, #facc15, #f97316)" },
-      { text: "Your clinic works 24/7 automatically", gradient: "linear-gradient(90deg, #34d399, #059669)" },
-      { text: "Appointments booked without lifting a finger", gradient: "linear-gradient(90deg, #f472b6, #e11d48)" }
-    ];
-
-    let currentSentence = 0;
-    let charIndex = 0;
-    let deleting = false;
-    const typingSpeed = 60;
-    const deletingSpeed = 40;
-    const pauseTime = 1500;
-
-    let cursorVisible = true;
-    let cursorTimer;
-
-    function setCursor(visible) { cursorEl.style.opacity = visible ? 1 : 0; }
-
-    function startCursorBlink(pause=false){
-      clearInterval(cursorTimer);
-      if(pause){ setCursor(true); } 
-      else { cursorTimer = setInterval(()=>{ cursorVisible=!cursorVisible; setCursor(cursorVisible); },500); }
-    }
-
-    function type(){
-      const sentence = sentences[currentSentence].text;
-      const gradient = sentences[currentSentence].gradient;
-
-      typingElement.style.background = gradient;
-      typingElement.style.backgroundClip = "text";
-      typingElement.style.webkitBackgroundClip = "text";
-      typingElement.style.color = "transparent";
-
-      if(!deleting){
-        typingElement.textContent = sentence.substring(0,charIndex+1);
-        charIndex++;
-        if(charIndex===sentence.length){
-          startCursorBlink(true);
-          setTimeout(()=>{ deleting=true; startCursorBlink(false); type(); }, pauseTime);
-        } else { setTimeout(type, typingSpeed); }
+    function typeAnim(){
+      if(forward){
+        el.textContent = phrases[i].substring(0,j+1);
+        j++;
+        if(j===phrases[i].length){ forward=false; setTimeout(typeAnim,1500); return; }
       } else {
-        typingElement.textContent = sentence.substring(0,charIndex-1);
-        charIndex--;
-        if(charIndex===0){ deleting=false; currentSentence=(currentSentence+1)%sentences.length; setTimeout(type, typingSpeed); }
-        else { setTimeout(type, deletingSpeed); }
+        el.textContent = phrases[i].substring(0,j-1);
+        j--;
+        if(j===0){ forward=true; i=(i+1)%phrases.length; }
       }
+      setTimeout(typeAnim, forward?100:30);
     }
-
-    startCursorBlink(false);
-    type();
+    typeAnim();
   </script>
 
 </body>
