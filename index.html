@@ -169,9 +169,9 @@
     <h1 class="text-5xl md:text-7xl font-black gradient-text mb-6" data-aos="fade-down" data-aos-delay="100">
       Meet Your New 24/7 <br> AI Receptionist
     </h1>
-    <p class="typing text-xl md:text-2xl text-gray-200" data-aos="fade-up" data-aos-delay="400">
-      Booking patients even while you sleep
-    </p>
+    <p id="animated-typing" class="typing text-xl md:text-2xl text-gray-200" data-aos="fade-up" data-aos-delay="400">
+  Booking patients even while you sleep
+</p>
     <p class="mt-6 text-gray-400 max-w-xl mx-auto" data-aos="fade-up" data-aos-delay="700">
       Our intelligent assistant works for you 24/7. Save time and never miss a patient call again.
     </p>
@@ -502,6 +502,48 @@
       }, 420); // small delay to allow scroll; still immediate action on click
     });
   </script>
+  <script>
+  const typingElement = document.getElementById('animated-typing');
+  const sentences = [
+    "Booking patients even while you sleep",
+    "Never miss a patient call again",
+    "Your clinic works 24/7 automatically",
+    "Appointments booked without lifting a finger"
+  ];
+
+  let currentSentence = 0;
+  let charIndex = 0;
+  let deleting = false;
+  const typingSpeed = 60;
+  const deletingSpeed = 40;
+  const pauseTime = 1500;
+
+  function type() {
+    const sentence = sentences[currentSentence];
+    if (!deleting) {
+      typingElement.textContent = sentence.substring(0, charIndex + 1);
+      charIndex++;
+      if (charIndex === sentence.length) {
+        deleting = true;
+        setTimeout(type, pauseTime);
+      } else {
+        setTimeout(type, typingSpeed);
+      }
+    } else {
+      typingElement.textContent = sentence.substring(0, charIndex - 1);
+      charIndex--;
+      if (charIndex === 0) {
+        deleting = false;
+        currentSentence = (currentSentence + 1) % sentences.length;
+        setTimeout(type, typingSpeed);
+      } else {
+        setTimeout(type, deletingSpeed);
+      }
+    }
+  }
+
+  type();
+</script>
 
 </body>
 </html>
