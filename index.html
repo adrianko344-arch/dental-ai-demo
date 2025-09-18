@@ -13,9 +13,9 @@
 
   <!-- AOS -->
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
-
+  
   <style>
-    :root { --accent-blue: #1E40AF; }
+    :root { --accent-green: #10B981; } /* Emerald 500 */
 
     body {
       font-family: 'Inter', sans-serif;
@@ -36,7 +36,7 @@
     .bg-animated {
       position: fixed; top: 0; left: 0;
       width: 100%; height: 100%;
-      background: linear-gradient(-45deg, #0a0f2c, #0d1b42, #111827, #1e3a8a);
+      background: linear-gradient(-45deg, #064e3b, #053d3a, #111827, #065f46);
       background-size: 400% 400%;
       animation: gradientShift 30s ease infinite;
       z-index: -4;
@@ -54,7 +54,7 @@
 
     /* Gradient shimmer text */
     .gradient-text {
-      background: linear-gradient(90deg, #60a5fa, #38bdf8, #3b82f6);
+      background: linear-gradient(90deg, #6ee7b7, #34d399, #10b981);
       background-size: 200% auto;
       color: transparent;
       background-clip: text;
@@ -88,7 +88,7 @@
       content: "";
       position: absolute; top: 50%; left: 50%;
       width: 200%; height: 200%;
-      background: radial-gradient(circle, rgba(30,64,175,0.22) 20%, transparent 70%);
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.22) 20%, transparent 70%);
       transform: translate(-50%,-50%);
       border-radius: 50%;
       animation: pulse 3s infinite;
@@ -121,30 +121,30 @@
     }
     .glass:hover {
       transform: translateY(-10px) rotate3d(1, 0, 0, 8deg) scale(1.03);
-      background: rgba(34, 211, 238, 0.07);
-      box-shadow: 0 0 30px rgba(34, 211, 238, 0.2);
+      background: rgba(16, 185, 129, 0.07);
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
     }
     .icon-wrapper {
-      background: rgba(34, 211, 238, 0.1);
+      background: rgba(16, 185, 129, 0.1);
       border-radius: 50%;
       padding: 1rem;
       margin-bottom: 1.5rem;
       transition: background 0.3s ease;
     }
     .glass:hover .icon-wrapper {
-      background: rgba(34, 211, 238, 0.2);
+      background: rgba(16, 185, 129, 0.2);
     }
 
-    /* --- NEW ELEGANT GLOW --- */
+    /* --- ELEGANT GLOW --- */
     @keyframes elegant-glow {
         0% {
-            box-shadow: 0 0 12px rgba(34, 211, 238, 0.2), 0 0 12px rgba(129, 140, 248, 0.2);
+            box-shadow: 0 0 12px rgba(52, 211, 153, 0.2), 0 0 12px rgba(16, 185, 129, 0.2);
         }
         50% {
-            box-shadow: 0 0 24px rgba(34, 211, 238, 0.4), 0 0 24px rgba(129, 140, 248, 0.4);
+            box-shadow: 0 0 24px rgba(52, 211, 153, 0.4), 0 0 24px rgba(16, 185, 129, 0.4);
         }
         100% {
-            box-shadow: 0 0 12px rgba(34, 211, 238, 0.2), 0 0 12px rgba(129, 140, 248, 0.2);
+            box-shadow: 0 0 12px rgba(52, 211, 153, 0.2), 0 0 12px rgba(16, 185, 129, 0.2);
         }
     }
     .capability-card {
@@ -154,12 +154,34 @@
     }
     .capability-card:hover {
         transform: translateY(-5px);
-        background: rgba(34, 211, 238, 0.05);
+        background: rgba(16, 185, 129, 0.05);
         animation: elegant-glow 3s infinite ease-in-out;
     }
-    /* --- END NEW ELEGANT GLOW --- */
+    /* --- END ELEGANT GLOW --- */
+    
+    /* --- Animated Timeline --- */
+    .timeline-container {
+      position: relative;
+    }
+    #timeline-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    #timeline-path {
+      stroke-width: 2px;
+      stroke: url(#timeline-gradient);
+      fill: none;
+      stroke-dasharray: 1; /* Will be updated by JS */
+      stroke-dashoffset: 1; /* Will be updated by JS */
+      transition: stroke-dashoffset 2s ease-in-out;
+    }
+    /* --- END Animated Timeline --- */
 
-    /* Timeline */
     .timeline {
       display: flex;
       justify-content: center;
@@ -181,18 +203,24 @@
       transform: translateY(30px);
       opacity: 0;
     }
-    .timeline-step:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(30,64,175,0.45); }
-    .timeline-step-icon { font-size: 2rem; margin-bottom: 1rem; color: #60a5fa; }
+    .timeline-step:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(16, 185, 129, 0.45); }
+    .timeline-step-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #34d399;
+      position: relative; /* To ensure icon is above the SVG line */
+      z-index: 1;
+    }
 
     /* Counters */
-    .counter { font-size: 2rem; font-weight: bold; color: #60a5fa; }
+    .counter { font-size: 2rem; font-weight: bold; color: #34d399; }
 
     /* Section smooth fade-in */
     section { opacity: 0; transform: translateY(20px); transition: all 0.8s ease; }
     section.visible { opacity: 1; transform: translateY(0); }
 
     /* Demo section background */
-    #demo-section { background: linear-gradient(180deg, #1e0033, #0a001a, #000814); padding: 6rem 1rem; text-align:center; }
+    #demo-section { background: linear-gradient(180deg, #064e3b, #052e16, #000814); padding: 6rem 1rem; text-align:center; }
 
     footer { color: #9ca3af; }
   </style>
@@ -217,7 +245,7 @@
       Our intelligent assistant works for you 24/7. Save time and never miss a patient call again.
     </p>
     <p class="mt-6 text-sm text-gray-500" data-aos="fade-up" data-aos-delay="900">
-      The blue phone widget on-screen will let you try the assistant live.
+      The green phone widget on-screen will let you try the assistant live.
     </p>
   </section>
 
@@ -227,7 +255,7 @@
       
       <div class="glass p-8 rounded-2xl flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
         <div class="icon-wrapper">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-cyan-400"><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h5"/><path d="M17.5 17.5 16 16.25V14"/><path d="M22 16a6 6 0 1 1-12 0 6 6 0 0 1 12 0Z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-emerald-400"><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h5"/><path d="M17.5 17.5 16 16.25V14"/><path d="M22 16a6 6 0 1 1-12 0 6 6 0 0 1 12 0Z"/></svg>
         </div>
         <h3 class="text-xl font-bold mb-2">24/7 Appointment Booking</h3>
         <p class="text-gray-400">The assistant can book new and existing patients at any time, even after hours.</p>
@@ -235,7 +263,7 @@
       
       <div class="glass p-8 rounded-2xl flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="300">
         <div class="icon-wrapper">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-cyan-400"><path d="M9.5 2.5a2.5 2.5 0 0 1 5 0"/><path d="M12 18.27a5.5 5.5 0 0 1-5.5-5.5V7.5a5.5 5.5 0 0 1 11 0v5.27a5.5 5.5 0 0 1-5.5 5.5Z"/><path d="M12 12.5a2.5 2.5 0 0 1-2.5-2.5V9.5a2.5 2.5 0 0 1 5 0v.5a2.5 2.5 0 0 1-2.5 2.5Z"/><path d="M14 7.5a2 2 0 0 0-2-2"/><path d="M10 7.5a2 2 0 0 1 2-2"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-emerald-400"><path d="M9.5 2.5a2.5 2.5 0 0 1 5 0"/><path d="M12 18.27a5.5 5.5 0 0 1-5.5-5.5V7.5a5.5 5.5 0 0 1 11 0v5.27a5.5 5.5 0 0 1-5.5 5.5Z"/><path d="M12 12.5a2.5 2.5 0 0 1-2.5-2.5V9.5a2.5 2.5 0 0 1 5 0v.5a2.5 2.5 0 0 1-2.5 2.5Z"/><path d="M14 7.5a2 2 0 0 0-2-2"/><path d="M10 7.5a2 2 0 0 1 2-2"/></svg>
         </div>
         <h3 class="text-xl font-bold mb-2">Intelligent Answers</h3>
         <p class="text-gray-400">It answers common questions about your services, pricing, and business hours.</p>
@@ -243,7 +271,7 @@
 
       <div class="glass p-8 rounded-2xl flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="500">
         <div class="icon-wrapper">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-cyan-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-emerald-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
         </div>
         <h3 class="text-xl font-bold mb-2">Less Stress for Your Staff</h3>
         <p class="text-gray-400">Your staff can focus completely on patients while the AI handles the phone.</p>
@@ -259,7 +287,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         
         <div class="capability-card rounded-2xl p-6 flex items-center gap-4" data-aos="fade-up" data-aos-delay="100">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-cyan-400 flex-shrink-0"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-emerald-400 flex-shrink-0"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>
           <div>
             <h3 class="font-bold text-lg text-left">Reschedule & Cancel</h3>
             <p class="text-gray-400 text-sm text-left">Handles appointment changes flawlessly.</p>
@@ -267,7 +295,7 @@
         </div>
 
         <div class="capability-card rounded-2xl p-6 flex items-center gap-4" data-aos="fade-up" data-aos-delay="200">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-cyan-400 flex-shrink-0"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-emerald-400 flex-shrink-0"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
           <div>
             <h3 class="font-bold text-lg text-left">Insurance Questions</h3>
             <p class="text-gray-400 text-sm text-left">Answers queries about accepted plans.</p>
@@ -275,7 +303,7 @@
         </div>
 
         <div class="capability-card rounded-2xl p-6 flex items-center gap-4" data-aos="fade-up" data-aos-delay="300">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-cyan-400 flex-shrink-0"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-emerald-400 flex-shrink-0"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
           <div>
             <h3 class="font-bold text-lg text-left">After-Hours Support</h3>
             <p class="text-gray-400 text-sm text-left">Ensures no patient call is ever missed.</p>
@@ -283,7 +311,7 @@
         </div>
 
          <div class="capability-card rounded-2xl p-6 flex items-center gap-4" data-aos="fade-up" data-aos-delay="400">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-cyan-400 flex-shrink-0"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-emerald-400 flex-shrink-0"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
           <div>
             <h3 class="font-bold text-lg text-left">Service Information</h3>
             <p class="text-gray-400 text-sm text-left">Provides details about your procedures.</p>
@@ -291,7 +319,7 @@
         </div>
 
          <div class="capability-card rounded-2xl p-6 flex items-center gap-4" data-aos="fade-up" data-aos-delay="500">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-cyan-400 flex-shrink-0"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-emerald-400 flex-shrink-0"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           <div>
             <h3 class="font-bold text-lg text-left">Custom Greetings</h3>
             <p class="text-gray-400 text-sm text-left">Greets patients with your unique message.</p>
@@ -299,7 +327,7 @@
         </div>
 
          <div class="capability-card rounded-2xl p-6 flex items-center gap-4" data-aos="fade-up" data-aos-delay="600">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-cyan-400 flex-shrink-0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/><path d="M16 2v6h6"/><path d="M16 8 22 2"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-emerald-400 flex-shrink-0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/><path d="M16 2v6h6"/><path d="M16 8 22 2"/></svg>
           <div>
             <h3 class="font-bold text-lg text-left">Smart Call Routing</h3>
             <p class="text-gray-400 text-sm text-left">Transfers urgent calls to your staff.</p>
@@ -312,33 +340,44 @@
 
 
   <!-- Live Call Flow Timeline -->
-  <section class="py-20 bg-black/80">
+  <section id="how-it-works-section" class="py-20 bg-black/80">
     <h2 class="text-4xl md:text-5xl font-extrabold text-center mb-12 gradient-text" data-aos="fade-up">How Your AI Receptionist Works</h2>
-    <div class="timeline px-6">
-      <div class="timeline-step" data-aos="fade-right">
-        <div class="timeline-step-icon">📞</div>
-        <h3 class="font-bold mb-2">Patient Calls</h3>
-        <p class="text-gray-400">A patient calls your clinic number.</p>
-      </div>
-      <div class="timeline-step" data-aos="fade-right" data-aos-delay="200">
-        <div class="timeline-step-icon">🤖</div>
-        <h3 class="font-bold mb-2">AI Greets</h3>
-        <p class="text-gray-400">AI answers with a friendly greeting instantly.</p>
-      </div>
-      <div class="timeline-step" data-aos="fade-right" data-aos-delay="400">
-        <div class="timeline-step-icon">📋</div>
-        <h3 class="font-bold mb-2">Collects Details</h3>
-        <p class="text-gray-400">AI asks for patient name, service, and preferred time.</p>
-      </div>
-      <div class="timeline-step" data-aos="fade-right" data-aos-delay="600">
-        <div class="timeline-step-icon">✅</div>
-        <h3 class="font-bold mb-2">Books Appointment</h3>
-        <p class="text-gray-400">Appointment is added to your calendar automatically.</p>
-      </div>
-      <div class="timeline-step" data-aos="fade-right" data-aos-delay="800">
-        <div class="timeline-step-icon">📩</div>
-        <h3 class="font-bold mb-2">Confirmation Sent</h3>
-        <p class="text-gray-400">Patient receives instant confirmation via SMS/email.</p>
+    <div class="timeline-container">
+       <svg id="timeline-svg">
+        <defs>
+          <linearGradient id="timeline-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#34D399;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <path id="timeline-path" d=""></path>
+      </svg>
+      <div class="timeline px-6">
+        <div class="timeline-step" data-aos="fade-right">
+          <div class="timeline-step-icon">📞</div>
+          <h3 class="font-bold mb-2">Patient Calls</h3>
+          <p class="text-gray-400">A patient calls your clinic number.</p>
+        </div>
+        <div class="timeline-step" data-aos="fade-right" data-aos-delay="200">
+          <div class="timeline-step-icon">🤖</div>
+          <h3 class="font-bold mb-2">AI Greets</h3>
+          <p class="text-gray-400">AI answers with a friendly greeting instantly.</p>
+        </div>
+        <div class="timeline-step" data-aos="fade-right" data-aos-delay="400">
+          <div class="timeline-step-icon">📋</div>
+          <h3 class="font-bold mb-2">Collects Details</h3>
+          <p class="text-gray-400">AI asks for patient name, service, and preferred time.</p>
+        </div>
+        <div class="timeline-step" data-aos="fade-right" data-aos-delay="600">
+          <div class="timeline-step-icon">✅</div>
+          <h3 class="font-bold mb-2">Books Appointment</h3>
+          <p class="text-gray-400">Appointment is added to your calendar automatically.</p>
+        </div>
+        <div class="timeline-step" data-aos="fade-right" data-aos-delay="800">
+          <div class="timeline-step-icon">📩</div>
+          <h3 class="font-bold mb-2">Confirmation Sent</h3>
+          <p class="text-gray-400">Patient receives instant confirmation via SMS/email.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -369,7 +408,7 @@
     </p>
 
     <div data-aos="zoom-in" data-aos-delay="600">
-      <button id="demo-button" class="call-button small bg-[var(--accent-blue)] text-white rounded-full px-10 py-3 shadow-lg">
+      <button id="demo-button" class="call-button small bg-[var(--accent-green)] text-white rounded-full px-10 py-3 shadow-lg">
         <span class="icon">📞</span><span>Try Live Demo</span>
         <div class="shine" aria-hidden="true"></div>
       </button>
@@ -377,10 +416,10 @@
   </section>
 
   <!-- Footer -->
-  <footer class="py-6 text-center text-gray-500 text-sm relative">
-    &copy; 2025 Your Dental Practice.
+  <footer class="text-center text-gray-500 text-sm relative">
+    
   </footer>
-
+  
   <!-- Scripts -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>AOS.init({ duration: 900, once: true });</script>
@@ -418,6 +457,43 @@
       });
     }, { threshold: 0.5 });
     counters.forEach(c => counterObserver.observe(c));
+
+    // Animated Timeline Logic
+    const timelineObserver = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        const timeline = document.querySelector('.timeline');
+        const steps = Array.from(timeline.querySelectorAll('.timeline-step-icon'));
+        const svg = document.getElementById('timeline-svg');
+        const path = document.getElementById('timeline-path');
+        
+        setTimeout(() => {
+          const svgRect = svg.getBoundingClientRect();
+          let pathData = '';
+          steps.forEach((step, i) => {
+            const stepRect = step.getBoundingClientRect();
+            const x = stepRect.left + stepRect.width / 2 - svgRect.left;
+            const y = stepRect.top + stepRect.height / 2 - svgRect.top;
+            if (i === 0) {
+              pathData += `M ${x} ${y} `;
+            } else {
+              pathData += `L ${x} ${y} `;
+            }
+          });
+          
+          path.setAttribute('d', pathData);
+          const length = path.getTotalLength();
+          path.style.strokeDasharray = length;
+          path.style.strokeDashoffset = length;
+          
+          requestAnimationFrame(() => {
+            path.style.strokeDashoffset = '0';
+          });
+        }, 100);
+
+        timelineObserver.unobserve(entries[0].target);
+      }
+    }, { threshold: 0.5 });
+    timelineObserver.observe(document.getElementById('how-it-works-section'));
   </script>
 
   <!-- Particles canvas script -->
@@ -430,12 +506,12 @@
 
       const ICONS = ['🦷','🪥','😁','🔬','🏥'];
       const particles = [];
-      const MAX_PARTICLES = 220;
-      const mouse = { x: W / 2, y: H / 2 }; // Start mouse in center
+      const MAX_PARTICLES = 176;
+      const mouse = { x: W / 2, y: H / 2 };
 
       window.addEventListener('resize', ()=>{ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; });
       window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
-      window.addEventListener('mouseleave', ()=>{ mouse.x = W/2; mouse.y = H/2; }); // Reset to center on leave
+      window.addEventListener('mouseleave', ()=>{ mouse.x = W/2; mouse.y = H/2; });
 
       class P {
         constructor(isIcon){ this.reset(isIcon); }
@@ -443,8 +519,8 @@
           this.isIcon = !!isIcon;
           this.x = Math.random() * W;
           this.y = H + (Math.random() * 60);
-          this.vx = (Math.random() - 0.5) * (this.isIcon ? 0.5 : 0.4); // Slower horizontal speed
-          this.vy = 0.4 + Math.random() * (this.isIcon ? 1.5 : 0.8);   // Slower vertical speed
+          this.vx = (Math.random() - 0.5) * (this.isIcon ? 0.5 : 0.4);
+          this.vy = 0.4 + Math.random() * (this.isIcon ? 1.5 : 0.8);
           this.baseSize = this.isIcon ? 18 + Math.random() * 22 : 1 + Math.random() * 3;
           this.size = this.baseSize;
           this.icon = this.isIcon ? ICONS[Math.floor(Math.random()*ICONS.length)] : null;
@@ -478,7 +554,6 @@
           }
         }
         draw(ctx){
-          // --- NEW --- Parallax Calculation
           const parallaxFactor = this.isIcon ? 0.015 : 0.007;
           const offsetX = (W / 2 - mouse.x) * parallaxFactor;
           const offsetY = (H / 2 - mouse.y) * parallaxFactor;
@@ -486,7 +561,7 @@
           ctx.save();
           ctx.globalAlpha = this.alpha;
           if (this.isIcon && this.icon){
-            ctx.translate(this.x + offsetX, this.y + offsetY); // Apply parallax offset
+            ctx.translate(this.x + offsetX, this.y + offsetY);
             ctx.rotate(this.angle);
             ctx.font = `${Math.round(this.size)}px serif`;
             ctx.textAlign = 'center';
@@ -495,8 +570,8 @@
             ctx.fillText(this.icon, 0, 0);
           } else {
             ctx.beginPath();
-            ctx.arc(this.x + offsetX, this.y + offsetY, Math.max(0.6, this.size), 0, Math.PI*2); // Apply parallax offset
-            ctx.fillStyle = `rgba(30,64,175,${0.5 * this.alpha})`;
+            ctx.arc(this.x + offsetX, this.y + offsetY, Math.max(0.6, this.size), 0, Math.PI*2);
+            ctx.fillStyle = `rgba(16, 185, 129, ${0.5 * this.alpha})`;
             ctx.fill();
           }
           ctx.restore();
@@ -539,53 +614,57 @@
     })();
   </script>
 
-  <!-- VAPI WIDGET (blue) - FINAL FIX -->
+  <!-- VAPI SCRIPT -->
   <script>
     var vapiInstance = null;
-    const assistant = "a62ccb25-e09e-474a-832c-b21b045bcca2";
-    const apiKey = "ebb2b07d-b81f-43b3-9503-e852379tretre";
+    const assistant = "a62ccb25-e09E-474a-832c-b21b045bcca2";
+    const apiKey = "ebb2b07d-b81f-43b3-9503-e8523797683d";
     
-    // Define the button configuration for ALL states to prevent overrides.
     const buttonConfig = {
       button: {
         position: "right",
-        idle: { backgroundColor: "#1E40AF", color: "#ffffff" },
-        loading: { backgroundColor: "#1E40AF", color: "#ffffff" },
-        speaking: { backgroundColor: "#1E40AF", color: "#ffffff" }
+        idle: {
+          color: "#fff",
+          backgroundColor: "#10B981"
+        },
+        loading: {
+          color: "#fff",
+          backgroundColor: "#10B981"
+        },
+        speaking: {
+          color: "#fff",
+          backgroundColor: "#10B981"
+        }
       }
     };
 
-    (function(d, t) {
+    (function (d, t) {
       var g = document.createElement(t),
         s = d.getElementsByTagName(t)[0];
-      g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+      g.src =
+        "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
       g.defer = true;
       g.async = true;
       s.parentNode.insertBefore(g, s);
 
-      g.onload = function() {
-        try {
-          vapiInstance = window.vapiSDK.run({
-            apiKey: apiKey,
-            assistant: assistant,
-            config: buttonConfig // Use the complete config object
-          });
-        } catch(e) { console.warn("VAPI init failed:", e); }
+      g.onload = function () {
+        vapiInstance = window.vapiSDK.run({
+          apiKey: apiKey, // mandatory
+          assistant: assistant, // mandatory
+          config: buttonConfig, // optional
+        });
       };
     })(document, "script");
   </script>
+
 
   <!-- Try Live Demo button -->
   <script>
     document.getElementById('demo-button').addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      setTimeout(() => {
-        try {
-          if (vapiInstance && typeof vapiInstance.open === 'function') vapiInstance.open();
-          else if (window.vapi && typeof window.vapi.open === 'function') window.vapi.open();
-          else if (window.vapiSDK && window.vapiSDK.open) window.vapiSDK.open && window.vapiSDK.open();
-        } catch (e) {}
-      }, 420);
+      if (vapiInstance) {
+        vapiInstance.open();
+      }
     });
   </script>
 
@@ -593,24 +672,22 @@
   <script>
     const typingElement = document.getElementById('animated-typing');
     const sentences = [
-      { text: "Booking patients even while you sleep", color: "#818CF8" },
+      { text: "Booking patients even while you sleep", color: "#6EE7B7" },
       { text: "Never miss a patient call again", color: "#A7F3D0" },
-      { text: "Your clinic works 24/7 automatically", color: "#C4B5FD" },
-      { text: "Appointments booked without lifting a finger", color: "#22D3EE" }
+      { text: "Your clinic works 24/7 automatically", color: "#34D399" },
+      { text: "Appointments booked without lifting a finger", color: "#10B981" }
     ];
 
     let currentSentence = 0;
     let charIndex = 0;
     let deleting = false;
-    const typingSpeed = 100; // Slower typing speed
-    const deletingSpeed = 50;  // Slower deleting speed
+    const typingSpeed = 100;
+    const deletingSpeed = 50;
     const pauseTime = 1500;
 
     function type() {
       const sentenceData = sentences[currentSentence];
       const sentence = sentenceData.text;
-
-      // Set the color for the current sentence
       typingElement.style.color = sentenceData.color;
       
       if (!deleting) {
@@ -632,7 +709,7 @@
     }
     type();
   </script>
-
+  
 </body>
 </html>
 
