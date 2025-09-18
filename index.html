@@ -111,15 +111,29 @@
     .call-button.small { padding: 10px 22px; font-size: 18px; border-radius: 999px; }
     .call-button .icon { font-size: 20px; }
 
-    /* Glass cards */
+    /* Enhanced Glass cards */
     .glass {
-      background: rgba(255,255,255,0.05);
+      background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       transform-style: preserve-3d;
-      transition: transform 0.4s ease;
+      transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
     }
-    .glass:hover { transform: rotate3d(1,1,0,8deg) scale(1.03); }
+    .glass:hover {
+      transform: translateY(-10px) rotate3d(1, 0, 0, 8deg) scale(1.03);
+      background: rgba(34, 211, 238, 0.07);
+      box-shadow: 0 0 30px rgba(34, 211, 238, 0.2);
+    }
+    .icon-wrapper {
+      background: rgba(34, 211, 238, 0.1);
+      border-radius: 50%;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      transition: background 0.3s ease;
+    }
+    .glass:hover .icon-wrapper {
+      background: rgba(34, 211, 238, 0.2);
+    }
 
     /* Timeline */
     .timeline {
@@ -186,18 +200,31 @@
   <!-- Features -->
   <section class="py-20 bg-black/70 relative">
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6">
-      <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="100">
+      
+      <div class="glass p-8 rounded-2xl flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
+        <div class="icon-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-cyan-400"><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h5"/><path d="M17.5 17.5 16 16.25V14"/><path d="M22 16a6 6 0 1 1-12 0 6 6 0 0 1 12 0Z"/></svg>
+        </div>
         <h3 class="text-xl font-bold mb-2">24/7 Appointment Booking</h3>
         <p class="text-gray-400">The assistant can book new and existing patients at any time, even after hours.</p>
       </div>
-      <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="300">
+      
+      <div class="glass p-8 rounded-2xl flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="300">
+        <div class="icon-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-cyan-400"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A3 3 0 1 0 12 18Z"/><path d="M9 12a4.5 4.5 0 0 0 4.5 4.5 3 3 0 1 1 0 6 4.5 4.5 0 0 0-4.5 4.5V12Z"/><path d="M15 12a4.5 4.5 0 0 0-4.5-4.5A3 3 0 1 1 12 3a4.5 4.5 0 0 0 4.5-4.5V12Z"/><path d="M12 12v.5"/><path d="M11.5 18v-5.5"/><path d="M12.5 6v5.5"/><path d="m15 9.5-.5.5"/><path d="m9.5 15-.5.5"/><path d="m11.5 6-.5-.5"/><path d="m18 12-.5.5"/><path d="M6 12l.5.5"/><path d="m12.5 18-.5-.5"/></svg>
+        </div>
         <h3 class="text-xl font-bold mb-2">Intelligent Answers</h3>
         <p class="text-gray-400">It answers common questions about your services, pricing, and business hours.</p>
       </div>
-      <div class="glass p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="500">
+
+      <div class="glass p-8 rounded-2xl flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="500">
+        <div class="icon-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-12 h-12 text-cyan-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
         <h3 class="text-xl font-bold mb-2">Less Stress for Your Staff</h3>
         <p class="text-gray-400">Your staff can focus completely on patients while the AI handles the phone.</p>
       </div>
+
     </div>
   </section>
 
@@ -333,8 +360,8 @@
           this.isIcon = !!isIcon;
           this.x = Math.random() * W;
           this.y = H + (Math.random() * 60);
-          this.vx = (Math.random() - 0.5) * (this.isIcon ? 0.8 : 0.6);
-          this.vy = 0.6 + Math.random() * (this.isIcon ? 2.2 : 1.2);
+          this.vx = (Math.random() - 0.5) * (this.isIcon ? 0.5 : 0.4); // Slower horizontal speed
+          this.vy = 0.4 + Math.random() * (this.isIcon ? 1.5 : 0.8);   // Slower vertical speed
           this.baseSize = this.isIcon ? 18 + Math.random() * 22 : 1 + Math.random() * 3;
           this.size = this.baseSize;
           this.icon = this.isIcon ? ICONS[Math.floor(Math.random()*ICONS.length)] : null;
@@ -424,27 +451,40 @@
     })();
   </script>
 
-  <!-- VAPI WIDGET (blue) -->
+  <!-- VAPI WIDGET (blue) - FINAL FIX -->
   <script>
     var vapiInstance = null;
     const assistant = "a62ccb25-e09e-474a-832c-b21b045bcca2";
     const apiKey = "ebb2b07d-b81f-43b3-9503-e8523797683d";
-    (function(d,t){
-      var g=document.createElement(t), s=d.getElementsByTagName(t)[0];
-      g.src="https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
-      g.defer=true; g.async=true; s.parentNode.insertBefore(g,s);
-      g.onload=function(){
+    
+    // Define the button configuration for ALL states to prevent overrides.
+    const buttonConfig = {
+      button: {
+        position: "right",
+        idle: { backgroundColor: "#1E40AF", color: "#ffffff" },
+        loading: { backgroundColor: "#1E40AF", color: "#ffffff" },
+        speaking: { backgroundColor: "#1E40AF", color: "#ffffff" }
+      }
+    };
+
+    (function(d, t) {
+      var g = document.createElement(t),
+        s = d.getElementsByTagName(t)[0];
+      g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+      g.defer = true;
+      g.async = true;
+      s.parentNode.insertBefore(g, s);
+
+      g.onload = function() {
         try {
           vapiInstance = window.vapiSDK.run({
             apiKey: apiKey,
             assistant: assistant,
-            config: {
-              button: { position: "right", idle: { color: "#1E40AF", backgroundColor: "#ffffff" } }
-            }
+            config: buttonConfig // Use the complete config object
           });
-        } catch(e){ console.warn("VAPI init failed:", e); }
+        } catch(e) { console.warn("VAPI init failed:", e); }
       };
-    })(document,"script");
+    })(document, "script");
   </script>
 
   <!-- Try Live Demo button -->
@@ -465,21 +505,26 @@
   <script>
     const typingElement = document.getElementById('animated-typing');
     const sentences = [
-      "Booking patients even while you sleep",
-      "Never miss a patient call again",
-      "Your clinic works 24/7 automatically",
-      "Appointments booked without lifting a finger"
+      { text: "Booking patients even while you sleep", color: "#818CF8" },
+      { text: "Never miss a patient call again", color: "#A7F3D0" },
+      { text: "Your clinic works 24/7 automatically", color: "#C4B5FD" },
+      { text: "Appointments booked without lifting a finger", color: "#22D3EE" }
     ];
 
     let currentSentence = 0;
     let charIndex = 0;
     let deleting = false;
-    const typingSpeed = 60;
-    const deletingSpeed = 40;
+    const typingSpeed = 100; // Slower typing speed
+    const deletingSpeed = 50;  // Slower deleting speed
     const pauseTime = 1500;
 
     function type() {
-      const sentence = sentences[currentSentence];
+      const sentenceData = sentences[currentSentence];
+      const sentence = sentenceData.text;
+
+      // Set the color for the current sentence
+      typingElement.style.color = sentenceData.color;
+      
       if (!deleting) {
         typingElement.textContent = sentence.substring(0, charIndex + 1);
         charIndex++;
