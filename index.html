@@ -231,7 +231,6 @@
     /* Demo section background */
     #demo-section { background: linear-gradient(180deg, #064e3b, #052e16, #000814); padding: 6rem 1rem; text-align:center; }
 
-    footer { color: #9ca3af; }
   </style>
 </head>
 
@@ -662,9 +661,24 @@
   </script>
 
 
-  <!-- Try Live Demo button -->
+  <!-- Try Live Demo button & Magnetic effect -->
   <script>
-    document.getElementById('demo-button').addEventListener('click', () => {
+    const demoButton = document.getElementById('demo-button');
+    const magneticArea = demoButton.parentElement;
+
+    magneticArea.addEventListener('mousemove', (e) => {
+      const rect = magneticArea.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+
+      demoButton.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+    });
+
+    magneticArea.addEventListener('mouseleave', () => {
+      demoButton.style.transform = 'translate(0,0)';
+    });
+    
+    demoButton.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (vapiInstance) {
         vapiInstance.open();
@@ -716,6 +730,4 @@
   
 </body>
 </html>
-"
-
 
