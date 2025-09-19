@@ -229,7 +229,7 @@
     section.visible { opacity: 1; transform: translateY(0); }
 
     /* Demo section background */
-    #demo-section { background: linear-gradient(180deg, #064e3b, #052e16, #000814); padding: 6rem 1rem; text-align:center; }
+    #demo-section { background: linear-gradient(180deg, #064e3b, #052e16, #000814); padding-bottom: 6rem; padding-top: 6rem; text-align:center; }
 
   </style>
 </head>
@@ -408,13 +408,11 @@
     </div>
   </section>
 
-  <!-- CTA -->
-  <section id="demo-section" class="py-20 text-center relative">
+  <section id="demo-section" class="py-12 text-center relative">
     <h2 class="text-4xl md:text-5xl font-extrabold mb-6 gradient-text" data-aos="zoom-in" data-aos-delay="100">Experience the Future of Patient Calls</h2>
     <p class="text-gray-300 mb-8 max-w-2xl mx-auto" data-aos="zoom-in" data-aos-delay="300">
       Click the button below to talk with your new AI receptionist.
     </p>
-
     <div data-aos="zoom-in" data-aos-delay="600">
       <button id="demo-button" class="call-button small bg-[var(--accent-green)] text-white rounded-full px-10 py-3 shadow-lg">
         <span class="icon">📞</span><span>Try Live Demo</span>
@@ -620,26 +618,10 @@
   <!-- VAPI SCRIPT -->
   <script>
     var vapiInstance = null;
-    const assistant = "a62ccb25-e09E-474a-832c-b21b045bcca2";
+    const assistant = "a62ccb25-e09e-474a-832c-b21b045bcca2";
     const apiKey = "ebb2b07d-b81f-43b3-9503-e8523797683d";
     
-    const buttonConfig = {
-      button: {
-        position: "right",
-        idle: {
-          color: "#fff",
-          backgroundColor: "#10B981"
-        },
-        loading: {
-          color: "#fff",
-          backgroundColor: "#10B981"
-        },
-        speaking: {
-          color: "#fff",
-          backgroundColor: "#10B981"
-        }
-      }
-    };
+    const buttonConfig = {};
 
     (function (d, t) {
       var g = document.createElement(t),
@@ -680,8 +662,8 @@
     
     demoButton.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      if (vapiInstance) {
-        vapiInstance.open();
+      if (window.vapiSDK) {
+        window.vapiSDK.open();
       }
     });
   </script>
