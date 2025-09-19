@@ -43,14 +43,63 @@
     }
     @keyframes gradientShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
 
-    /* Particle canvas */
-    #particles {
+    /* Canvases */
+    #particles, #aurora, #toothCanvas {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      z-index: -2;
       pointer-events: none;
     }
+    #particles { z-index: -2; }
+    #aurora { z-index: -3; opacity: 0.6; }
+    #toothCanvas { 
+      z-index: -1; 
+      position: absolute; /* Changed to absolute to be contained within hero */
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      max-width: 600px;
+      max-height: 600px;
+      transform: translate(-50%, -50%);
+    }
+
+    @media (max-width: 768px) {
+      #toothCanvas {
+        display: none; /* Hide on mobile for performance */
+      }
+    }
+    
+    /* --- DIGITAL OVERLAY --- */
+    .bg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        repeating-linear-gradient(
+          0deg,
+          rgba(16, 185, 129, 0.04),
+          rgba(16, 185, 129, 0.04) 1px,
+          transparent 1px,
+          transparent 4px
+        );
+      background-size: 100% 4px;
+      animation: scanlines 20s linear infinite;
+      z-index: -1;
+      pointer-events: none;
+    }
+    @keyframes scanlines {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 0 200px;
+      }
+    }
+    /* --- END DIGITAL OVERLAY --- */
+
 
     /* Gradient shimmer text */
     .gradient-text {
@@ -241,10 +290,13 @@
   <video autoplay muted loop class="bg-video" playsinline>
     <source src="https://cdn.coverr.co/videos/coverr-digital-globe-network-3832/1080p.mp4" type="video/mp4">
   </video>
+  <canvas id="aurora"></canvas>
   <canvas id="particles"></canvas>
+  <div class="bg-overlay"></div>
 
   <!-- Hero -->
   <section id="top-section" class="min-h-screen flex flex-col justify-center items-center text-center px-6 relative">
+    <canvas id="toothCanvas"></canvas>
     <h1 class="text-5xl md:text-7xl font-black gradient-text mb-6" data-aos="fade-down" data-aos-delay="100">
       Meet Your New 24/7 <br> AI Receptionist
     </h1>
@@ -422,6 +474,7 @@
   </section>
 
   <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>AOS.init({ duration: 900, once: true });</script>
 
@@ -614,6 +667,64 @@
       loop();
     })();
   </script>
+  
+  <!-- Aurora Borealis Script -->
+  <script>
+    (function() {
+      const canvas = document.getElementById('aurora');
+      const ctx = canvas.getContext('2d');
+      let W = canvas.width = window.innerWidth;
+      let H = canvas.height = window.innerHeight;
+      const mouse = { x: W/2, y: H/2 };
+      let time = 0;
+
+      window.addEventListener('resize', () => {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+      });
+
+      function draw() {
+        time += 0.005;
+        ctx.clearRect(0, 0, W, H);
+        ctx.globalCompositeOperation = 'lighter';
+
+        const baseRadius = Math.min(W, H) * 0.6;
+        
+        // Gradient 1
+        const x1 = W * 0.5 + Math.sin(time * 0.8) * W * 0.2;
+        const y1 = H * 0.5 + Math.cos(time * 0.7) * H * 0.2;
+        const r1 = baseRadius * (1 + Math.sin(time * 0.9) * 0.1);
+        const grad1 = ctx.createRadialGradient(x1, y1, 0, x1, y1, r1);
+        grad1.addColorStop(0, 'rgba(16, 185, 129, 0.2)');
+        grad1.addColorStop(1, 'rgba(16, 185, 129, 0)');
+        ctx.fillStyle = grad1;
+        ctx.beginPath();
+        ctx.arc(x1, y1, r1, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Gradient 2 - Mouse influenced
+        const x2 = mouse.x + Math.cos(time * 0.6) * 100;
+        const y2 = mouse.y + Math.sin(time * 0.5) * 100;
+        const r2 = baseRadius * 0.8 * (1 + Math.cos(time) * 0.1);
+        const grad2 = ctx.createRadialGradient(x2, y2, 0, x2, y2, r2);
+        grad2.addColorStop(0, 'rgba(52, 211, 153, 0.15)');
+        grad2.addColorStop(1, 'rgba(52, 211, 153, 0)');
+        ctx.fillStyle = grad2;
+        ctx.beginPath();
+        ctx.arc(x2, y2, r2, 0, Math.PI * 2);
+        ctx.fill();
+
+        requestAnimationFrame(draw);
+      }
+      
+      draw();
+    })();
+  </script>
 
   <!-- VAPI SCRIPT -->
   <script>
@@ -642,30 +753,116 @@
     })(document, "script");
   </script>
 
+  <!-- 3D Tooth Model Script -->
+  <script>
+    (function(){
+      if (window.innerWidth < 768) return; // Don't run on mobile
+
+      const scene = new THREE.Scene();
+      const canvas = document.getElementById('toothCanvas');
+      const container = document.getElementById('top-section');
+      
+      const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+      camera.position.z = 5;
+
+      const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Lights
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambientLight);
+
+      const pointLight = new THREE.PointLight(0x6ee7b7, 1);
+      pointLight.position.set(5, 5, 5);
+      scene.add(pointLight);
+
+      // Material
+      const material = new THREE.MeshStandardMaterial({
+        color: 0x34d399,
+        metalness: 0.6,
+        roughness: 0.4,
+        transparent: true,
+        opacity: 0.9
+      });
+
+      // Geometry (Stylized Molar)
+      const tooth = new THREE.Group();
+      const crown = new THREE.Mesh(new THREE.BoxGeometry(2, 1, 2), material);
+      crown.position.y = 0.5;
+      
+      const root1 = new THREE.Mesh(new THREE.BoxGeometry(0.6, 1.5, 0.6), material);
+      root1.position.set(-0.5, -0.75, -0.5);
+      
+      const root2 = new THREE.Mesh(new THREE.BoxGeometry(0.6, 1.5, 0.6), material);
+      root2.position.set(0.5, -0.75, -0.5);
+      
+      const root3 = new THREE.Mesh(new THREE.BoxGeometry(0.6, 1.5, 0.6), material);
+      root3.position.set(-0.5, -0.75, 0.5);
+      
+      const root4 = new THREE.Mesh(new THREE.BoxGeometry(0.6, 1.5, 0.6), material);
+      root4.position.set(0.5, -0.75, 0.5);
+
+      tooth.add(crown, root1, root2, root3, root4);
+      scene.add(tooth);
+
+      // Mouse tracking
+      const mouse = new THREE.Vector2();
+      window.addEventListener('mousemove', (event) => {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      });
+      
+      // Animation Loop
+      function animate() {
+        requestAnimationFrame(animate);
+
+        tooth.rotation.y += 0.003;
+        tooth.rotation.x += 0.001;
+
+        // Mouse interaction
+        camera.position.x += (mouse.x * 2 - camera.position.x) * 0.05;
+        camera.position.y += (mouse.y * 2 - camera.position.y) * 0.05;
+        camera.lookAt(scene.position);
+
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // Handle window resize
+      window.addEventListener('resize', () => {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+
+    })();
+  </script>
 
   <!-- Try Live Demo button & Magnetic effect -->
   <script>
     const demoButton = document.getElementById('demo-button');
-    const magneticArea = demoButton.parentElement;
+    if (demoButton) {
+      const magneticArea = demoButton.parentElement;
 
-    magneticArea.addEventListener('mousemove', (e) => {
-      const rect = magneticArea.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
+      magneticArea.addEventListener('mousemove', (e) => {
+        const rect = magneticArea.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        demoButton.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+      });
 
-      demoButton.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
-    });
-
-    magneticArea.addEventListener('mouseleave', () => {
-      demoButton.style.transform = 'translate(0,0)';
-    });
-    
-    demoButton.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      if (window.vapiSDK) {
-        window.vapiSDK.open();
-      }
-    });
+      magneticArea.addEventListener('mouseleave', () => {
+        demoButton.style.transform = 'translate(0,0)';
+      });
+      
+      demoButton.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (window.vapiSDK) {
+          window.vapiSDK.open();
+        }
+      });
+    }
   </script>
 
   <!-- Typing effect -->
